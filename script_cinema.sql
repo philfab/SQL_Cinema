@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Film (
     duree INT,
     synopsis TEXT,
     note INT,
-    affiche VARCHAR(255),
+    affiche VARCHAR(255) DEFAULT 'affiche.jpg',
     id_realisateur INT,
     FOREIGN KEY (id_realisateur) REFERENCES Realisateur(id_realisateur)
 );

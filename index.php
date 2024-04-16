@@ -1,31 +1,49 @@
 <?php
 
-use controllers\Controller;
+use Controllers\{
+    FilmController,
+    ActorController,
+    DirectorController,
+    KindController,
+    RoleController
+};
+
 
 spl_autoload_register(function ($class) {
     require $class . '.php';
 });
 
-$controller = new Controller();
 
 $action = $_GET['action'] ?? 'listFilms';
+$id = $_GET['id'] ?? null;
 
-var_dump($action);
+
 
 switch ($action) {
     case 'listFilms':
+        $controller = new FilmController();
         $controller->listFilms();
         break;
+    case 'detailFilm':
+        if ($id) {
+            $controller = new FilmController();
+            $controller->detailsFilm($id);
+        }
+        break;
     case 'listActeurs':
-        $controller->listActeurs();
+        $controller = new ActorController();
+        $controller->listActors();
         break;
-    case 'listRealisateurs':
-        $controller->listReals();
+    case 'listDirectors':
+        $controller = new DirectorController();
+        $controller->listDirectors();
         break;
-    case 'listGenres':
-        $controller->listGenres();
+    case 'listKinds':
+        $controller = new KindController();
+        $controller->listKinds();
         break;
     case 'listRoles':
+        $controller = new RoleController();
         $controller->listRoles();
         break;
 }

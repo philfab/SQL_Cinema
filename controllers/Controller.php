@@ -16,6 +16,7 @@ class Controller
         $films = $pdo->query("
             SELECT titre, annee_sortie
             FROM film
+            ORDER BY annee_sortie DESC
         ");
 
         require "views/filmsView.php";

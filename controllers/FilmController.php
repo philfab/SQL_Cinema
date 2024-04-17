@@ -27,7 +27,7 @@ class FilmController
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT f.*, p.prenom, p.nom,
+        SELECT f.*,f.id_realisateur , p.prenom, p.nom,
                CONCAT(FLOOR(duree / 60), 'h ', LPAD(duree % 60, 2, '0'), 'mn') AS duree_formatee
         FROM film f
         INNER JOIN realisateur r ON f.id_realisateur = r.id_realisateur
@@ -44,7 +44,7 @@ class FilmController
     public function castingFilm($pdo, $filmId)
     {
         $casting = $pdo->prepare("
-        SELECT p.prenom, p.nom, r.personnage
+        SELECT c.id_acteur,p.prenom, p.nom, r.personnage
         FROM Casting c
         INNER JOIN Acteur a ON c.id_acteur = a.id_acteur
         INNER JOIN Personne p ON a.id_personne = p.id_personne

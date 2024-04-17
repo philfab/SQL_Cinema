@@ -5,7 +5,11 @@
         <p>Titre: <?= $filmDetails['titre'] ?></p>
         <p>Année de sortie: <?= $filmDetails['annee_sortie'] ?></p>
         <p>Durée: <?= $filmDetails['duree_formatee'] ?></p>
-        <p>Réalisateur: <?= $filmDetails['prenom'] . ' ' . $filmDetails['nom'] ?></p>
+        <p>Réalisateur:
+            <a href="index.php?action=detailDirector&id=<?= $filmDetails['id_realisateur'] ?>">
+                <?= $filmDetails['prenom'] . ' ' . $filmDetails['nom'] ?>
+            </a>
+        </p>
         <p>Note: <?= $filmDetails['note'] ?></p>
         <p>Synopsis: <?= $filmDetails['synopsis'] ?></p>
     </div>
@@ -15,7 +19,12 @@
     <h4>Casting</h4>
     <ul>
         <?php foreach ($filmCasting as $acteur) { ?>
-            <li><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?> dans le rôle de <?= $acteur['personnage'] ?></li>
+            <li>
+                <a href="index.php?action=detailActor&id=<?= $acteur['id_acteur'] ?>">
+                    <?= $acteur['prenom'] . ' ' . $acteur['nom'] ?>
+                </a>
+                dans le rôle de <?= $acteur['personnage'] ?>
+            </li>
         <?php } ?>
     </ul>
 <?php } ?>

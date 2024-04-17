@@ -1,3 +1,10 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 td {
     text-align: center;
 }
@@ -10,6 +17,11 @@ a {
     text-decoration: none;
 }
 
-li {
-    margin-top: 5px;
+nav ul {
+    list-style-type: none; 
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;  
 }

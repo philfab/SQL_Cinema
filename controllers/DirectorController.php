@@ -15,7 +15,7 @@ class DirectorController
     {
         $pdo = Connect::Connection();
         $realisateurs = $pdo->query("
-        SELECT p.prenom, p.nom
+        SELECT id_realisateur, p.prenom, p.nom
         FROM Personne p
         INNER JOIN realisateur r ON p.id_personne = r.id_personne
         GROUP BY r.id_realisateur
@@ -23,5 +23,9 @@ class DirectorController
         ");
 
         require "views/realisateursView.php";
+    }
+
+    public function detailsDirector($directorId)
+    {
     }
 }

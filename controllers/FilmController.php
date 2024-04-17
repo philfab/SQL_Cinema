@@ -27,7 +27,8 @@ class FilmController
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT f.*, p.prenom, p.nom
+        SELECT f.*, p.prenom, p.nom,
+               CONCAT(FLOOR(duree / 60), 'h ', LPAD(duree % 60, 2, '0'), 'mn') AS duree_formatee
         FROM film f
         INNER JOIN realisateur r ON f.id_realisateur = r.id_realisateur
         INNER JOIN personne p ON r.id_personne = p.id_personne
@@ -35,10 +36,9 @@ class FilmController
     ");
         $details->execute(['id' => $filmId]);
         $filmDetails = $details->fetch();
-        $filmDetails['duree'] = $this->dureeFormatee($filmDetails['duree']);
         $filmCasting = $this->castingFilm($pdo, $filmId);
 
-        require "views/filmsView.php";
+        require "views/filmDetailsView.php";
     }
 
     public function castingFilm($pdo, $filmId)
@@ -54,10 +54,5 @@ class FilmController
     ");
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
-    }
-
-    function dureeFormatee($duree)
-    {
-        return intdiv($duree, 60) . 'h ' . str_pad($duree % 60, 2, '0', STR_PAD_LEFT) . 'mn';
     }
 }

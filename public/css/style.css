@@ -1,7 +1,15 @@
-td{
+td {
     text-align: center;
 }
 
-th{
+th {
     text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    margin-top: 5px;
 }

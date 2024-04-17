@@ -18,17 +18,28 @@ $action = $_GET['action'] ?? 'listFilms';
 $id = $_GET['id'] ?? null;
 
 
-
 switch ($action) {
-    case 'listFilms':
-        $controller = new FilmController();
-        $controller->listFilms();
-        break;
     case 'detailFilm':
         if ($id) {
             $controller = new FilmController();
             $controller->detailsFilm($id);
         }
+        break;
+    case 'detailActor':
+        if ($id) {
+            $controller = new ActorController();
+            $controller->detailsActor($id);
+        }
+        break;
+    case 'detailDirector':
+        if ($id) {
+            $controller = new DirectorController();
+            $controller->detailsDirector($id);
+        }
+        break;
+    case 'listFilms':
+        $controller = new FilmController();
+        $controller->listFilms();
         break;
     case 'listActeurs':
         $controller = new ActorController();

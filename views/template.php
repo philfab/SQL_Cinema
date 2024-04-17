@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($titre) ? $titre : 'SQL_Cinema' ?></title>
-    <link rel="stylesheet" href="/public/css/style.css">
-    <script src="/public/js/script.js" defer></script>
+    <link rel="stylesheet" href="public/css/style.css">
+    <script src="public/js/script.js" defer></script>
 </head>
 
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="/index.php?action=listFilms">Films</a></li>
-                <li><a href="/index.php?action=listActeurs">Acteurs</a></li>
-                <li><a href="/index.php?action=listDirectors">Réalisateurs</a></li>
-                <li><a href="/index.php?action=listKinds">Genres</a></li>
-                <li><a href="/index.php?action=listRoles">Rôles</a></li>
+                <li><a href="index.php?action=listFilms">Films</a></li>
+                <li><a href="index.php?action=listActeurs">Acteurs</a></li>
+                <li><a href="index.php?action=listDirectors">Réalisateurs</a></li>
+                <li><a href="index.php?action=listKinds">Genres</a></li>
+                <li><a href="index.php?action=listRoles">Rôles</a></li>
             </ul>
         </nav>
     </header>

@@ -1,25 +1,18 @@
 <?php ob_start(); ?>
 
 <p class="uk-label uk-label-warning">Il y a <?= $acteurs->rowCount() ?> acteurs</p>
+<ul>
+    <?php
+    $acteursData = $acteurs->fetchAll();
+    foreach ($acteursData as $acteur) { ?>
+        <li>
+            <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>"><?= $acteur["nom"] . " " . $acteur["prenom"] ?></a>
+        </li>
 
-<table class="uk-table uk-table-striped">
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $acteursData = $acteurs->fetchAll();
-        foreach ($acteursData as $acteur) { ?>
-            <tr>
-                <td><?= $acteur["nom"] ?></td>
-                <td><?= $acteur["prenom"] ?></td>
-            </tr>
-        <?php } ?>
-    </tbody>
-</table>
+
+    <?php } ?>
+</ul>
+
 
 <?php
 $titre = "Liste des acteurs";

@@ -1,8 +1,9 @@
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+section{
+    margin: 20px;
+}
+
+footer{
+    text-align: center;
 }
 
 td {
@@ -11,6 +12,10 @@ td {
 
 a {
     text-decoration: none;
+}
+
+nav {
+    text-align: center;
 }
 
 nav ul {
@@ -24,4 +29,8 @@ nav ul li {
 
 ul{
     padding: 15px;
+}
+
+h2{
+    text-align: left;
 }

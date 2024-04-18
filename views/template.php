@@ -24,11 +24,11 @@
 
     <div id="wrapper" class="uk-container uk-container-expand">
         <main>
-            <div id="content">
-                <h1 class="uk-heading-divider">SQL_Cinema</h1>
-                <h2 class="uk-heading-bullet"><?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h2>
+            <section id="content">
+                
+                <h4> <?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h4>
                 <?= isset($contenu) ? $contenu : '' ?>
-            </div>
+            </section>
         </main>
     </div>
 

@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 
 <?php if (isset($films)) { ?>
-<p>Il y a <?= $films->rowCount() ?> films</p>
+
 
 <table>
     <thead>

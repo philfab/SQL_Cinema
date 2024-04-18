@@ -9,10 +9,6 @@ td {
     text-align: center;
 }
 
-th {
-    text-decoration: underline;
-}
-
 a {
     text-decoration: none;
 }
@@ -24,4 +20,8 @@ nav ul {
 nav ul li {
     display: inline-block;
     margin-right: 10px;  
+}
+
+ul{
+    padding: 15px;
 }

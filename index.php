@@ -37,6 +37,18 @@ switch ($action) {
             $controller->detailsDirector($id);
         }
         break;
+    case 'detailGenre':
+        if ($id) {
+            $controller = new KindController();
+            $controller->detailsGenre($id);
+        }
+        break;
+    case 'detailRole':
+        if ($id) {
+            $controller = new RoleController();
+            $controller->detailsRole($id);
+        }
+        break;      
     case 'listFilms':
         $controller = new FilmController();
         $controller->listFilms();

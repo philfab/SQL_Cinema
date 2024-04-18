@@ -2,7 +2,6 @@
 
 <?php if (isset($filmDetails)) { ?>
     <div>
-        <p>Titre: <?= $filmDetails['titre'] ?></p>
         <p>Année de sortie: <?= $filmDetails['annee_sortie'] ?></p>
         <p>Durée: <?= $filmDetails['duree_formatee'] ?></p>
         <p>Réalisateur:
@@ -23,7 +22,13 @@
                 <a href="index.php?action=detailActor&id=<?= $acteur['id_acteur'] ?>">
                     <?= $acteur['prenom'] . ' ' . $acteur['nom'] ?>
                 </a>
-                dans le rôle de <?= $acteur['personnage'] ?>
+                dans le rôle de 
+
+                <a href="index.php?action=detailRole&id=<?= $acteur['id_role']?>">
+                <?= $acteur['personnage']?>
+              </a>.
+
+              
             </li>
         <?php } ?>
     </ul>
@@ -31,7 +36,7 @@
 
 <?php
 $titre = "Détails du film";
-$titre_secondaire = "Détails du film";
+$titre_secondaire = "Détails du film " . $filmDetails['titre'];
 $contenu = ob_get_clean();
 require "views/template.php";
 ?>

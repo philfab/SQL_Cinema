@@ -11,7 +11,12 @@
 </h3>
 <ul>
     <?php foreach ($actorDetails as $film) { ?>
-    <li><?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) , dans le rôle de <?= $film['personnage'] ?>.</li>
+    <li>
+        <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
+              <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>, dans le rôle de 
+              <a href="index.php?action=detailRole&id=<?= $film['id_role']?>">
+                <?= $film['personnage']?>
+              </a>.</li>
     <?php } ?>
 </ul>
 

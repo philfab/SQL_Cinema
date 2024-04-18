@@ -44,7 +44,7 @@ class FilmController
     public function castingFilm($pdo, $filmId)
     {
         $casting = $pdo->prepare("
-        SELECT c.id_acteur,p.prenom, p.nom, r.personnage
+        SELECT  r.id_role , c.id_acteur,p.prenom, p.nom, r.personnage
         FROM Casting c
         INNER JOIN Acteur a ON c.id_acteur = a.id_acteur
         INNER JOIN Personne p ON a.id_personne = p.id_personne

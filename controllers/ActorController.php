@@ -20,7 +20,7 @@ class ActorController
             ORDER BY p.nom ASC
         ");
 
-        require "views/acteursView.php";
+        require "views/actorsView.php";
     }
 
     public function detailsActor($actorId)
@@ -28,7 +28,7 @@ class ActorController
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
         
-        SELECT p.prenom, p.nom, p.sexe, p.dateNaissance,f.titre, f.annee_sortie, r.personnage
+        SELECT r.id_role, f.id_film, p.prenom, p.nom, p.sexe, p.dateNaissance,f.titre, f.annee_sortie, r.personnage
         FROM Personne p
         INNER JOIN Acteur a ON p.id_personne = a.id_personne
         INNER JOIN Casting c ON a.id_acteur = c.id_acteur

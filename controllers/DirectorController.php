@@ -22,6 +22,10 @@ class DirectorController
         ORDER BY p.nom ASC
         ");
 
+        $actionAdd = 'addDirector';
+        $actionEdit = 'editDirector';
+        $actionDel = 'delDirector';
+
         require "views/directorsView.php";
     }
 

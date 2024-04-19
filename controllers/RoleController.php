@@ -20,6 +20,9 @@ class RoleController
             ORDER BY personnage ASC
         ");
 
+        $actionAdd = 'addRole';
+        $actionEdit = 'editRole';
+        $actionDel = 'delRole';
         require "views/rolesView.php";
     }
 

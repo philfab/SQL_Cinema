@@ -20,6 +20,10 @@ class KindController
                 ORDER BY libelle ASC
             ");
 
+        $actionAdd = 'addGenre';
+        $actionEdit = 'editGenre';
+        $actionDel = 'delGenre';
+
         require "views/kindsView.php";
     }
 

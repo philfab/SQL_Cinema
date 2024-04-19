@@ -2,7 +2,11 @@
 
 namespace Controllers;
 
-use models\Connect;
+use models\{
+    Connect,
+    FilmModel
+};
+
 
 class FilmController
 {
@@ -20,6 +24,9 @@ class FilmController
             ORDER BY annee_sortie DESC
         ");
 
+        $actionAdd = 'addFilm';
+        $actionEdit = 'editFilm';
+        $actionDel = 'delFilm';
         require "views/filmsView.php";
     }
 
@@ -54,5 +61,14 @@ class FilmController
     ");
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
+    }
+
+    public function addFilm()
+    {
+
+        if (isset($_GET['action']) && $_GET['action'] == 'addFilm') {
+            $showModal = true;
+            $modalContent = 'addFilm';
+        }
     }
 }

@@ -20,6 +20,9 @@ class ActorController
             ORDER BY p.nom ASC
         ");
 
+        $actionAdd = 'addActor';
+        $actionEdit = 'editActor';
+        $actionDel = 'delActor';
         require "views/actorsView.php";
     }
 

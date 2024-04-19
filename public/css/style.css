@@ -87,6 +87,55 @@ nav ul li a.active::after {
     transform: translateX(-50%); /* centre puce */
 }
 
+.button {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s; 
+}
+
+.button:hover, .button:focus {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.2);
+}
+
+.icon {
+    height: 35px;
+    width: auto;
+    transition: all 0.3s; 
+}
+
+.button:hover .icon, .button:focus .icon {
+    filter: hue-rotate(0.5turn); 
+}
+
+
+.button{
+    margin: 0;
+    padding: 0;
+    width: 35px;
+    height: 35px;
+}
+
+.title-sec {
+    display: inline;
+}
+
+.container-buttons{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.container-buttons .second-element {
+    margin-left: auto;
+}
+
+
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {
     .film-gallery figure {

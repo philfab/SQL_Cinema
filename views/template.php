@@ -30,13 +30,22 @@ $currentAction = $_GET['action'] ?? 'listFilms';
     <div id="wrapper" class="uk-container uk-container-expand">
         <main>
             <section id="content">
-                <h4> <?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h4>
+                <div class="container-buttons">
+                    <h4 class="title-sec"> <?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h4>
+                    <a href="index.php?action=<?= $actionAdd ?>" class="button second-element">
+                        <img src="public/images/add.svg" alt="Ajouter" class="icon" />
+                    </a>
+                    <a href="index.php?action=<?= $actionEdit ?>" class="button">
+                        <img src="public/images/edit.svg" alt="Éditer" class="icon" />
+                    </a>
+                    <a href="index.php?action=<?= $actionDel ?>" class="button">
+                        <img src="public/images/del.svg" alt="Supprimer" class="icon" />
+                    </a>
+                </div>
                 <?= isset($contenu) ? $contenu : '' ?>
             </section>
         </main>
     </div>
-
-
 
     <footer>
         <p>&copy; <?= date('Y') ?> SQL_Cinema.</p>

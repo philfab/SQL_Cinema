@@ -19,6 +19,10 @@ $id = $_GET['id'] ?? null;
 
 
 switch ($action) {
+    case 'addFilm':
+        $controller = new FilmController();
+        $controller->addFilm();
+        break;
     case 'detailFilm':
         if ($id) {
             $controller = new FilmController();

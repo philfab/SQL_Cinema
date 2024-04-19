@@ -4,11 +4,11 @@
 
 
 <ul>
-    <?php $genresData = $genres->fetchAll();?>
+    <?php $genresData = $genres->fetchAll(); ?>
     <?php foreach ($genresData as $genre) { ?>
         <li>
             <a href="index.php?action=detailGenre&id=<?= $genre["id_genre"] ?>"><?= $genre["libelle"] ?></a>
-            
+
         </li>
     <?php } ?>
 </ul>

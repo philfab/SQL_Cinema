@@ -1,21 +1,15 @@
 section{
-    margin: 20px;
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
 }
 
-footer{
-    text-align: center;
-}
-
-td {
+footer,td,nav{
     text-align: center;
 }
 
 a {
     text-decoration: none;
-}
-
-nav {
-    text-align: center;
 }
 
 nav ul {
@@ -31,6 +25,3 @@ ul{
     padding: 15px;
 }
 
-h2{
-    text-align: left;
-}

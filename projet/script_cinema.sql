@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS Personne (
     prenom VARCHAR(50),
     nom VARCHAR(50),
     dateNaissance DATE,
-    sexe CHAR(1)
+    sexe CHAR(1),
+    photo VARCHAR(255) DEFAULT 'photo.jpg'
 );
 
 CREATE TABLE IF NOT EXISTS Realisateur (

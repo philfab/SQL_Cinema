@@ -15,7 +15,7 @@ class FilmController
     {
         $pdo = Connect::Connection();
         $films = $pdo->query("
-            SELECT id_film, titre, annee_sortie
+            SELECT id_film, titre, annee_sortie, affiche
             FROM film
             ORDER BY annee_sortie DESC
         ");

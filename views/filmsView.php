@@ -1,25 +1,17 @@
 <?php ob_start(); ?>
 
-<?php if (isset($films)) { ?>
 
+<div class="film-gallery">
+    <?php foreach ($films as $film) : ?>
+        <figure>
+            <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
+                <img src="<?= $film['affiche'] ?>" alt="Affiche du film <?= $film['titre'] ?>">
+            </a>
+            <figcaption><?= $film['titre'] ?></figcaption>
+        </figure>
+    <?php endforeach; ?>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>TITRE</th>
-            <th>ANNEE SORTIE</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($films as $film) { ?>
-        <tr>
-            <td><a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>"><?= $film['titre'] ?></a></td>
-            <td><?= $film['annee_sortie'] ?></td>
-        </tr>
-        <?php } ?>
-    </tbody>
-</table>
-<?php } ?>
 
 <?php
 $titre = "Liste des films";

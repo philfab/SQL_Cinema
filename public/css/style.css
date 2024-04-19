@@ -1,10 +1,26 @@
-section{
+*{
+    box-sizing: border-box; 
+    background-color: black;
+    color: whitesmoke;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root{
+    --red : crimson;
+}
+
+header{
+    margin: 50px 0 100px 0;
+    font-size: 1.1rem;
+}
+
+section {
     width: 80%;
     max-width: 1200px;
     margin: auto;
 }
 
-footer,td,nav{
+footer, td, nav {
     text-align: center;
 }
 
@@ -14,6 +30,7 @@ a {
 
 nav ul {
     list-style-type: none; 
+    padding: 0;
 }
 
 nav ul li {
@@ -21,7 +38,70 @@ nav ul li {
     margin-right: 10px;  
 }
 
-ul{
-    padding: 15px;
+.film-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    padding-bottom: 20px;
+}
+
+.film-gallery figure {
+    flex: 0 0 calc(25% - 20px); /*somme des largeurs des 4 ims + marges = 100% */
+    margin-bottom: 20px;
+    margin: 0 0 20px 0;
+}
+
+.film-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+figcaption {
+    padding-top: 5px;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+nav ul li a {
+    position: relative;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    color: var(--red);
+}
+
+nav ul li a.active::after {
+    content: '';
+    position: absolute; 
+    left: 50%; 
+    bottom: -5px; 
+    width: 5px; /* largeur puce */
+    height: 5px; /* hauteur puce */
+    border-radius: 50%;
+    background-color: var(--red);
+    transform: translateX(-50%); /* centre puce */
+}
+
+/* media queries tablet + mobile */
+@media (max-width: 1024px) {
+    .film-gallery figure {
+        flex: 0 0 calc(33.333% - 20px); /*3 ims par rangée pour tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .film-gallery figure {
+        flex: 0 0 calc(50% - 20px); /* 2 ims par rangée pour petits appareils*/
+    }
+}
+
+@media (max-width: 480px) {
+    .film-gallery figure {
+        flex: 0 0 100%; /* 1 im par rangée pour mobile */
+    }
 }
 

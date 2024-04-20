@@ -8,10 +8,11 @@ use Controllers\{
     RoleController
 };
 
-
+require_once 'vendor/autoload.php';
 spl_autoload_register(function ($class) {
     require $class . '.php';
 });
+
 
 
 $action = $_GET['action'] ?? 'listFilms';
@@ -19,9 +20,9 @@ $id = $_GET['id'] ?? null;
 
 
 switch ($action) {
-    case 'addFilm':
-        $controller = new FilmController();
-        $controller->addFilm();
+    case 'addKind':
+        $controller = new KindController();
+        $controller->addKind();
         break;
     case 'detailFilm':
         if ($id) {
@@ -52,7 +53,7 @@ switch ($action) {
             $controller = new RoleController();
             $controller->detailsRole($id);
         }
-        break;      
+        break;
     case 'listFilms':
         $controller = new FilmController();
         $controller->listFilms();

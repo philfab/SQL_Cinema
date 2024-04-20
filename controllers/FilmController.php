@@ -4,9 +4,8 @@ namespace Controllers;
 
 use models\{
     Connect,
-    FilmModel
 };
-
+use Kint\Kint;
 
 class FilmController
 {
@@ -44,7 +43,6 @@ class FilmController
         $details->execute(['id' => $filmId]);
         $filmDetails = $details->fetch();
         $filmCasting = $this->castingFilm($pdo, $filmId);
-
         require "views/filmDetailsView.php";
     }
 

@@ -47,6 +47,17 @@ $currentAction = $_GET['action'] ?? 'listFilms';
         </main>
     </div>
 
+    <!-- Modale dynamique -->
+    <div id="modal" class="modal" style="display: <?= isset($showModal) && $showModal ? 'block' : 'none'; ?>">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body">
+                <?= $modalContent ?? ''; ?>
+            </div>
+        </div>
+    </div>
+
+
     <footer>
         <p>&copy; <?= date('Y') ?> SQL_Cinema.</p>
     </footer>

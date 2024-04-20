@@ -20,9 +20,9 @@ class KindController
                 ORDER BY libelle ASC
             ");
 
-        $actionAdd = 'addGenre';
-        $actionEdit = 'editGenre';
-        $actionDel = 'delGenre';
+        $actionAdd = 'addKind';
+        $actionEdit = 'editKind';
+        $actionDel = 'delKind';
 
         require "views/kindsView.php";
     }
@@ -42,5 +42,13 @@ class KindController
         $genreDetails = $details->fetchAll();
 
         require "views/kindDetailsView.php";
+    }
+
+    public function addKind()
+    {
+        $showModal = true;
+        $modalContent = 'addKind';
+
+        require "views/kindsView.php";
     }
 }

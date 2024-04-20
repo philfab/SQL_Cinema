@@ -3,11 +3,10 @@
 <p class="uk-label uk-label-warning">Il y a <?= $roles->rowCount() ?> rôles</p>
 
 <ul>
-    <?php $rolesData = $roles->fetchAll(); ?>
-    <?php foreach ($rolesData as $role) { ?>
+    <?php foreach ($roles as $role) { ?>
         <li>
             <a href="index.php?action=detailRole&id=<?= $role["id_role"] ?>"><?= $role["personnage"] ?></a>
-            
+
         </li>
     <?php } ?>
 </ul>

@@ -3,13 +3,10 @@
 <p class="uk-label uk-label-warning">Il y a <?= $acteurs->rowCount() ?> acteurs</p>
 <ul>
     <?php
-    $acteursData = $acteurs->fetchAll();
-    foreach ($acteursData as $acteur) { ?>
+    foreach ($acteurs as $acteur) { ?>
         <li>
             <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>"><?= $acteur["nom"] . " " . $acteur["prenom"] ?></a>
         </li>
-
-
     <?php } ?>
 </ul>
 

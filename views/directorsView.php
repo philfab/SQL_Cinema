@@ -4,8 +4,7 @@
 
 <ul>
     <?php
-    $realisateursData = $realisateurs->fetchAll();
-    foreach ($realisateursData as $realisateur) { ?>
+    foreach ($realisateurs as $realisateur) { ?>
         <li>
             <a href="index.php?action=detailDirector&id=<?= $realisateur["id_realisateur"] ?>"><?= $realisateur["nom"] . " " . $realisateur["prenom"] ?></a>
         </li>

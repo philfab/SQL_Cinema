@@ -11,23 +11,23 @@ $currentAction = $_GET['action'] ?? 'listFilms';
     <title><?= isset($titre) ? $titre : 'SQL_Cinema' ?></title>
     <link rel="stylesheet" href="public/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="public/js/script.js" defer></script>
+
 </head>
 
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="index.php?action=listFilms" class="<?= $currentAction == 'listFilms' ? 'active' : '' ?>">Films</a></li>
-                <li><a href="index.php?action=listActeurs" class="<?= $currentAction == 'listActeurs' ? 'active' : '' ?>">Acteurs</a></li>
-                <li><a href="index.php?action=listDirectors" class="<?= $currentAction == 'listDirectors' ? 'active' : '' ?>">Réalisateurs</a></li>
-                <li><a href="index.php?action=listKinds" class="<?= $currentAction == 'listKinds' ? 'active' : '' ?>">Genres</a></li>
-                <li><a href="index.php?action=listRoles" class="<?= $currentAction == 'listRoles' ? 'active' : '' ?>">Rôles</a></li>
+                <li><a href="index.php?action=listFilms" class="<?= strpos($currentAction, 'Film') ? 'active' : '' ?>">Films</a></li>
+                <li><a href="index.php?action=listActors" class="<?= strpos($currentAction, 'Actor') ? 'active' : '' ?>">Acteurs</a></li>
+                <li><a href="index.php?action=listDirectors" class="<?= strpos($currentAction, 'Director') ? 'active' : '' ?>">Réalisateurs</a></li>
+                <li><a href="index.php?action=listKinds" class="<?= strpos($currentAction, 'Kind') ? 'active' : '' ?>">Genres</a></li>
+                <li><a href="index.php?action=listRoles" class="<?= strpos($currentAction, 'Role') ? 'active' : '' ?>">Rôles</a></li>
             </ul>
         </nav>
     </header>
 
-    <div id="wrapper" class="uk-container uk-container-expand">
+    <div id="wrapper">
         <main>
             <section id="content">
                 <div class="container-buttons">
@@ -44,23 +44,30 @@ $currentAction = $_GET['action'] ?? 'listFilms';
                 </div>
                 <?= isset($contenu) ? $contenu : '' ?>
             </section>
-        </main>
-    </div>
+            <!-- Modale dynamique -->
+            <?php if (isset($showModal) && $showModal) : ?>
+                <div id="modal-overlay" class="modal-overlay" style="display: flex;">
+                    <div class="modal" id="modal">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <div id="modal-body">
+                                <?= $modalContent ?? ''; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
 
-    <!-- Modale dynamique -->
-    <div id="modal" class="modal" style="display: <?= isset($showModal) && $showModal ? 'block' : 'none'; ?>">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="modal-body">
-                <?= $modalContent ?? ''; ?>
-            </div>
-        </div>
+
+
+        </main>
     </div>
 
 
     <footer>
         <p>&copy; <?= date('Y') ?> SQL_Cinema.</p>
     </footer>
+    <script src="public/js/script.js"></script>
 </body>
 
 </html>

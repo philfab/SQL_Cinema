@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<p class="uk-label uk-label-warning">Il y a <?= $realisateurs->rowCount() ?> realisateurs</p>
+<p>Il y a <?= $realisateurs->rowCount() ?> realisateurs</p>
 
 <ul>
     <?php

@@ -11,15 +11,20 @@ class RoleController
     {
     }
 
-    public function listRoles()
+    public function listRoles($update = false)
     {
-        $pdo = Connect::Connection();
-        $roles = $pdo->query("
+        if (!isset($_SESSION['roles']) || $update) {
+            $pdo = Connect::Connection();
+            $roles = $pdo->query("
             SELECT id_role, personnage
             FROM role
             ORDER BY personnage ASC
         ");
 
+            $_SESSION['roles'] = $roles->fetchAll();
+        }
+
+        $roles = $_SESSION['roles'];
         $actionAdd = 'addRole';
         $actionEdit = 'editRole';
         $actionDel = 'delRole';
@@ -42,5 +47,41 @@ class RoleController
         $details->execute(['id' => $roleId]);
         $roleDetails = $details->fetchAll();
         require "views/roleDetailsView.php";
+    }
+
+    public function addRole()
+    {
+        $modalType  = 'modalAddRole';
+        $actionAdd = 'addRole';
+        $actionEdit = 'editRole';
+        $actionDel = 'delRole';
+        $roles = $_SESSION['roles'];
+        require "views/rolesView.php";
+    }
+
+    public function saveRole()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roleName'])) {
+            $roleName = filter_input(INPUT_POST, 'roleName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $pdo = Connect::Connection();
+
+            $check = $pdo->prepare("SELECT COUNT(*) FROM role WHERE personnage = :personnage");
+            $check->execute([':personnage' => $roleName]);
+            $exists = $check->fetchColumn() > 0;
+
+            if ($exists) {
+                echo "Le rôle existe déjà.";
+            } else {
+                $req = $pdo->prepare("INSERT INTO role (personnage) VALUES (:personnage)");
+
+                if ($req->execute([':personnage' => $roleName])) {
+                    $this->listRoles(true);
+                    exit;
+                } else {
+                    echo "Erreur ajout du rôle.";
+                }
+            }
+        }
     }
 }

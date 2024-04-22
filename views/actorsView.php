@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<p class="uk-label uk-label-warning">Il y a <?= $acteurs->rowCount() ?> acteurs</p>
+<p>Il y a <?= $acteurs->rowCount() ?> acteurs</p>
 <ul>
     <?php
     foreach ($acteurs as $acteur) { ?>

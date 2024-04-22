@@ -63,10 +63,5 @@ class FilmController
 
     public function addFilm()
     {
-
-        if (isset($_GET['action']) && $_GET['action'] == 'addFilm') {
-            $showModal = true;
-            $modalContent = 'addFilm';
-        }
     }
 }

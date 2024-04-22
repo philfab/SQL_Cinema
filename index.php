@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use Controllers\{
     FilmController,
@@ -24,6 +25,19 @@ switch ($action) {
         $controller = new KindController();
         $controller->addKind();
         break;
+    case 'addRole':
+        $controller = new RoleController();
+        $controller->addRole();
+        break;
+    case 'saveKind':
+        $controller = new KindController();
+        $controller->saveKind();
+        break;
+    case 'saveRole':
+        $controller = new RoleController();
+        $controller->saveRole();
+        break;
+
     case 'detailFilm':
         if ($id) {
             $controller = new FilmController();
@@ -42,10 +56,10 @@ switch ($action) {
             $controller->detailsDirector($id);
         }
         break;
-    case 'detailGenre':
+    case 'detailKind':
         if ($id) {
             $controller = new KindController();
-            $controller->detailsGenre($id);
+            $controller->detailKind($id);
         }
         break;
     case 'detailRole':
@@ -58,7 +72,7 @@ switch ($action) {
         $controller = new FilmController();
         $controller->listFilms();
         break;
-    case 'listActeurs':
+    case 'listActors':
         $controller = new ActorController();
         $controller->listActors();
         break;

@@ -13,7 +13,7 @@ class ActorController
     {
         $pdo = Connect::Connection();
         $acteurs = $pdo->query("
-            SELECT id_acteur, p.prenom, p.nom
+            SELECT id_acteur, p.prenom, p.nom, p.photo
             FROM Personne p
             INNER JOIN acteur a ON p.id_personne = a.id_personne
             GROUP BY a.id_acteur

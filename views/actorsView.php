@@ -1,15 +1,15 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= $acteurs->rowCount() ?> acteurs</p>
-<ul>
-    <?php
-    foreach ($acteurs as $acteur) { ?>
-        <li>
-            <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>"><?= $acteur["nom"] . " " . $acteur["prenom"] ?></a>
-        </li>
+<div class="film-gallery">
+    <?php foreach ($acteurs as $acteur) { ?>
+        <figure>
+        <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>">
+         <img src="<?= $acteur['photo'] ?>" alt="Photo de l'acteur">
+        </a>
+            <figcaption><?=  $acteur["nom"] . " " . $acteur["prenom"] ?></figcaption>
+        </figure>
     <?php } ?>
-</ul>
-
+</div>
 
 <?php
 $titre = "Liste des acteurs";

@@ -35,7 +35,7 @@ $currentAction = $_GET['action'] ?? 'listFilms';
                     <a href="index.php?action=<?=isset($actionAdd) ? $actionAdd : '' ?>" class="button second-element">
                         <img src="public/images/add.svg" alt="Ajouter" class="icon" />
                     </a>
-                    <a href="index.php?action=<?=isset($actionEdit) ? $actionAdd : ''?>" class="button">
+                    <a href="index.php?action=<?=isset($actionEdit) ? $actionEdit : ''?>" class="button">
                         <img src="public/images/edit.svg" alt="Éditer" class="icon" />
                     </a>
                     <a href="index.php?action=<?= isset($actionDel) ? $actionDel : '' ?>" class="button">

@@ -14,11 +14,8 @@ spl_autoload_register(function ($class) {
     require $class . '.php';
 });
 
-
-
 $action = $_GET['action'] ?? 'listFilms';
 $id = $_GET['id'] ?? null;
-
 
 switch ($action) {
     case 'addKind':

@@ -1,7 +1,5 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= $kinds->rowCount() ?> genres</p>
-
 <div class="genre-container">
     <?php foreach ($kinds as $kind) { ?>
         <div class="genre-tile">

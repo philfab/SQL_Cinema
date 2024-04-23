@@ -15,7 +15,7 @@ class DirectorController
     {
         $pdo = Connect::Connection();
         $realisateurs = $pdo->query("
-        SELECT id_realisateur, p.prenom, p.nom
+        SELECT r.id_realisateur, p.prenom, p.nom, p.photo
         FROM Personne p
         INNER JOIN realisateur r ON p.id_personne = r.id_personne
         GROUP BY r.id_realisateur

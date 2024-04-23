@@ -1,15 +1,15 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= $realisateurs->rowCount() ?> realisateurs</p>
-
-<ul>
-    <?php
-    foreach ($realisateurs as $realisateur) { ?>
-        <li>
-            <a href="index.php?action=detailDirector&id=<?= $realisateur["id_realisateur"] ?>"><?= $realisateur["nom"] . " " . $realisateur["prenom"] ?></a>
-        </li>
+<div class="film-gallery">
+    <?php foreach ($realisateurs as $realisateur) { ?>
+        <figure>
+        <a href="index.php?action=detailDirector&id=<?= $realisateur["id_realisateur"] ?>">
+         <img src="<?= $realisateur['photo'] ?>" alt="Photo du Realisateur">
+        </a>
+            <figcaption><?=  $realisateur["nom"] . " " . $realisateur["prenom"] ?></figcaption>
+        </figure>
     <?php } ?>
-</ul>
+</div>
 
 <?php
 $titre = "Liste des realisateurs";

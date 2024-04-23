@@ -32,13 +32,13 @@ $currentAction = $_GET['action'] ?? 'listFilms';
             <section id="content">
                 <div class="container-buttons">
                     <h4 class="title-sec"> <?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h4>
-                    <a href="index.php?action=<?= $actionAdd ?>" class="button second-element">
+                    <a href="index.php?action=<?=isset($actionAdd) ? $actionAdd : '' ?>" class="button second-element">
                         <img src="public/images/add.svg" alt="Ajouter" class="icon" />
                     </a>
-                    <a href="index.php?action=<?= $actionEdit ?>" class="button">
+                    <a href="index.php?action=<?=isset($actionEdit) ? $actionAdd : ''?>" class="button">
                         <img src="public/images/edit.svg" alt="Éditer" class="icon" />
                     </a>
-                    <a href="index.php?action=<?= $actionDel ?>" class="button">
+                    <a href="index.php?action=<?= isset($actionDel) ? $actionDel : '' ?>" class="button">
                         <img src="public/images/del.svg" alt="Supprimer" class="icon" />
                     </a>
                 </div>

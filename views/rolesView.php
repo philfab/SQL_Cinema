@@ -1,8 +1,5 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= $roles->rowCount() ?> rôles</p>
-
-
 <div class="genre-container">
     <?php foreach ($roles as $role) { ?>
         <div class="genre-tile">

@@ -11,24 +11,19 @@ class KindController
     {
     }
 
-    public function listKinds($update = false)
+    function getlist(): \PDOStatement
     {
-        if (!isset($_SESSION['kinds']) || $update) {
-            $pdo = Connect::Connection();
-            $kinds = $pdo->query("
-                SELECT id_genre, libelle
-                FROM genre
-                ORDER BY libelle ASC
-            ");
-            $_SESSION['kinds'] = $kinds->fetchAll();
-        }
-
-        $kinds = $_SESSION['kinds'];
-        $actionAdd = 'addKind';
-        $actionEdit = 'editKind';
-        $actionDel = 'delKind';
-
-        require "views/kindsView.php";
+        $pdo = Connect::Connection();
+        $kinds = $pdo->query("
+            SELECT id_genre, libelle
+            FROM genre
+            ORDER BY libelle ASC
+        ");
+        return $kinds;
+    }
+    public function listKinds()
+    {
+        $this->toView($this->getlist());
     }
 
     public function detailKind($genreId)
@@ -50,11 +45,7 @@ class KindController
     public function addKind()
     {
         $modalType  = 'modalAddKind';
-        $actionAdd = 'addKind';
-        $actionEdit = 'editKind';
-        $actionDel = 'delKind';
-        $kinds = $_SESSION['kinds'];
-        require "views/kindsView.php";
+        $this->toView($this->getlist(),$modalType );
     }
 
     public function saveKind()
@@ -74,12 +65,19 @@ class KindController
                 $req = $pdo->prepare("INSERT INTO genre (libelle) VALUES (:libelle)");
 
                 if ($req->execute([':libelle' => $genreName])) {
-                    $this->listKinds(true);
+                    header("Location: index.php?action=listKinds");
                     exit;
                 } else {
                     echo "Erreur ajout du genre.";
                 }
             }
         }
+    }
+
+    function toView($kinds,$modalType = null){
+        $actionAdd = 'addKind';
+        $actionEdit = 'editKind';
+        $actionDel = 'delKind';
+        require "views/kindsView.php";
     }
 }

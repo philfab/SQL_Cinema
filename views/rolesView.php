@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= count($roles) ?> rôles</p>
+<p>Il y a <?= $roles->rowCount() ?> rôles</p>
 
 
 <div class="genre-container">
@@ -31,6 +31,7 @@ endif;
 ?>
 
 <?php
+$path = "index.php?action=listRoles";
 $titre = "Liste des rôles";
 $titre_secondaire = "Liste des rôles";
 $contenu = ob_get_clean();

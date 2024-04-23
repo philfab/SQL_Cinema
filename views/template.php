@@ -46,7 +46,7 @@ $currentAction = $_GET['action'] ?? 'listFilms';
             </section>
             <!-- Modale dynamique -->
             <?php if (isset($showModal) && $showModal) : ?>
-                <div id="modal-overlay" class="modal-overlay" style="display: flex;">
+                <div data-path="<?= $path ?>" id="modal-overlay" class="modal-overlay" style="display: flex;">
                     <div class="modal" id="modal">
                         <div class="modal-content">
                             <span class="close-modal">&times;</span>

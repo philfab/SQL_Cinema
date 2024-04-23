@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('modal-overlay');
-    const buttons = document.querySelectorAll('.button');
 
   function closeModal() {
+        history.replaceState (null, null, overlay.dataset.path);     
         overlay.style.display = 'none';  
   }
 
@@ -14,13 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   };
 
-  buttons.forEach(function(button) {
-    button.addEventListener('click', function(event) {
-       
-        var newUrl = event.currentTarget.href;
-        history.replaceState(null, null, newUrl);
-    });
-});
 
 });
   

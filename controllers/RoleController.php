@@ -11,24 +11,20 @@ class RoleController
     {
     }
 
-    public function listRoles($update = false)
+    function getlist(): \PDOStatement
     {
-        if (!isset($_SESSION['roles']) || $update) {
-            $pdo = Connect::Connection();
-            $roles = $pdo->query("
-            SELECT id_role, personnage
-            FROM role
-            ORDER BY personnage ASC
+        $pdo = Connect::Connection();
+        $roles = $pdo->query("
+        SELECT id_role, personnage
+        FROM role
+        ORDER BY personnage ASC
         ");
+        return $roles;
+    }
 
-            $_SESSION['roles'] = $roles->fetchAll();
-        }
-
-        $roles = $_SESSION['roles'];
-        $actionAdd = 'addRole';
-        $actionEdit = 'editRole';
-        $actionDel = 'delRole';
-        require "views/rolesView.php";
+    public function listRoles()
+    {
+        $this->toView($this->getlist());
     }
 
     public function detailsRole($roleId)
@@ -52,11 +48,7 @@ class RoleController
     public function addRole()
     {
         $modalType  = 'modalAddRole';
-        $actionAdd = 'addRole';
-        $actionEdit = 'editRole';
-        $actionDel = 'delRole';
-        $roles = $_SESSION['roles'];
-        require "views/rolesView.php";
+        $this->toView($this->getlist(),$modalType );
     }
 
     public function saveRole()
@@ -76,12 +68,19 @@ class RoleController
                 $req = $pdo->prepare("INSERT INTO role (personnage) VALUES (:personnage)");
 
                 if ($req->execute([':personnage' => $roleName])) {
-                    $this->listRoles(true);
+                    header("Location: index.php?action=listRoles");
                     exit;
                 } else {
                     echo "Erreur ajout du rôle.";
                 }
             }
         }
+    }
+
+    function toView($roles,$modalType = null){
+        $actionAdd = 'addRole';
+        $actionEdit = 'editRole';
+        $actionDel = 'delRole';
+        require "views/rolesView.php";
     }
 }

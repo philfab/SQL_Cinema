@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<p>Il y a <?= count($kinds) ?> genres</p>
+<p>Il y a <?= $kinds->rowCount() ?> genres</p>
 
 <div class="genre-container">
     <?php foreach ($kinds as $kind) { ?>
@@ -30,6 +30,7 @@ endif;
 ?>
 
 <?php
+$path = "index.php?action=listKinds";
 $titre = "Liste des genres";
 $titre_secondaire = "Liste des genres";
 $contenu = ob_get_clean();

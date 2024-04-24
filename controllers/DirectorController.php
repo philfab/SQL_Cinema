@@ -13,20 +13,7 @@ class DirectorController
 
     public function listDirectors()
     {
-        $pdo = Connect::Connection();
-        $realisateurs = $pdo->query("
-        SELECT r.id_realisateur, p.prenom, p.nom, p.photo
-        FROM Personne p
-        INNER JOIN realisateur r ON p.id_personne = r.id_personne
-        GROUP BY r.id_realisateur
-        ORDER BY p.nom ASC
-        ");
-
-        $actionAdd = 'addDirector';
-        $actionEdit = 'editDirector';
-        $actionDel = 'delDirector';
-
-        require "views/directorsView.php";
+        $this->toView($this->getlist());
     }
 
     public function detailsDirector($directorId)
@@ -44,5 +31,39 @@ class DirectorController
         $directorDetails = $details->fetchAll();
 
         require "views/directorDetailsView.php";
+    }
+
+    public function addDirector()
+    {
+        $modalType = "modalAddDirector";
+        $this->toView($this->getList(), $modalType);
+    }
+
+    function toView($realisateurs, $modalType = null)
+    {
+        $actionAdd = 'addDirector';
+        $actionEdit = 'editDirector';
+        $actionDel = 'delDirector';
+        require "views/directorsView.php";
+    }
+
+    function getList()
+    {
+        $pdo = Connect::Connection();
+        $realisateurs = $pdo->query("
+        SELECT r.id_realisateur, p.prenom, p.nom, p.photo
+        FROM Personne p
+        INNER JOIN realisateur r ON p.id_personne = r.id_personne
+        GROUP BY r.id_realisateur
+        ORDER BY p.nom ASC
+        ");
+        return $realisateurs;
+    }
+
+    public function saveDirector()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+        }
     }
 }

@@ -56,13 +56,23 @@ nav ul li {
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 10px 10px 0 0
+}
+
+figure {
+    transition: all 0.3s;
     border-radius: 10px;
 }
 
 figcaption {
-    padding-top: 5px;
+    padding: 5px 0 0 3px;
+    border-radius: 0 0 10px 10px;
     font-size: 0.9rem;
     font-style: italic;
+}
+
+select {
+    margin-bottom: 10px;
 }
 
 nav ul li a {
@@ -144,9 +154,9 @@ nav ul li a.active::after {
     display: flex;
     align-items: center;
     justify-content: center; 
-  }
+}
 
-  .modal {
+.modal {
     position: relative; 
     background: #1a1a1a; 
     color: #fff; 
@@ -154,9 +164,10 @@ nav ul li a.active::after {
     border-radius: 10px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5); 
     max-width: 500px; 
-  }
+    min-width: 400px;
+}
   
-  .close-modal {
+.close-modal {
     position: absolute;
     top: 0;
     right: 5px;
@@ -164,42 +175,40 @@ nav ul li a.active::after {
     color: #fff;
     cursor: pointer;
     background-color: transparent;
-  }
+}
   
-  
-  .modal-content form {
+.modal-content form {
     display: flex;
     flex-direction: column;
-  }
+}
   
-  .modal-content label,
-  .modal-content input,
-  .modal-content button {
+.modal-content label,
+.modal-content input,
+.modal-content button {
     margin-bottom: 10px; 
-  }
+}
 
-  
-  .modal-content input[type="text"] {
+.modal-content input[type="text"] {
     border: 1px solid #555;
     background: #333; 
     color: #fff; 
     padding: 15px; 
-  }
+}
   
-  .modal-content button {
+.modal-content button {
     padding: 15px;
     background: #e50914;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
   
-  .modal-content button:hover {
+.modal-content button:hover {
     background: #b20710; 
-  }
+}
 
-  .genre-container {
+.genre-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -221,11 +230,11 @@ nav ul li a.active::after {
     transition: all 0.3s;
 }
 
-.genre-tile:hover, .genre-tile:focus {
+.genre-tile:hover, .genre-tile:focus, 
+figure:hover, figure:focus{
     transform: translateY(-10px); 
-    box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+       box-shadow: 0 6px 12px rgba(255, 255, 255, 0.7);
 }
-
   
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {

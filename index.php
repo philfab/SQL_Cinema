@@ -26,6 +26,10 @@ switch ($action) {
         $controller = new RoleController();
         $controller->addRole();
         break;
+    case 'addDirector':
+        $controller = new DirectorController();
+        $controller->addDirector();
+        break;
     case 'saveKind':
         $controller = new KindController();
         $controller->saveKind();
@@ -34,7 +38,10 @@ switch ($action) {
         $controller = new RoleController();
         $controller->saveRole();
         break;
-
+    case 'saveDirector':
+        $controller = new DirectorController();
+        $controller->saveDirector();
+        break;
     case 'detailFilm':
         if ($id) {
             $controller = new FilmController();

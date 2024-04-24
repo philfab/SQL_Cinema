@@ -9,7 +9,8 @@ class ActorController
     public function __construct()
     {
     }
-    public function listActors()
+
+    function getList()
     {
         $pdo = Connect::Connection();
         $acteurs = $pdo->query("
@@ -19,7 +20,22 @@ class ActorController
             GROUP BY a.id_acteur
             ORDER BY p.nom ASC
         ");
+        return $acteurs;
+    }
 
+    function listActors()
+    {
+        $this->toView($this->getlist());
+    }
+
+    public function addActor()
+    {
+        $modalType = "modalAddActor";
+        $this->toView($this->getList(), $modalType);
+    }
+
+    function toView($acteurs, $modalType = null)
+    {
         $actionAdd = 'addActor';
         $actionEdit = 'editActor';
         $actionDel = 'delActor';
@@ -43,5 +59,45 @@ class ActorController
         $details->execute(['id' => $actorId]);
         $actorDetails = $details->fetchAll();
         require "views/actorDetailsView.php";
+    }
+
+    public function saveActor()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
+
+            $pdo = Connect::Connection();
+
+            if ($this->isInBDD($pdo, $nom, $prenom)) {
+                echo "L'acteur existe déjà.";
+            } else {
+                $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
+                $req = $pdo->prepare($sql);
+                $req->execute([
+                    ':prenom' => $prenom,
+                    ':nom' => $nom,
+                    ':dateNaissance' => $dateNaissance,
+                    ':sexe' => $sexe,
+                    ':photo' => $photoUrl
+                ]);
+                $id_personne = $pdo->lastInsertId(); // récup l'id de personne
+
+                if ($id_personne) {
+                    $sql = "INSERT INTO acteur (id_personne) VALUES (:id_personne)";
+                    $req = $pdo->prepare($sql);
+                    $req->execute([':id_personne' => $id_personne]);
+                }
+            }
+        }
+    }
+    function isInBDD($pdo, $nom, $prenom): bool
+    {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM personne WHERE nom = :nom AND prenom = :prenom");
+        $check->execute([':nom' => $nom, ':prenom' => $prenom]);
+        return $check->fetchColumn() > 0;
     }
 }

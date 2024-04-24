@@ -48,7 +48,7 @@ class RoleController
     public function addRole()
     {
         $modalType  = 'modalAddRole';
-        $this->toView($this->getlist(),$modalType );
+        $this->toView($this->getlist(), $modalType);
     }
 
     public function saveRole()
@@ -58,11 +58,7 @@ class RoleController
 
             $pdo = Connect::Connection();
 
-            $check = $pdo->prepare("SELECT COUNT(*) FROM role WHERE personnage = :personnage");
-            $check->execute([':personnage' => $roleName]);
-            $exists = $check->fetchColumn() > 0;
-
-            if ($exists) {
+            if ($this->isInBDD($pdo, $roleName)) {
                 echo "Le rôle existe déjà.";
             } else {
                 $req = $pdo->prepare("INSERT INTO role (personnage) VALUES (:personnage)");
@@ -77,7 +73,15 @@ class RoleController
         }
     }
 
-    function toView($roles,$modalType = null){
+    function isInBDD($pdo, $roleName): bool
+    {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM role WHERE personnage = :personnage");
+        $check->execute([':personnage' => $roleName]);
+        return $check->fetchColumn() > 0;
+    }
+
+    function toView($roles, $modalType = null)
+    {
         $actionAdd = 'addRole';
         $actionEdit = 'editRole';
         $actionDel = 'delRole';

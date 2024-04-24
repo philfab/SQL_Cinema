@@ -25,7 +25,7 @@ if (isset($modalType) && $modalType === 'modalAddDirector') :
         <label for="dateNaissance">Date de naissance :</label>
         <input type="date" id="dateNaissance" name="dateNaissance">
 
-        <label for="Sexe">sexe :</label>
+        <label for="sexe">Sexe :</label>
         <select id="sexe" name="sexe">
             <option value="M">Masculin</option>
             <option value="F">Feminin</option>

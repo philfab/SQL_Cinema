@@ -69,25 +69,34 @@ class DirectorController
             $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
 
-            var_dump($photoUrl);
             $pdo = Connect::Connection();
 
-            $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
-            $req = $pdo->prepare($sql);
-            $req->execute([
-                ':prenom' => $prenom,
-                ':nom' => $nom,
-                ':dateNaissance' => $dateNaissance,
-                ':sexe' => $sexe,
-                ':photo' => $photoUrl
-            ]);
-            $id_personne = $pdo->lastInsertId(); // récup l'id de personne
-
-            if ($id_personne) {
-                $sql = "INSERT INTO Realisateur (id_personne) VALUES (:id_personne)";
+            if ($this->isInBDD($pdo, $nom, $prenom)) {
+                echo "Le reálisateur existe déjà.";
+            } else {
+                $sql = "INSERT INTO personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
                 $req = $pdo->prepare($sql);
-                $req->execute([':id_personne' => $id_personne]);
+                $req->execute([
+                    ':prenom' => $prenom,
+                    ':nom' => $nom,
+                    ':dateNaissance' => $dateNaissance,
+                    ':sexe' => $sexe,
+                    ':photo' => $photoUrl
+                ]);
+                $id_personne = $pdo->lastInsertId(); // récup l'id de personne
+
+                if ($id_personne) {
+                    $sql = "INSERT INTO realisateur (id_personne) VALUES (:id_personne)";
+                    $req = $pdo->prepare($sql);
+                    $req->execute([':id_personne' => $id_personne]);
+                }
             }
         }
+    }
+    function isInBDD($pdo, $nom, $prenom): bool
+    {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM personne WHERE nom = :nom AND prenom = :prenom");
+        $check->execute([':nom' => $nom, ':prenom' => $prenom]);
+        return $check->fetchColumn() > 0;
     }
 }

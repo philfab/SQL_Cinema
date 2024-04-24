@@ -45,7 +45,7 @@ class KindController
     public function addKind()
     {
         $modalType  = 'modalAddKind';
-        $this->toView($this->getlist(),$modalType );
+        $this->toView($this->getlist(), $modalType);
     }
 
     public function saveKind()
@@ -55,11 +55,7 @@ class KindController
 
             $pdo = Connect::Connection();
 
-            $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
-            $check->execute([':libelle' => $genreName]);
-            $exists = $check->fetchColumn() > 0;
-
-            if ($exists) {
+            if ($this->isInBDD($pdo, $genreName)) {
                 echo "Le genre existe déjà.";
             } else {
                 $req = $pdo->prepare("INSERT INTO genre (libelle) VALUES (:libelle)");
@@ -74,7 +70,15 @@ class KindController
         }
     }
 
-    function toView($kinds,$modalType = null){
+    function isInBDD($pdo, $genreName): bool
+    {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
+        $check->execute([':libelle' => $genreName]);
+        return $check->fetchColumn() > 0;
+    }
+
+    function toView($kinds, $modalType = null)
+    {
         $actionAdd = 'addKind';
         $actionEdit = 'editKind';
         $actionDel = 'delKind';

@@ -6,7 +6,7 @@
             <a href="index.php?action=detailDirector&id=<?= $realisateur["id_realisateur"] ?>">
                 <img src="<?= $realisateur['photo'] ?>" alt="Photo du Realisateur">
             </a>
-            <figcaption><?= $realisateur["nom"] . " " . $realisateur["prenom"] ?></figcaption>
+            <figcaption><?= $realisateur["prenom"] . " " . $realisateur["nom"] ?></figcaption>
         </figure>
     <?php } ?>
 </div>
@@ -32,7 +32,7 @@ if (isset($modalType) && $modalType === 'modalAddDirector') :
         </select>
 
         <label for="photoUrl">Photo :</label>
-        <input type="text" id="photoUrl" name="photo" required maxlength="255">
+        <input type="text" id="photoUrl" name="photoUrl" required maxlength="255">
 
         <button class="input" type="submit">Ajouter</button>
     </form>

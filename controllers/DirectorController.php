@@ -63,7 +63,31 @@ class DirectorController
     public function saveDirector()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+            $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
+
+            var_dump($photoUrl);
+            $pdo = Connect::Connection();
+
+            $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
+            $req = $pdo->prepare($sql);
+            $req->execute([
+                ':prenom' => $prenom,
+                ':nom' => $nom,
+                ':dateNaissance' => $dateNaissance,
+                ':sexe' => $sexe,
+                ':photo' => $photoUrl
+            ]);
+            $id_personne = $pdo->lastInsertId(); // récup l'id de personne
+
+            if ($id_personne) {
+                $sql = "INSERT INTO Realisateur (id_personne) VALUES (:id_personne)";
+                $req = $pdo->prepare($sql);
+                $req->execute([':id_personne' => $id_personne]);
+            }
         }
     }
 }

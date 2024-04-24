@@ -3,10 +3,10 @@
 <div class="film-gallery">
     <?php foreach ($acteurs as $acteur) { ?>
         <figure>
-        <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>">
-         <img src="<?= $acteur['photo'] ?>" alt="Photo de l'acteur">
-        </a>
-            <figcaption><?=  $acteur["nom"] . " " . $acteur["prenom"] ?></figcaption>
+            <a href="index.php?action=detailActor&id=<?= $acteur["id_acteur"] ?>">
+                <img src="<?= $acteur['photo'] ?>" alt="Photo de l'acteur">
+            </a>
+            <figcaption><?= $acteur["prenom"] . " " . $acteur["nom"] ?></figcaption>
         </figure>
     <?php } ?>
 </div>

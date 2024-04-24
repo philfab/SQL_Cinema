@@ -38,6 +38,11 @@ nav ul li {
     margin-right: 10px;  
 }
 
+.form-film label,
+.form-film input{
+ display: inline;
+}
+
 .film-gallery {
     display: flex;
     flex-wrap: wrap;

@@ -16,6 +16,25 @@ class FilmController
 
     public function listFilms()
     {
+        $this->toView($this->getlist());
+    }
+
+    public function addFilm()
+    {
+        $modalType = "modalAddFilm";
+        $this->toView($this->getList(), $modalType);
+    }
+
+    function toView($films, $modalType = null)
+    {
+        $actionAdd = 'addFilm';
+        $actionEdit = 'editFilm';
+        $actionDel = 'delFilm';
+        require "views/filmsView.php";;
+    }
+
+    function getList(): \PDOStatement
+    {
         $pdo = Connect::Connection();
         $films = $pdo->query("
             SELECT id_film, titre, annee_sortie, affiche
@@ -23,10 +42,7 @@ class FilmController
             ORDER BY annee_sortie DESC
         ");
 
-        $actionAdd = 'addFilm';
-        $actionEdit = 'editFilm';
-        $actionDel = 'delFilm';
-        require "views/filmsView.php";
+        return $films;
     }
 
     public function detailsFilm($filmId)
@@ -59,9 +75,5 @@ class FilmController
     ");
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
-    }
-
-    public function addFilm()
-    {
     }
 }

@@ -38,32 +38,6 @@ nav ul li {
     margin-right: 10px;  
 }
 
-.form-film label,
-.form-film input{
- display: inline;
-}
-
-.film-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-around;
-    padding-bottom: 20px;
-}
-
-.film-gallery figure {
-    flex: 0 0 calc(25% - 20px); /*somme des largeurs des 4 ims + marges = 100% */
-    margin-bottom: 20px;
-    margin: 0 0 20px 0;
-}
-
-.film-gallery img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px 10px 0 0
-}
-
 figure {
     transition: all 0.3s;
     border-radius: 10px;
@@ -100,6 +74,97 @@ nav ul li a.active::after {
     border-radius: 50%;
     background-color: var(--red);
     transform: translateX(-50%); /* centre puce */
+}
+
+.form-film {
+    margin: auto;
+    background: #333; 
+    padding: 20px;
+    color: white; 
+    border-radius: 10px; 
+}
+
+.form-film .form-row {
+    margin-bottom: 20px;
+}
+
+.form-film {
+    display: flex;
+    justify-content: space-around;
+}
+
+.form-film input[type="text"],
+.form-film input[type="number"],
+.form-film select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #444; 
+    background: #222; 
+    color: white; 
+    border-radius: 5px;
+}
+
+.form-film .button-row {
+    text-align: center;
+}
+
+.form-film button.input {
+    width: 100%;
+    padding: 10px 20px;
+    margin: 0;
+    border: none;
+    background-color: red; 
+    color: white; 
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.film-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    padding-bottom: 20px;
+}
+
+.film-gallery figure {
+    flex: 0 0 calc(25% - 20px); /*somme des largeurs des 4 ims + marges = 100% */
+    margin-bottom: 20px;
+    margin: 0 0 20px 0;
+}
+
+.film-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px 10px 0 0
+}
+
+.film-data{
+    flex : 0 0 calc(30%);
+}
+
+#casting-modal select{
+    opacity: 0.5;
+}
+
+#casting-modal > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    gap: 20px;
+}
+
+#casting-modal .actor-container {
+    flex: 1 1 48%;
+    margin-bottom: 10px; 
+}
+
+.close-casting {
+    flex-basis: 100%;
+    margin-top: 10px; 
 }
 
 .button {
@@ -168,8 +233,7 @@ nav ul li a.active::after {
     padding: 30px; 
     border-radius: 10px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5); 
-    max-width: 500px; 
-    min-width: 400px;
+    max-width: 500px;
 }
   
 .close-modal {
@@ -187,17 +251,20 @@ nav ul li a.active::after {
     flex-direction: column;
 }
   
-.modal-content label,
 .modal-content input,
 .modal-content button {
     margin-bottom: 10px; 
+}
+
+.modal-content label {
+    margin-bottom: 5px; 
 }
 
 .modal-content input[type="text"] {
     border: 1px solid #555;
     background: #333; 
     color: #fff; 
-    padding: 15px; 
+    padding: 10px; 
 }
   
 .modal-content button {
@@ -240,6 +307,34 @@ figure:hover, figure:focus{
     transform: translateY(-10px); 
        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.7);
 }
+
+#casting-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+#casting-modal > div {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.container-casting{
+    display: flex;
+    justify-content: space-between;
+    gap:20px;
+}
+
   
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {

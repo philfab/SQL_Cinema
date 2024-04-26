@@ -11,7 +11,8 @@ $currentAction = $_GET['action'] ?? 'listFilms';
     <title><?= isset($titre) ? $titre : 'SQL_Cinema' ?></title>
     <link rel="stylesheet" href="public/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="public/js/script.js" defer></script>
 </head>
 
 <body>
@@ -62,12 +63,10 @@ $currentAction = $_GET['action'] ?? 'listFilms';
 
         </main>
     </div>
-
-
     <footer>
         <p>&copy; <?= date('Y') ?> SQL_Cinema.</p>
     </footer>
-    <script src="public/js/script.js"></script>
+
 </body>
 
 </html>

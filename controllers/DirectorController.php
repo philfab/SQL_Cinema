@@ -47,7 +47,7 @@ class DirectorController
         require "views/directorsView.php";
     }
 
-    function getList() : \PDOStatement
+    public function getList(): \PDOStatement
     {
         $pdo = Connect::Connection();
         $realisateurs = $pdo->query("

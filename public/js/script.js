@@ -1,19 +1,44 @@
 document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('modal-overlay');
+    if (!overlay) return; 
 
-  function closeModal() {
+    function closeModal() {
         history.replaceState (null, null, overlay.dataset.path);     
         overlay.style.display = 'none';  
-  }
+    }
 
-  document.querySelector('.close-modal').onclick = closeModal;
+    const closeButton = document.querySelector('.close-modal');
+    if (closeButton) {
+        closeButton.onclick = closeModal;
+    }
 
-  overlay.onclick = function(event) {
-      if (event.target === overlay) {
-          closeModal();
-      }
-  };
+    overlay.onclick = function(event) {
+        if (event.target === overlay) {
+            closeModal();
+        }
+    };
 
-
+    const openCastingButton = document.querySelector('.open-casting');
+    openCastingButton.addEventListener('click', () => {
+        document.getElementById('casting-modal').style.display = 'block';
+    });
+    
+    const closeCastingButton = document.querySelector('.close-casting');
+    closeCastingButton.addEventListener('click', () => {
+        document.getElementById('casting-modal').style.display = 'none';
+    });
+    
 });
-  
+
+function toggleRoleSelect(checkbox, actorId) {
+    var select = document.getElementById('role-select-' + actorId);
+    if (checkbox.checked) {
+        select.disabled = false; 
+        select.style.opacity=1;
+    } else {
+        select.disabled = true; 
+        select.selectedIndex = 0;
+        select.style.opacity=0.5;
+    }
+}
+

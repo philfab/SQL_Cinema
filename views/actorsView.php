@@ -31,7 +31,7 @@ if (isset($modalType) && $modalType === 'modalAddActor') :
             <option value="F">Feminin</option>
         </select>
 
-        <label for="photoUrl">Photo :</label>
+        <label for="photoUrl">Photo (lien) :</label>
         <input type="text" id="photoUrl" name="photoUrl" required maxlength="255">
 
         <button class="input" type="submit">Ajouter</button>

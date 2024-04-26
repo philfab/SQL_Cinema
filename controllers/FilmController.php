@@ -30,6 +30,9 @@ class FilmController
         $actionAdd = 'addFilm';
         $actionEdit = 'editFilm';
         $actionDel = 'delFilm';
+        $realisateurs = (new DirectorController())->getList()->fetchAll();
+        $acteurs = (new ActorController())->getList()->fetchAll();
+        $roles = (new RoleController())->getlist()->fetchAll();
         require "views/filmsView.php";;
     }
 

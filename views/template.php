@@ -64,12 +64,10 @@ $currentAction = $_GET['action'] ?? 'listFilms';
                 </div>
             <?php endif; ?>
 
-
-
         </main>
     </div>
     <footer>
-        <p>&copy; <?= date('Y') ?> SQL_Cinema.</p>
+        <!--  <p>&copy; <?= date('Y') ?> SQL_Cinema.</p> <p>&copy; <?= date('Y') ?> SQL_Cinema.</p> -->
     </footer>
 
 </body>

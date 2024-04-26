@@ -6,17 +6,20 @@
         date('d-m-Y', strtotime($actorDetails[0]['dateNaissance'])) . ') de sexe ' .
         (($actorDetails[0]['sexe'] == 'M') ? 'masculin' : 'feminin') ?>
   </h3>
-  <ul>
-    <?php foreach ($actorDetails as $film) { ?>
-      <li>
-        <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
-          <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>, dans le rôle de
-        <a href="index.php?action=detailRole&id=<?= $film['id_role'] ?>">
-          <?= $film['personnage'] . '.' ?>
-        </a>
-      </li>
-    <?php } ?>
-  </ul>
+
+  <?php if ($actorDetails[0]['id_film'] != null) { ?>
+    <ul>
+      <?php foreach ($actorDetails as $film) { ?>
+        <li>
+          <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
+            <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>, dans le rôle de
+          <a href="index.php?action=detailRole&id=<?= $film['id_role'] ?>">
+            <?= $film['personnage'] . '.' ?>
+          </a>
+        </li>
+      <?php } ?>
+    </ul>
+  <?php } ?>
 
 <?php } ?>
 

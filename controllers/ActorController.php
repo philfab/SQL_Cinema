@@ -46,15 +46,16 @@ class ActorController
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        
-        SELECT r.id_role, f.id_film, p.prenom, p.nom, p.sexe, p.dateNaissance,f.titre, f.annee_sortie, r.personnage
+        SELECT p.prenom, p.nom, p.sexe, p.dateNaissance, p.photo, 
+               f.id_film, f.titre, f.annee_sortie, 
+               r.id_role, r.personnage
         FROM Personne p
         INNER JOIN Acteur a ON p.id_personne = a.id_personne
-        INNER JOIN Casting c ON a.id_acteur = c.id_acteur
-        INNER JOIN Film f ON c.id_film = f.id_film
-        INNER JOIN Role r ON c.id_role = r.id_role
+        LEFT JOIN Casting c ON a.id_acteur = c.id_acteur
+        LEFT JOIN Film f ON c.id_film = f.id_film
+        LEFT JOIN Role r ON c.id_role = r.id_role
         WHERE a.id_acteur = :id
-        ORDER BY f.annee_sortie DESC
+        ORDER BY f.annee_sortie DESC, f.titre
     ");
         $details->execute(['id' => $actorId]);
         $actorDetails = $details->fetchAll();

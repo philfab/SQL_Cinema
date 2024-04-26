@@ -20,18 +20,20 @@ class DirectorController
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT f.id_film,p.prenom, p.nom, f.titre, f.annee_sortie
+        SELECT p.prenom, p.nom,p.dateNaissance,p.sexe,p.photo, 
+               f.id_film, f.titre, f.annee_sortie
         FROM Personne p
         INNER JOIN Realisateur r ON p.id_personne = r.id_personne
-        INNER JOIN Film f ON r.id_realisateur = f.id_realisateur
+        LEFT JOIN Film f ON r.id_realisateur = f.id_realisateur
         WHERE r.id_realisateur = :id
-        ORDER BY f.annee_sortie DESC
+        ORDER BY f.annee_sortie DESC, f.titre
     ");
         $details->execute(['id' => $directorId]);
         $directorDetails = $details->fetchAll();
 
         require "views/directorDetailsView.php";
     }
+
 
     public function addDirector()
     {

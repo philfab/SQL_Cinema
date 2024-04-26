@@ -65,6 +65,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
         <button type="button" class="open-casting">Ouvrir le casting</button>
 
         <div class="form-row container-casting">
+
             <div class="film-data">
                 <label for="note">Note (1-5) :</label>
                 <select name="note" id="note">

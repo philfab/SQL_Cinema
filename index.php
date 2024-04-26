@@ -54,6 +54,10 @@ switch ($action) {
         $controller = new ActorController();
         $controller->saveActor();
         break;
+    case 'saveFilm':
+        $controller = new FilmController();
+        $controller->saveFilm();
+        break;
     case 'detailFilm':
         if ($id) {
             $controller = new FilmController();

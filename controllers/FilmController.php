@@ -33,6 +33,7 @@ class FilmController
         $realisateurs = (new DirectorController())->getList()->fetchAll();
         $acteurs = (new ActorController())->getList()->fetchAll();
         $roles = (new RoleController())->getlist()->fetchAll();
+        $genres = (new KindController())->getlist()->fetchAll();
         require "views/filmsView.php";;
     }
 
@@ -62,6 +63,7 @@ class FilmController
         $details->execute(['id' => $filmId]);
         $filmDetails = $details->fetch();
         $filmCasting = $this->castingFilm($pdo, $filmId);
+        $filmGenres = $this->getFilmGenres($pdo, $filmId);
         require "views/filmDetailsView.php";
     }
 
@@ -78,5 +80,88 @@ class FilmController
     ");
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
+    }
+    public function getFilmGenres($pdo, $filmId)
+    {
+        $genres = $pdo->prepare("
+        SELECT g.id_genre, g.libelle
+        FROM genre g
+        INNER JOIN classifier c ON g.id_genre = c.id_genre
+        WHERE c.id_film = :id_film
+    ");
+        $genres->execute(['id_film' => $filmId]);
+        return $genres->fetchAll();
+    }
+
+
+    public function saveFilm()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $titre = $_POST['titre'] ?? '';
+            $annee_sortie = $_POST['annee_sortie'] ?? '';
+            $realisateur = $_POST['realisateur'] ?? null;
+            $affiche = $_POST['affiche'] ?? '';
+            $duree = $_POST['duree'] ?? 0;
+            $note = $_POST['note'] ?? null;
+            $synopsis = $_POST['synopsis'] ?? '';
+            $id_genre = rand(1, 5); // temporaire !!
+
+            $pdo = Connect::Connection();
+
+
+            if ($this->isInBDD($pdo, $titre, $annee_sortie)) {
+                echo "Un film avec le même titre et la même année existe déjà.";
+            } else {
+                $sql = "INSERT INTO film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis)
+                VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
+
+                $insert = $pdo->prepare($sql);
+                $insert->execute([
+                    'titre' => $titre,
+                    'id_realisateur' => $realisateur,
+                    'affiche' => $affiche,
+                    'duree' => $duree,
+                    'note' => $note,
+                    'annee_sortie' => $annee_sortie,
+                    'synopsis' => $synopsis
+                ]);
+
+                $filmId = $pdo->lastInsertId();
+
+                // genre du film dans la table classifier
+                $insertClassifier = $pdo->prepare("
+                INSERT INTO classifier (id_film, id_genre)
+                VALUES (:id_film, :id_genre)
+            ");
+                $insertClassifier->execute([
+                    'id_film' => $filmId,
+                    'id_genre' => $id_genre
+                ]);
+
+                // Gestion des acteurs et de leurs rôles
+                foreach ($_POST['actor'] as $id_acteur => $data) {
+                    $role_id = $data['role'] ?? null;
+                    if ($role_id) {
+                        $insertCasting = $pdo->prepare("
+                        INSERT INTO casting (id_film, id_acteur, id_role)
+                        VALUES (:id_film, :id_acteur, :id_role)
+                    ");
+                        $insertCasting->execute([
+                            'id_film' => $filmId,
+                            'id_acteur' => $id_acteur,
+                            'id_role' => $role_id
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+
+    function isInBDD($pdo, $titre, $annee_sortie): bool
+    {
+        $check = $pdo->prepare("SELECT id_film FROM film WHERE titre = :titre AND annee_sortie = :annee_sortie");
+        $check->execute(['titre' => $titre, 'annee_sortie' => $annee_sortie]);
+        return $check->fetchColumn() > 0;
     }
 }

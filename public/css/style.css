@@ -26,6 +26,20 @@ footer, td, nav {
 
 a {
     text-decoration: none;
+    color : cornflowerblue
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}
+
+nav>ul>li>a {
+    color: inherit;
+}
+
+nav>ul>li>a:hover, nav>ul>li>a:focus, 
+.genre-tile>a:hover, .genre-tile>a:focus {
+    text-decoration: none;
 }
 
 nav ul {
@@ -36,11 +50,6 @@ nav ul {
 nav ul li {
     display: inline-block;
     margin-right: 10px;  
-}
-
-figure {
-    transition: all 0.3s;
-    border-radius: 10px;
 }
 
 figcaption {
@@ -130,6 +139,15 @@ nav ul li a.active::after {
     padding-bottom: 20px;
 }
 
+figure, figure > img {
+    border-radius: 10px;
+    margin: 0;
+}
+
+.film-gallery figure {
+    transition: all 0.3s;
+}
+
 .film-gallery figure {
     flex: 0 0 calc(25% - 20px); /*somme des largeurs des 4 ims + marges = 100% */
     margin-bottom: 20px;
@@ -185,7 +203,6 @@ nav ul li a.active::after {
     filter: hue-rotate(0.5turn); 
 }
 
-
 .button{
     margin: 0;
     padding: 0;
@@ -200,12 +217,8 @@ nav ul li a.active::after {
 .container-buttons{
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between;
     margin-bottom: 10px;
-}
-
-.container-buttons .second-element {
-    margin-left: auto;
 }
 
 .modal-overlay, #casting-modal,#kinds-modal {
@@ -303,7 +316,7 @@ nav ul li a.active::after {
 }
 
 .genre-tile:hover, .genre-tile:focus, 
-figure:hover, figure:focus{
+.film-gallery figure:hover, .film-gallery figure:focus{
     transform: translateY(-10px); 
        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.7);
 }
@@ -328,6 +341,7 @@ figure:hover, figure:focus{
     border-radius: 10px;
     padding: 20px;
     max-width: 600px;
+    max-height: 600px;
 }
 
 .scroll-container{
@@ -376,10 +390,30 @@ figure:hover, figure:focus{
     border: 2px solid #555;
     border-radius: 10px;
     padding: 5px 20px; 
+    color: inherit;
 }
 
 #casting-content  label{
     font-style: italic;
+}
+
+.personne {
+    font-style: italic;
+}
+
+.personne-wrapper {
+    display: flex;
+    margin: 0;
+}
+
+.personne-wrapper figcaption{
+    padding: 0;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
 }
   
 /* media queries tablet + mobile */

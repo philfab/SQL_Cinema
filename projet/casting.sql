@@ -2,7 +2,7 @@ INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES
 ('Quentin', 'Tarantino', '1963-03-27', 'M',"https://fr.web.img6.acsta.net/c_310_420/pictures/19/05/22/10/33/5945451.jpg"),
 ('James', 'Cameron', '1954-08-16', 'M',"https://fr.web.img6.acsta.net/c_310_420/pictures/22/12/07/15/19/3602099.jpg"),
 ('Christopher', 'Nolan', '1970-07-30', 'M',"https://fr.web.img5.acsta.net/c_310_420/pictures/14/10/30/10/59/215487.jpg"),
-('John', 'Travolta', '1954-02-18', 'M',"https://fr.web.img2.acsta.net/c_162_216/pictures/18/05/15/15/20/5209194.jpg"),
+('John', 'Travolta', '1954-02-18', 'M',"https://fr.web.img6.acsta.net/c_310_420/pictures/18/05/15/15/20/5209194.jpg"),
 ('Samuel', 'L. Jackson', '1948-12-21', 'M',"https://fr.web.img3.acsta.net/c_310_420/pictures/15/07/27/12/24/354255.jpg"),
 ('Leonardo', 'DiCaprio', '1974-11-11', 'M',"https://fr.web.img3.acsta.net/c_310_420/pictures/15/06/24/14/36/054680.jpg"),
 ('Kate', 'Winslet', '1975-10-05', 'F',"https://fr.web.img3.acsta.net/c_310_420/pictures/15/09/15/10/01/065591.jpg"),

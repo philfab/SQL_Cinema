@@ -21,5 +21,6 @@
 $titre = "Détails du Rôle";
 $titre_secondaire = "";
 $contenu = ob_get_clean();
+$hideButtons = true;
 require "views/template.php";
 ?>

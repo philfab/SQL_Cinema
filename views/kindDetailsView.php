@@ -16,5 +16,6 @@
 $titre = "Films du Genre";
 $titre_secondaire = "Films du Genre" . " " . $genreDetails[0]['libelle'];
 $contenu = ob_get_clean();
+$hideButtons=true;
 require "views/template.php";
 ?>

@@ -33,18 +33,23 @@ $currentAction = $_GET['action'] ?? 'listFilms';
             <section id="content">
                 <div class="container-buttons">
                     <h3 class="title-sec"> <?= isset($titre_secondaire) ? $titre_secondaire : '' ?></h3>
-                    <a href="index.php?action=<?= isset($actionAdd) ? $actionAdd : '' ?>" class="button second-element">
-                        <img src="public/images/add.svg" alt="Ajouter" class="icon" />
-                    </a>
-                    <a href="index.php?action=<?= isset($actionEdit) ? $actionEdit : '' ?>" class="button">
-                        <img src="public/images/edit.svg" alt="Éditer" class="icon" />
-                    </a>
-                    <a href="index.php?action=<?= isset($actionDel) ? $actionDel : '' ?>" class="button">
-                        <img src="public/images/del.svg" alt="Supprimer" class="icon" />
-                    </a>
+                    <?php if ((isset($hideButtons) && !$hideButtons) || !isset($hideButtons)) { ?>
+                        <div class="buttons">
+                            <a href="index.php?action=<?= isset($actionAdd) ? $actionAdd : '' ?>" class="button">
+                                <img src="public/images/add.svg" alt="Ajouter" class="icon" />
+                            </a>
+                            <a href="index.php?action=<?= isset($actionEdit) ? $actionEdit : '' ?>" class="button">
+                                <img src="public/images/edit.svg" alt="Éditer" class="icon" />
+                            </a>
+                            <a href="index.php?action=<?= isset($actionDel) ? $actionDel : '' ?>" class="button">
+                                <img src="public/images/del.svg" alt="Supprimer" class="icon" />
+                            </a>
+                        </div>
+                    <?php } ?>
                 </div>
                 <?= isset($contenu) ? $contenu : '' ?>
             </section>
+
             <!-- Modale dynamique -->
             <?php if (isset($showModal) && $showModal) : ?>
                 <div data-path="<?= $path ?>" id="modal-overlay" class="modal-overlay" style="display: flex;">

@@ -51,5 +51,6 @@
 $titre = "Détails du film";
 $titre_secondaire = "Détails du film " . $filmDetails['titre'];
 $contenu = ob_get_clean();
+$hideButtons = true;
 require "views/template.php";
 ?>

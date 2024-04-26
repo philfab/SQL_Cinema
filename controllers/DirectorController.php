@@ -88,7 +88,12 @@ class DirectorController
                 if ($id_personne) {
                     $sql = "INSERT INTO realisateur (id_personne) VALUES (:id_personne)";
                     $req = $pdo->prepare($sql);
-                    $req->execute([':id_personne' => $id_personne]);
+                    if ($req->execute([':id_personne' => $id_personne])) {
+                        header("Location: index.php?action=listDirectors");
+                        exit;
+                    } else {
+                        echo "Erreur ajout du reálisateur.";
+                    }
                 }
             }
         }

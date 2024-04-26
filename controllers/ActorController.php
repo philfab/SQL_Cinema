@@ -89,7 +89,13 @@ class ActorController
                 if ($id_personne) {
                     $sql = "INSERT INTO acteur (id_personne) VALUES (:id_personne)";
                     $req = $pdo->prepare($sql);
-                    $req->execute([':id_personne' => $id_personne]);
+
+                    if ($req->execute([':id_personne' => $id_personne])) {
+                        header("Location: index.php?action=listActors");
+                        exit;
+                    } else {
+                        echo "Erreur ajout de l'acteur.";
+                    }
                 }
             }
         }

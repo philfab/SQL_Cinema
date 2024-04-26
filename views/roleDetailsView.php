@@ -1,16 +1,16 @@
 <?php ob_start(); ?>
 
-<h2>Détails du Rôle</h2>
+<h3>Détails du Rôle</h3>
 <?php if (isset($roleDetails)) { ?>
     <h3><?= $roleDetails[0]['personnage'] ?></h3>
     <ul>
         <?php foreach ($roleDetails as $detail) : ?>
             <li>
-            <a href="index.php?action=detailActor&id=<?= $detail['id_acteur'] ?>">
-                 <?= $detail['prenom'] . ' ' . $detail['nom'] ?>
-            </a>dans 
+                <a href="index.php?action=detailActor&id=<?= $detail['id_acteur'] ?>">
+                    <?= $detail['prenom'] . ' ' . $detail['nom'] ?>
+                </a>dans
 
-            <a href="index.php?action=detailFilm&id=<?= $detail['id_film'] ?>"><?= $detail['titre'] ?></a>
+                <a href="index.php?action=detailFilm&id=<?= $detail['id_film'] ?>"><?= $detail['titre'] ?></a>
 
             </li>
         <?php endforeach; ?>

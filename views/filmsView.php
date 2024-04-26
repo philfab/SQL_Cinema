@@ -23,35 +23,43 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             <input type="text" id="titre" name="titre" required autofocus maxlength="100">
         </div>
 
-        <div class="form-row">
-            <label for="realisateur">Réalisateur :</label>
-            <select id="realisateur" name="realisateur">
-                <?php foreach ($realisateurs as $realisateur) { ?>
-                    <option value="<?= $realisateur['id_realisateur'] ?>">
-                        <?= $realisateur['prenom'] . ' ' . $realisateur['nom'] ?>
-                    </option>
-                <?php } ?>
-            </select>
+        <div class="form-row container-casting">
+            <div class="form-row">
+                <label for="realisateur">Réalisateur :</label>
+                <select id="realisateur" name="realisateur">
+                    <?php foreach ($realisateurs as $realisateur) { ?>
+                        <option value="<?= $realisateur['id_realisateur'] ?>">
+                            <?= $realisateur['prenom'] . ' ' . $realisateur['nom'] ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="affiche">Affiche du film (lien image) :</label>
+                <input type="text" id="affiche" name="affiche" required maxlength="255">
+            </div>
         </div>
 
         <div id="casting-modal" style="display:none;">
-            <div>
-                <h2>Sélectionnez les acteurs et leurs rôles</h2>
-                <?php foreach ($acteurs as $acteur) { ?>
-                    <div class="actor-container">
-                        <input type="checkbox" id="actor-<?= $acteur['id_acteur']; ?>" onclick="toggleRoleSelect(this, '<?= $acteur['id_acteur']; ?>')">
-                        <label for="actor-<?= $acteur['id_acteur']; ?>"><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?></label>
-                        <select id="role-select-<?= $acteur['id_acteur']; ?>" name="actor[<?= $acteur['id_acteur']; ?>][role]" disabled>
-                            <option value="" disabled selected style="display:none;">Sélectionnez un rôle</option>
-                            <?php foreach ($roles as $role) { ?>
-                                <option value="<?= $role['id_role'] ?>"><?= $role['personnage'] ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                <?php } ?>
+            <div id="casting-content">
+                <h3>Sélectionnez les acteurs et leurs rôles</h3>
+                <div class="scroll-container">
+                    <?php foreach ($acteurs as $acteur) { ?>
+                        <div class="actor-container">
+                            <input type="checkbox" id="actor-<?= $acteur['id_acteur']; ?>" onclick="toggleRoleSelect(this, '<?= $acteur['id_acteur']; ?>')">
+                            <label for="actor-<?= $acteur['id_acteur']; ?>"><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?></label>
+                            <select id="role-select-<?= $acteur['id_acteur']; ?>" name="actor[<?= $acteur['id_acteur']; ?>][role]" disabled>
+                                <option value="" disabled selected style="display:none;">Sélectionnez un rôle</option>
+                                <?php foreach ($roles as $role) { ?>
+                                    <option value="<?= $role['id_role'] ?>"><?= $role['personnage'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php } ?>
+                </div>
                 <button class="close-casting" type="button">Casting Terminé</button>
             </div>
-
         </div>
 
         <button type="button" class="open-casting">Ouvrir le casting</button>
@@ -67,7 +75,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             </div>
             <div class="film-data">
                 <label for="duree">Durée (mn) :</label>
-                <input type="number" id="duree" name="duree" min="60" max="300">
+                <input type="number" id="duree" name="duree" min="60" max="300" required>
             </div>
             <div class="film-data">
                 <label for="annee_sortie">Année :</label>
@@ -84,12 +92,8 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             <input type="textarea" id="synopsis" name="synopsis" maxlength="500">
         </div>
 
-        <div class="form-row">
-            <label for="affiche">Affiche du film (lien image) :</label>
-            <input type="text" id="affiche" name="affiche" required maxlength="255">
-        </div>
 
-        <div class="form-row button-row">
+        <div class="button-row">
             <button class="input" type="submit">Ajouter</button>
         </div>
     </form>

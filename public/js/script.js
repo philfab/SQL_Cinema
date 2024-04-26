@@ -29,6 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('casting-modal').style.display = 'none';
         document.body.style.overflow =  'auto';
     });
+
+    const openKindButton = document.querySelector('.open-kinds');
+    openKindButton.addEventListener('click', () => {
+        document.getElementById('kinds-modal').style.display = 'flex';
+        document.body.style.overflow =  'hidden';
+    });
+    
+    const closeKindButton = document.querySelector('.close-kinds');
+    closeKindButton.addEventListener('click', () => {
+        document.getElementById('kinds-modal').style.display = 'none';
+        document.body.style.overflow =  'auto';
+    });
     
 });
 

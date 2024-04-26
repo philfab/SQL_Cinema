@@ -41,6 +41,8 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             </div>
         </div>
 
+        <button type="button" class="open-casting">Casting du film</button>
+
         <div id="casting-modal" style="display:none;">
             <div id="casting-content">
                 <h3>Sélectionnez les acteurs et leurs rôles</h3>
@@ -62,10 +64,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             </div>
         </div>
 
-        <button type="button" class="open-casting">Ouvrir le casting</button>
-
         <div class="form-row container-casting">
-
             <div class="film-data">
                 <label for="note">Note (1-5) :</label>
                 <select name="note" id="note">
@@ -88,6 +87,23 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             </div>
         </div>
 
+        <button type="button" class="open-kinds">Genres du film</button>
+
+        <div id="kinds-modal" style="display:none;">
+            <div id="kinds-content">
+                <h3>Sélectionnez les genres</h3>
+                <div class="kinds-container">
+                    <?php foreach ($kinds as $kind) { ?>
+                        <div>
+                            <input type="checkbox" id="genre-<?= $kind['id_genre']; ?>" name="genres[]" value="<?= $kind['id_genre']; ?>">
+                            <label for="genre-<?= $kind['id_genre']; ?>"><?= $kind['libelle']; ?></label>
+                        </div>
+                    <?php } ?>
+                </div>
+                <button class="close-kinds" type="button">Terminer la sélection</button>
+            </div>
+        </div>
+
         <div class="form-row">
             <label for="synopsis">Synopsis :</label>
             <input type="textarea" id="synopsis" name="synopsis" maxlength="500">
@@ -95,7 +111,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
 
 
         <div class="button-row">
-            <button class="input" type="submit">Ajouter</button>
+            <button class="input" type="submit">Ajouter Film</button>
         </div>
     </form>
 

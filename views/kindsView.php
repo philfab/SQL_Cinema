@@ -15,7 +15,7 @@ if (isset($modalType) && $modalType === 'modalAddKind') :
 ?>
     <form class="form" action="index.php?action=saveKind" method="post">
         <label for="genreName">Nom du genre :</label>
-        <input type="text" id="genreName" name="genreName" required autofocus maxlength="20" onkeydown="return /[a-zA-Z]/i.test(event.key)">
+        <input type="text" id="genreName" name="genreName" required autofocus maxlength="20" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
         <button class="input" type="submit">Ajouter</button>
     </form>
 <?php

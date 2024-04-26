@@ -208,7 +208,7 @@ nav ul li a.active::after {
     margin-left: auto;
 }
 
-.modal-overlay {
+.modal-overlay, #casting-modal,#kinds-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -219,6 +219,10 @@ nav ul li a.active::after {
     display: flex;
     align-items: center;
     justify-content: center; 
+}
+
+#kinds-modal{
+    background: rgba(0, 0, 0, 0.5); 
 }
 
 .modal {
@@ -317,7 +321,7 @@ figure:hover, figure:focus{
     align-items: center;
 }
 
-#casting-content {
+#casting-content, #kinds-content {
     display: flex;
     flex-direction: column;
     background-color: #333;
@@ -326,7 +330,7 @@ figure:hover, figure:focus{
     max-width: 600px;
 }
 
-.scroll-container {
+.scroll-container{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between; 
@@ -339,13 +343,27 @@ figure:hover, figure:focus{
     max-width: 600px;
 }
 
+.kinds-container {
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    margin-top: 20px;
+    max-height: 600px; 
+    overflow-y: auto;
+    border-radius: 10px;
+    max-width: 600px;
+    padding: 20px;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
 .container-casting{
     display: flex;
     justify-content: space-between;
     gap:20px;
 }
 
-#casting-content h3{
+#casting-content h3, #kinds-content h3{
    display: inline-block;
    margin: auto;
    border: 2px solid #555;

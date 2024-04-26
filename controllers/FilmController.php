@@ -33,7 +33,7 @@ class FilmController
         $realisateurs = (new DirectorController())->getList()->fetchAll();
         $acteurs = (new ActorController())->getList()->fetchAll();
         $roles = (new RoleController())->getlist()->fetchAll();
-        $genres = (new KindController())->getlist()->fetchAll();
+        $kinds = (new KindController())->getlist()->fetchAll();
         require "views/filmsView.php";;
     }
 
@@ -97,7 +97,9 @@ class FilmController
     public function saveFilm()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pdo = Connect::Connection();
 
+            // Récupération des données du formulaire
             $titre = $_POST['titre'] ?? '';
             $annee_sortie = $_POST['annee_sortie'] ?? '';
             $realisateur = $_POST['realisateur'] ?? null;
@@ -105,19 +107,16 @@ class FilmController
             $duree = $_POST['duree'] ?? 0;
             $note = $_POST['note'] ?? null;
             $synopsis = $_POST['synopsis'] ?? '';
-            $id_genre = rand(1, 5); // temporaire !!
-
-            $pdo = Connect::Connection();
+            $genres = $_POST['genres'] ?? [];
 
 
             if ($this->isInBDD($pdo, $titre, $annee_sortie)) {
                 echo "Un film avec le même titre et la même année existe déjà.";
             } else {
                 $sql = "INSERT INTO film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis)
-                VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
-
-                $insert = $pdo->prepare($sql);
-                $insert->execute([
+                    VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
+                $req = $pdo->prepare($sql);
+                $req->execute([
                     'titre' => $titre,
                     'id_realisateur' => $realisateur,
                     'affiche' => $affiche,
@@ -129,34 +128,30 @@ class FilmController
 
                 $filmId = $pdo->lastInsertId();
 
-                // genre du film dans la table classifier
-                $insertClassifier = $pdo->prepare("
-                INSERT INTO classifier (id_film, id_genre)
-                VALUES (:id_film, :id_genre)
-            ");
-                $insertClassifier->execute([
-                    'id_film' => $filmId,
-                    'id_genre' => $id_genre
-                ]);
+                // Insertion des genres du film
+                foreach ($genres as $genreId) {
+                    $reqInsertClassifier = $pdo->prepare("INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
+                    $reqInsertClassifier->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
+                }
 
                 // Gestion des acteurs et de leurs rôles
                 foreach ($_POST['actor'] as $id_acteur => $data) {
                     $role_id = $data['role'] ?? null;
                     if ($role_id) {
-                        $insertCasting = $pdo->prepare("
-                        INSERT INTO casting (id_film, id_acteur, id_role)
-                        VALUES (:id_film, :id_acteur, :id_role)
-                    ");
-                        $insertCasting->execute([
+                        $reqInsertCasting = $pdo->prepare("INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
+                        $reqInsertCasting->execute([
                             'id_film' => $filmId,
                             'id_acteur' => $id_acteur,
                             'id_role' => $role_id
                         ]);
                     }
                 }
+
+                header("Location: index.php?action=listFilms;");
             }
         }
     }
+
 
     function isInBDD($pdo, $titre, $annee_sortie): bool
     {

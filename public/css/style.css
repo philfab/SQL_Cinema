@@ -10,7 +10,7 @@
 }
 
 header{
-    margin: 50px 0 100px 0;
+    margin: 40px 0 50px 0;
 }
 
 section {
@@ -402,7 +402,7 @@ figure, figure > img {
 
 .personne-wrapper {
     display: flex;
-    margin: 0;
+    margin: 0 0 50px 0;
 }
 
 .personne-wrapper figcaption{
@@ -414,7 +414,34 @@ figure, figure > img {
     justify-content: space-around;
     gap: 10px;
 }
-  
+
+.film-infos {
+    margin-left: 20px;
+    max-width: 60%;
+}
+
+.film-infos p, .film-infos h2, .film-infos ul {
+    margin: 0;
+}
+
+.film-infos span {
+    font-style: italic;
+}
+
+.film-infos h4{
+    margin-bottom: 0;
+}
+
+.affiche-details {
+    box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.7);
+    z-index: 10;
+    
+}
+
+.affiche-details  img{
+    height: 100%;
+    width: 314px;
+}
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {
     .film-gallery figure {

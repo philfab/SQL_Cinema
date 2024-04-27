@@ -63,7 +63,7 @@ class FilmController
         $details->execute(['id' => $filmId]);
         $filmDetails = $details->fetch();
         $filmCasting = $this->castingFilm($pdo, $filmId);
-        $filmGenres = $this->getFilmGenres($pdo, $filmId);
+        $filmGenres = $this->genresFilm($pdo, $filmId);
         require "views/filmDetailsView.php";
     }
 
@@ -81,7 +81,7 @@ class FilmController
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
     }
-    public function getFilmGenres($pdo, $filmId)
+    public function genresFilm($pdo, $filmId)
     {
         $genres = $pdo->prepare("
         SELECT g.id_genre, g.libelle
@@ -92,8 +92,6 @@ class FilmController
         $genres->execute(['id_film' => $filmId]);
         return $genres->fetchAll();
     }
-
-
     public function saveFilm()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -151,8 +149,6 @@ class FilmController
             }
         }
     }
-
-
     function isInBDD($pdo, $titre, $annee_sortie): bool
     {
         $check = $pdo->prepare("SELECT id_film FROM film WHERE titre = :titre AND annee_sortie = :annee_sortie");

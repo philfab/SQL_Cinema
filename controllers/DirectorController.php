@@ -33,8 +33,6 @@ class DirectorController
 
         require "views/directorDetailsView.php";
     }
-
-
     public function addDirector()
     {
         $modalType = "modalAddDirector";

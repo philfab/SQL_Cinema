@@ -50,8 +50,8 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
                     <?php foreach ($acteurs as $acteur) { ?>
                         <div class="actor-container">
                             <input type="checkbox" id="actor-<?= $acteur['id_acteur']; ?>" onclick="toggleRoleSelect(this, '<?= $acteur['id_acteur']; ?>')">
-                            <label for="actor-<?= $acteur['id_acteur']; ?>"><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?></label>
-                            <select id="role-select-<?= $acteur['id_acteur']; ?>" name="actor[<?= $acteur['id_acteur']; ?>][role]" disabled>
+                            <label for="actor-<?= $acteur['id_acteur'] ?>"><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?></label>
+                            <select id="role-select-<?= $acteur['id_acteur'] ?>" name="actor[<?= $acteur['id_acteur'] ?>][role]" disabled>
                                 <option value="" disabled selected style="display:none;">Sélectionnez un rôle</option>
                                 <?php foreach ($roles as $role) { ?>
                                     <option value="<?= $role['id_role'] ?>"><?= $role['personnage'] ?></option>
@@ -69,7 +69,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
                 <label for="note">Note (1-5) :</label>
                 <select name="note" id="note">
                     <?php for ($note = 1; $note <= 5; $note++) { ?>
-                        <option value="<?= $note; ?>"><?= $note; ?></option>
+                        <option value="<?= $note ?>"><?= $note ?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -81,7 +81,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
                 <label for="annee_sortie">Année :</label>
                 <select name="annee_sortie" id="annee_sortie">
                     <?php for ($year = (int)date('Y'); 1900 <= $year; $year--) { ?>
-                        <option value="<?= $year; ?>"><?= $year; ?></option>
+                        <option value="<?= $year ?>"><?= $year ?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -96,7 +96,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
                     <?php foreach ($kinds as $kind) { ?>
                         <div>
                             <input type="checkbox" id="genre-<?= $kind['id_genre']; ?>" name="genres[]" value="<?= $kind['id_genre']; ?>">
-                            <label for="genre-<?= $kind['id_genre']; ?>"><?= $kind['libelle']; ?></label>
+                            <label for="genre-<?= $kind['id_genre'] ?>"><?= $kind['libelle'] ?></label>
                         </div>
                     <?php } ?>
                 </div>

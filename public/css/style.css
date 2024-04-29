@@ -172,6 +172,8 @@ figure, figure > img {
 .actor-container {
     flex: 1 1 48%;
     border-radius: 10px;
+    padding: 7px 5px 5px 5px;
+    max-width: 48%;
 }
 
 .close-casting {
@@ -492,6 +494,13 @@ figure, figure > img {
    flex-direction: row;
    gap: 30px;
 }
+
+.input-del-role:disabled {
+    cursor: not-allowed; 
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {

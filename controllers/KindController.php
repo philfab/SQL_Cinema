@@ -48,6 +48,12 @@ class KindController
         $this->toView($this->getlist(), $modalType);
     }
 
+    public function delKind()
+    {
+        $modalType  = 'modalDelKind';
+        $this->toView($this->getlist()->fetchAll(), $modalType);
+    }
+
     public function saveKind()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['genreName'])) {
@@ -75,6 +81,27 @@ class KindController
         $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
         $check->execute([':libelle' => $genreName]);
         return $check->fetchColumn() > 0;
+    }
+
+    public function deleteKinds()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kindIds'])) {
+            $kindIds = $_POST['kindIds'];
+
+            $pdo = Connect::Connection();
+
+            //array_map = verif si entiers
+            $kindIdsString = implode(',', array_map('intval', $kindIds));
+
+            //suppression des genres par groupes
+            $req = $pdo->prepare("DELETE FROM genre WHERE id_genre IN ($kindIdsString)");
+            if ($req->execute()) {
+                header("Location: index.php?action=listKinds");
+                exit;
+            } else {
+                echo "Erreur suppression des genres !";
+            }
+        }
     }
 
     function toView($kinds, $modalType = null)

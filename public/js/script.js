@@ -5,8 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeCastingButton = document.querySelector('.close-casting');
     const openKindButton = document.querySelector('.open-kinds');
     const closeKindButton = document.querySelector('.close-kinds');
-    const checkboxes = document.querySelectorAll('.actor-container input[type="checkbox"]');
-    const submitButton = document.querySelector('.input-del-role');
+    const checkboxesDelRole = document.querySelectorAll('.checksDelRole-container input[type="checkbox"]');
+    const submitButtonDelRole = document.querySelector('.input-del-role');
+    const checkboxesDelKind = document.querySelectorAll('.checksDelKind-container input[type="checkbox"]');
+    const submitButtonDelKind = document.querySelector('.input-del-kind');
 
     if (overlay){
         function closeModal() {
@@ -48,17 +50,31 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow =  'auto';
     });
 
-   function updateButtonState() {
-        if (!submitButton) return;
+   function updateButtonStateDelRole() {
+        if (!submitButtonDelRole) return;
 
-        const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-        submitButton.disabled = !isAnyChecked;
+        const isAnyChecked = Array.from(checkboxesDelRole).some(checkbox => checkbox.checked);
+        submitButtonDelRole.disabled = !isAnyChecked;
     }
 
-    if (checkboxes && checkboxes.length > 0) {
-        updateButtonState();
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateButtonState);
+    if (checkboxesDelRole && checkboxesDelRole.length > 0) {
+        updateButtonStateDelRole();
+        checkboxesDelRole.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonStateDelRole);
+        });
+    }
+
+    function updateButtonStateDelKind() {
+        if (!submitButtonDelKind) return;
+
+        const isAnyChecked = Array.from(checkboxesDelKind).some(checkbox => checkbox.checked);
+        submitButtonDelKind.disabled = !isAnyChecked;
+    }
+
+    if (checkboxesDelKind && checkboxesDelKind.length > 0) {
+        updateButtonStateDelKind();
+        checkboxesDelKind.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonStateDelKind);
         });
     }
 

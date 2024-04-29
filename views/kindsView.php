@@ -28,6 +28,30 @@ endif;
 ?>
 
 <?php
+if (isset($modalType) && $modalType === 'modalDelKind') :
+    ob_start();
+?>
+    <form action="index.php?action=deleteKinds" method="post">
+        <div id="casting-content">
+            <div class="scroll-container">
+                <h3 class="modify-title">Sélectionnez les genres à supprimer</h3>
+                <?php foreach ($kinds as $kind) { ?>
+                    <div class="actor-container  checksDelKind-container">
+                        <input type="checkbox" id="kind-<?= $kind['id_genre']; ?>" name="kindIds[]" value="<?= $kind['id_genre']; ?>">
+                        <label for="kind-<?= $kind['id_genre']; ?>"><?= $kind['libelle']; ?></label>
+                    </div>
+                <?php } ?>
+                <button type="submit" class="input input-del-kind">Supprimer les genres sélectionnés</button>
+            </div>
+        </div>
+    </form>
+<?php
+    $modalContent = ob_get_clean();
+    $showModal = true;
+endif;
+?>
+
+<?php
 $path = "index.php?action=listKinds";
 $titre = "Liste des genres";
 $titre_secondaire = "Liste des genres";

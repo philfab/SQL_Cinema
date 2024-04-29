@@ -22,6 +22,10 @@ switch ($action) {
         $controller = new KindController();
         $controller->addKind();
         break;
+    case 'delKind':
+        $controller = new KindController();
+        $controller->delKind();
+        break;
     case 'addRole':
         $controller = new RoleController();
         $controller->addRole();
@@ -65,6 +69,10 @@ switch ($action) {
     case 'deleteRoles':
         $controller = new RoleController();
         $controller->deleteRoles();
+        break;
+    case 'deleteKinds':
+        $controller = new KindController();
+        $controller->deleteKinds();
         break;
     case 'detailFilm':
         if ($id) {

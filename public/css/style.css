@@ -495,7 +495,7 @@ figure, figure > img {
    gap: 30px;
 }
 
-.input-del-role:disabled {
+.input-del-role:disabled, .input-del-kind:disabled {
     cursor: not-allowed; 
     opacity: 0.5;
     pointer-events: none;

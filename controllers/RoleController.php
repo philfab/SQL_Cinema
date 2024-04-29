@@ -51,6 +51,12 @@ class RoleController
         $this->toView($this->getlist(), $modalType);
     }
 
+    public function delRole()
+    {
+        $modalType  = 'modalDelRole';
+        $this->toView($this->getlist()->fetchAll(), $modalType);
+    }
+
     public function saveRole()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roleName'])) {
@@ -69,6 +75,27 @@ class RoleController
                 } else {
                     echo "Erreur ajout du rôle.";
                 }
+            }
+        }
+    }
+
+    public function deleteRoles()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roleIds'])) {
+            $roleIds = $_POST['roleIds'];
+
+            $pdo = Connect::Connection();
+
+            //array_map = verif si entiers
+            $roleIdsString = implode(',', array_map('intval', $roleIds));
+
+            //suppression des roles par groupes
+            $req = $pdo->prepare("DELETE FROM role WHERE id_role IN ($roleIdsString)");
+            if ($req->execute()) {
+                header("Location: index.php?action=listRoles");
+                exit;
+            } else {
+                echo "Erreur lors de la suppression des rôles.";
             }
         }
     }

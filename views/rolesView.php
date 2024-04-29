@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$modalContent = '';
+$showModal = false;
+?>
 
 <div class="genre-container">
     <?php foreach ($roles as $role) { ?>
@@ -8,10 +11,10 @@
     <?php } ?>
 </div>
 
+<!-- modale ajoute rôle -->
 <?php
-// si la modale doit etre affichée
 if (isset($modalType) && $modalType === 'modalAddRole') :
-    ob_start(); // commence la capture pour le contenu de la modale
+    ob_start(); // capture contenu modale
 ?>
     <form class="form" action="index.php?action=saveRole" method="post">
         <label for="roleName">Nom du Rôle :</label>
@@ -19,15 +22,33 @@ if (isset($modalType) && $modalType === 'modalAddRole') :
         <button class="input" type="submit">Ajouter</button>
     </form>
 <?php
-    $modalContent = ob_get_clean(); // termine la capture du contenu de la modale
+    $modalContent = ob_get_clean(); // fin capture du contenu modale
     $showModal = true;
-else :
-    $modalContent;
-    $showModal = false;
 endif;
 ?>
 
-
+<!-- modale sélection suppression rôles -->
+<?php
+if (isset($modalType) && $modalType === 'modalDelRole') :
+    ob_start();
+?>
+    <form action="index.php?action=deleteRoles" method="post">
+        <div class="scroll-container">
+            <h3 class="modify-title">Sélectionnez les rôles à supprimer</h3>
+            <?php foreach ($roles as $role) { ?>
+                <div class="actor-container">
+                    <input type="checkbox" id="role-<?= $role['id_role']; ?>" name="roleIds[]" value="<?= $role['id_role']; ?>">
+                    <label for="role-<?= $role['id_role']; ?>"><?= $role['personnage']; ?></label>
+                </div>
+            <?php } ?>
+            <button type="submit" class="input">Supprimer les rôles sélectionnés</button>
+        </div>
+    </form>
+<?php
+    $modalContent = ob_get_clean();
+    $showModal = true;
+endif;
+?>
 
 <?php
 $path = "index.php?action=listRoles";

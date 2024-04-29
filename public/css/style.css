@@ -118,16 +118,16 @@ nav ul li a.active::after {
     text-align: center;
 }
 
-.form-film button.input {
+button {
     width: 100%;
     padding: 10px 20px;
     margin: 0;
     border: none;
     background-color: red; 
     color: white; 
-    text-transform: uppercase;
     cursor: pointer;
     border-radius: 5px;
+    text-transform: uppercase;
 }
 
 .film-gallery {
@@ -376,7 +376,7 @@ figure, figure > img {
     gap:20px;
 }
 
-#casting-content h3, #kinds-content h3{
+.modify-title{
    display: inline-block;
    margin: auto;
    border: 2px solid #555;

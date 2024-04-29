@@ -45,7 +45,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
 
         <div id="casting-modal" style="display:none;">
             <div id="casting-content">
-                <h3>Sélectionnez les acteurs et leurs rôles</h3>
+                <h3 class="modify-title">Sélectionnez les acteurs et leurs rôles</h3>
                 <div class="scroll-container">
                     <?php foreach ($acteurs as $acteur) { ?>
                         <div class="actor-container">
@@ -91,7 +91,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
 
         <div id="kinds-modal" style="display:none;">
             <div id="kinds-content">
-                <h3>Sélectionnez les genres</h3>
+                <h3 class="modify-title">Sélectionnez les genres</h3>
                 <div class="kinds-container">
                     <?php foreach ($kinds as $kind) { ?>
                         <div>

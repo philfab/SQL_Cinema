@@ -1,5 +1,7 @@
+
 CREATE DATABASE IF NOT EXISTS Cinema;
 USE Cinema;
+
 
 CREATE TABLE IF NOT EXISTS Personne (
     id_personne INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +15,7 @@ CREATE TABLE IF NOT EXISTS Personne (
 CREATE TABLE IF NOT EXISTS Realisateur (
     id_realisateur INT AUTO_INCREMENT PRIMARY KEY,
     id_personne INT,
-    FOREIGN KEY (id_personne) REFERENCES Personne(id_personne)
+    FOREIGN KEY (id_personne) REFERENCES Personne(id_personne) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Genre (
@@ -30,21 +32,21 @@ CREATE TABLE IF NOT EXISTS Film (
     note INT,
     affiche VARCHAR(255) DEFAULT 'affiche.jpg',
     id_realisateur INT,
-    FOREIGN KEY (id_realisateur) REFERENCES Realisateur(id_realisateur)
+    FOREIGN KEY (id_realisateur) REFERENCES Realisateur(id_realisateur) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Classifier (
     id_film INT,
     id_genre INT,
     PRIMARY KEY (id_film, id_genre),
-    FOREIGN KEY (id_film) REFERENCES Film(id_film),
-    FOREIGN KEY (id_genre) REFERENCES Genre(id_genre)
+    FOREIGN KEY (id_film) REFERENCES Film(id_film) ON DELETE CASCADE,
+    FOREIGN KEY (id_genre) REFERENCES Genre(id_genre) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Acteur (
     id_acteur INT AUTO_INCREMENT PRIMARY KEY,
     id_personne INT,
-    FOREIGN KEY (id_personne) REFERENCES Personne(id_personne)
+    FOREIGN KEY (id_personne) REFERENCES Personne(id_personne) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Role (
@@ -57,7 +59,7 @@ CREATE TABLE IF NOT EXISTS Casting (
     id_acteur INT,
     id_role INT,
     PRIMARY KEY (id_film, id_acteur, id_role),
-    FOREIGN KEY (id_film) REFERENCES Film(id_film),
-    FOREIGN KEY (id_acteur) REFERENCES Acteur(id_acteur),
-    FOREIGN KEY (id_role) REFERENCES Role(id_role)
+    FOREIGN KEY (id_film) REFERENCES Film(id_film) ON DELETE CASCADE,
+    FOREIGN KEY (id_acteur) REFERENCES Acteur(id_acteur) ON DELETE CASCADE,
+    FOREIGN KEY (id_role) REFERENCES Role(id_role) ON DELETE CASCADE
 );

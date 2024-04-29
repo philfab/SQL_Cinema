@@ -105,7 +105,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
         </div>
 
         <div class="form-row">
-            <label for="synopsis">Synopsis :</label>
+            <label for="synopsis">Synopsis : </label>
             <input type="textarea" id="synopsis" name="synopsis" maxlength="500">
         </div>
 

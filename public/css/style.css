@@ -28,9 +28,9 @@ a {
     color : cornflowerblue
 }
 
-a:hover, a:focus {
+/* a:hover, a:focus {
     text-decoration: underline;
-}
+} */
 
 nav>ul>li>a {
     color: inherit;
@@ -424,7 +424,7 @@ figure, figure > img {
     margin: 0;
 }
 
-.film-infos span {
+.film-infos p span {
     font-style: italic;
 }
 
@@ -435,6 +435,7 @@ figure, figure > img {
 .affiche-details {
     box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.7);
     z-index: 10;
+    max-height: 431px;
     
 }
 
@@ -442,6 +443,56 @@ figure, figure > img {
     height: 100%;
     width: 314px;
 }
+
+.genre-label-container {
+    display: flex;
+    align-items: center; 
+    margin-top: 20px;
+}
+
+.genre-buttons {
+    display: flex;
+    gap: 10px; 
+}
+
+.genre-button {
+    padding: 4px 7px; 
+    background-color: white; 
+    color: black;
+    border: 2px solid black; 
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.genre-button:hover, .genre-button:focus {
+    background-color: #f8f8f8; 
+    color: black;
+}
+
+
+.far.fa-calendar-alt,.fa-clock {
+     margin-right: 5px;
+    color: #d1d1d1;
+}
+
+.fas.fa-star, .far.fa-star {
+    color: #f5b849; 
+}
+
+.film-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.details {
+   display: flex;
+   flex-direction: row;
+   gap: 30px;
+}
+
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {
     .film-gallery figure {

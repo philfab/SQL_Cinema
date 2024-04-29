@@ -21,7 +21,7 @@ INSERT INTO Film (titre, annee_sortie, duree, synopsis, note, id_realisateur, af
 ('Inception', 2010, 148, "Au lieu de subtiliser un rêve, un voleur et son équipe doivent faire l'inverse : implanter une idée dans l'esprit d'un individu.", 5, 3,"https://fr.web.img6.acsta.net/c_310_420/medias/nmedia/18/72/34/14/19476654.jpg"),
 ('Django Unchained', 2012, 165, "Un chasseur de primes et un esclave noir s'associent pour retrouver la femme de ce dernier.", 5, 1,"https://fr.web.img4.acsta.net/c_310_420/medias/nmedia/18/90/08/59/20366454.jpg"),
 ('Babylon', 2022, 189, "Récit d’une ambition démesurée et d’excès les plus fous.", 5, 4,"https://fr.web.img5.acsta.net/c_310_420/pictures/22/12/02/16/03/2536613.jpg"),
-('Une journee en enfer', 1995, 128 , "John McClane est aux prises avec un maître chanteur, facétieux et dangereux, qui dépose des bombes dans New York.", 5, 5,"https://fr.web.img5.acsta.net/c_310_420/medias/nmedia/18/36/04/16/18686568.jpg"),
+('Une journée en enfer', 1995, 128 , "John McClane est aux prises avec un maître chanteur, facétieux et dangereux, qui dépose des bombes dans New York.", 5, 5,"https://fr.web.img5.acsta.net/c_310_420/medias/nmedia/18/36/04/16/18686568.jpg"),
 ('Dont Look Up', 2021, 129 , "Deux astronomes s'embarquent dans une gigantesque tournée médiatique tandis qu'une comète se dirige vers la Terre.", 5, 6,"https://fr.web.img6.acsta.net/c_310_420/pictures/21/11/16/17/11/5656957.jpg"),
 ('Jackie Brown', 1998, 150 , "Jackie Brown, une hôtesse de l'air, arrondit ses fins de mois en convoyant de l'argent.", 5, 1,"https://fr.web.img4.acsta.net/c_310_420/medias/04/05/00/040500_af.jpg");
 

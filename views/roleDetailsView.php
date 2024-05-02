@@ -1,25 +1,26 @@
 <?php ob_start(); ?>
 
-<h3>Détails du Rôle</h3>
 <?php if (isset($roleDetails)) { ?>
-    <h3><?= $roleDetails[0]['personnage'] ?></h3>
     <ul>
-        <?php foreach ($roleDetails as $detail) : ?>
-            <li>
-                <a href="index.php?action=detailActor&id=<?= $detail['id_acteur'] ?>">
-                    <?= $detail['prenom'] . ' ' . $detail['nom'] ?>
-                </a>dans
+        <?php foreach ($roleDetails as $detail) { ?>
+            <?php if ($detail['id_acteur'] != null) { ?>
+                <li>
+                    <a href="index.php?action=detailActor&id=<?= $detail['id_acteur'] ?>">
+                        <?= $detail['prenom'] . ' ' . $detail['nom'] ?>
+                    </a>dans
 
-                <a href="index.php?action=detailFilm&id=<?= $detail['id_film'] ?>"><?= $detail['titre'] ?></a>
+                    <a href="index.php?action=detailFilm&id=<?= $detail['id_film'] ?>"><?= $detail['titre'] ?></a>
 
-            </li>
-        <?php endforeach; ?>
+                </li>
+            <?php } ?>
+        <?php } ?>
     </ul>
 <?php } ?>
 
 <?php
 $titre = "Détails du Rôle";
-$titre_secondaire = "";
+if (isset($roleDetails) && !empty($roleDetails))
+    $titre_secondaire = "Acteurs dans le rôle de " . $roleDetails[0]['personnage'];
 $contenu = ob_get_clean();
 $hideButtons = true;
 require "views/template.php";

@@ -33,12 +33,12 @@
                     </p>
 
                     <p>
-                        <?php for ($i = 0; $i < $filmDetails['note']; $i++) : ?>
+                        <?php for ($i = 0; $i < $filmDetails['note']; $i++) { ?>
                             <i class="fas fa-star"></i>
-                        <?php endfor; ?>
-                        <?php for ($i = $filmDetails['note']; $i < 5; $i++) : ?>
+                        <?php } ?>
+                        <?php for ($i = $filmDetails['note']; $i < 5; $i++) { ?>
                             <i class="far fa-star"></i>
-                        <?php endfor; ?>
+                        <?php } ?>
                     </p>
                 </div>
 

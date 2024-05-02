@@ -499,7 +499,9 @@ figure, figure > img {
 .input-del-role:disabled, 
 .input-del-kind:disabled, 
 .input-del-director:disabled,
-.input-del-actor:disabled {
+.input-del-actor:disabled,
+.input-del-film:disabled
+ {
     cursor: not-allowed; 
     opacity: 0.5;
     pointer-events: none;
@@ -507,6 +509,21 @@ figure, figure > img {
 
 .actor-container label{
     cursor: pointer;
+}
+
+.star {
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: gray; 
+    cursor: pointer;
+}
+
+.star.hovered, .star.selected {
+    color: orange;
+}
+
+#rating-container{
+    margin: 10px 0 0 5px;
 }
 
 

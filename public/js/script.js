@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButtonDelDirector = document.querySelector('.input-del-director');
     const checkboxesDelActor = document.querySelectorAll('.checksDelActor-container input[type="checkbox"]');
     const submitButtonDelActor = document.querySelector('.input-del-actor');
-   
+    const checkboxesDelFilm = document.querySelectorAll('.checksDelFilm-container input[type="checkbox"]');
+    const submitButtonDelFilm = document.querySelector('.input-del-film');
+    const stars = document.querySelectorAll('#rating-container .star');
+    const ratingInput = document.getElementById('note');
 
     if (overlay){
         function closeModal() {
@@ -117,6 +120,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function updateButtonStateDelFilm() {
+        if (!submitButtonDelFilm) return;
+
+        const isAnyChecked = Array.from(checkboxesDelFilm).some(checkbox => checkbox.checked);
+        submitButtonDelFilm.disabled = !isAnyChecked;
+    }
+
+    if (checkboxesDelFilm && checkboxesDelFilm.length > 0) {
+        updateButtonStateDelFilm();
+        checkboxesDelFilm.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonStateDelFilm);
+        });
+    }
+
+    function setStarRating(value) {
+        resetStarColors();
+        stars.forEach(star => {
+            if (star.dataset.value <= value) {
+                star.style.color = 'orange';
+            }
+        });
+    }
+
+    function setStarRating(value) {
+        stars.forEach((star, index) => {
+            if (index < value) {
+                star.classList.remove('far');
+                star.classList.add('fas'); // étoile pleine
+            } else {
+                star.classList.add('far');
+                star.classList.remove('fas'); // étoile vide
+            }
+        });
+    }
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+            setStarRating(this.dataset.value);
+        });
+
+        star.addEventListener('mouseout', function() {
+            setStarRating(ratingInput.value);
+        });
+
+        star.addEventListener('click', function() {
+            ratingInput.value = this.dataset.value;
+            setStarRating(this.dataset.value);
+        });
+    });
+
+    //une étoile par défaut
+    setStarRating(ratingInput.value);
 
 });
 

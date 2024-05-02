@@ -50,6 +50,10 @@ switch ($action) {
         $controller = new ActorController();
         $controller->delActor();
         break;
+    case 'delFilm':
+        $controller = new FilmController();
+        $controller->delFilm();
+        break;
     case 'addFilm':
         $controller = new FilmController();
         $controller->addFilm();
@@ -89,6 +93,10 @@ switch ($action) {
     case 'deleteActors':
         $controller = new ActorController();
         $controller->deleteActors();
+        break;
+    case 'deleteFilms':
+        $controller = new FilmController();
+        $controller->deleteFilms();
         break;
     case 'detailFilm':
         if ($id) {

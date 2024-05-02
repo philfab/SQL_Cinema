@@ -25,6 +25,11 @@ class FilmController
         $this->toView($this->getList(), $modalType);
     }
 
+    public function delFilm()
+    {
+        $modalType  = 'modalDelFilm';
+        $this->toView($this->getlist()->fetchAll(), $modalType);
+    }
     function toView($films, $modalType = null)
     {
         $actionAdd = 'addFilm';
@@ -124,28 +129,49 @@ class FilmController
 
                 $filmId = $pdo->lastInsertId();
 
-                // Insertion des genres du film
-                foreach ($genres as $genreId) {
-                    $reqInsertClassifier = $pdo->prepare("INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
-                    $reqInsertClassifier->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
+                // genres du film
+                if ($genres) {
+                    foreach ($genres as $genreId) {
+                        $reqInsertClassifier = $pdo->prepare("INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
+                        $reqInsertClassifier->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
+                    }
                 }
 
-                // Gestion des acteurs et de leurs rôles
-                foreach ($_POST['actor'] as $id_acteur => $data) {
-                    $role_id = $data['role'] ?? null;
-                    if ($role_id) {
-                        $reqInsertCasting = $pdo->prepare("INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
-                        $reqInsertCasting->execute([
-                            'id_film' => $filmId,
-                            'id_acteur' => $id_acteur,
-                            'id_role' => $role_id
-                        ]);
+                // gestion des acteurs et des rôles respectifs
+                if (isset($_POST['actor']) && $_POST['actor']) {
+                    foreach ($_POST['actor'] as $id_acteur => $data) {
+                        $role_id = $data['role'] ?? null;
+                        if ($role_id) {
+                            $reqInsertCasting = $pdo->prepare("INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
+                            $reqInsertCasting->execute([
+                                'id_film' => $filmId,
+                                'id_acteur' => $id_acteur,
+                                'id_role' => $role_id
+                            ]);
+                        }
                     }
                 }
             }
         }
-        header("Location: index.php?action=listFilms;");
+        header("Location: index.php?action=listFilms");
     }
+
+    public function deleteFilms()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmsIds'])) {
+            $filmsIds = $_POST['filmsIds'];
+
+            $pdo = Connect::Connection();
+
+            $filmsIds = implode(',', array_map('intval', $filmsIds));
+
+            // Suppression des films
+            $req = $pdo->prepare("DELETE FROM film WHERE id_film IN ($filmsIds)");
+            $req->execute();
+        }
+        header("Location: index.php?action=listFilms");
+    }
+
     function isInBDD($pdo, $titre, $annee_sortie): bool
     {
         $check = $pdo->prepare("SELECT id_film FROM film WHERE titre = :titre AND annee_sortie = :annee_sortie");

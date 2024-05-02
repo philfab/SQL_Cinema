@@ -1,21 +1,24 @@
 <?php ob_start(); ?>
 
 
-<?php if (isset($genreDetails)) { ?>
+<?php if (isset($genreDetails) && !empty($genreDetails)) { ?>
     <ul>
-        <?php foreach ($genreDetails as $film) {?>
-            <li>    
-            <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
-              <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>
-            </li>
+        <?php foreach ($genreDetails as $film) { ?>
+            <?php if ($film['id_film'] != null) { ?>
+                <li>
+                    <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
+                        <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>
+                </li>
+            <?php } ?>
         <?php } ?>
     </ul>
 <?php } ?>
 
 <?php
 $titre = "Films du Genre";
-$titre_secondaire = "Films du Genre" . " " . $genreDetails[0]['libelle'];
+if (isset($genreDetails) && !empty($genreDetails))
+    $titre_secondaire = "Films du Genre" . " " . $genreDetails[0]['libelle'];
 $contenu = ob_get_clean();
-$hideButtons=true;
+$hideButtons = true;
 require "views/template.php";
 ?>

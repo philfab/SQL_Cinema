@@ -70,12 +70,15 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
         <div class="form-row container-casting">
             <div class="film-data">
                 <label for="note">Note (1-5) :</label>
-                <select name="note" id="note">
-                    <?php for ($note = 1; $note <= 5; $note++) { ?>
-                        <option value="<?= $note ?>"><?= $note ?></option>
-                    <?php } ?>
-                </select>
+                <div id="rating-container">
+                    <?php for ($note = 1; $note <= 5; $note++) : ?>
+                        <i class="far fa-star star" data-value="<?= $note ?>"></i>
+                    <?php endfor; ?>
+                </div>
+                <input type="hidden" name="note" id="note" value="1">
             </div>
+
+
             <div class="film-data">
                 <label for="duree">Durée (mn) :</label>
                 <input type="number" id="duree" name="duree" min="60" max="300" required>
@@ -117,11 +120,34 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
             <button class="input" type="submit">Ajouter Film</button>
         </div>
     </form>
-
 <?php
     $modalContent = ob_get_clean();
     $showModal = true;
 endif
+?>
+
+<?php
+if (isset($modalType) && $modalType === 'modalDelFilm') :
+    ob_start();
+?>
+    <form action="index.php?action=deleteFilms" method="post">
+        <div id="casting-content">
+            <h3 class="modify-title">Sélectionnez les films à supprimer</h3>
+            <div class="scroll-container">
+                <?php foreach ($films as $film) { ?>
+                    <div class="actor-container  checksDelFilm-container">
+                        <input type="checkbox" id="dir-<?= $film['id_film'] ?>" name="filmsIds[]" value="<?= $film['id_film'] ?>">
+                        <label for="dir-<?= $film['id_film'] ?>"><?= $film['titre'] ?></label>
+                    </div>
+                <?php } ?>
+                <button type="submit" class="input input-del-film">Supprimer les films sélectionnés</button>
+            </div>
+        </div>
+    </form>
+<?php
+    $modalContent = ob_get_clean();
+    $showModal = true;
+endif;
 ?>
 
 <?php

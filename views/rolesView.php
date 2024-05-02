@@ -34,12 +34,12 @@ if (isset($modalType) && $modalType === 'modalDelRole') :
 ?>
     <form action="index.php?action=deleteRoles" method="post">
         <div id="casting-content">
+            <h3 class="modify-title">Sélectionnez les rôles à supprimer</h3>
             <div class="scroll-container">
-                <h3 class="modify-title">Sélectionnez les rôles à supprimer</h3>
                 <?php foreach ($roles as $role) { ?>
                     <div class="actor-container checksDelRole-container">
-                        <input type="checkbox" id="role-<?= $role['id_role']; ?>" name="roleIds[]" value="<?= $role['id_role']; ?>">
-                        <label for="role-<?= $role['id_role']; ?>"><?= $role['personnage']; ?></label>
+                        <input type="checkbox" id="role-<?= $role['id_role'] ?>" name="roleIds[]" value="<?= $role['id_role'] ?>">
+                        <label for="role-<?= $role['id_role'] ?>"><?= $role['personnage'] ?></label>
                     </div>
                 <?php } ?>
                 <button type="submit" class="input input-del-role">Supprimer les rôles sélectionnés</button>

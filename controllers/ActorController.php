@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use PDO;
 use models\Connect;
 
 class ActorController
@@ -32,6 +33,12 @@ class ActorController
     {
         $modalType = "modalAddActor";
         $this->toView($this->getList(), $modalType);
+    }
+
+    public function delActor()
+    {
+        $modalType = "modalDelActor";
+        $this->toView($this->getlist()->fetchAll(), $modalType);
     }
 
     function toView($acteurs, $modalType = null)
@@ -73,9 +80,7 @@ class ActorController
 
             $pdo = Connect::Connection();
 
-            if ($this->isInBDD($pdo, $nom, $prenom)) {
-                echo "L'acteur existe déjà.";
-            } else {
+            if (!$this->isInBDD($pdo, $nom, $prenom)) {
                 $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
                 $req = $pdo->prepare($sql);
                 $req->execute([
@@ -90,16 +95,33 @@ class ActorController
                 if ($id_personne) {
                     $sql = "INSERT INTO acteur (id_personne) VALUES (:id_personne)";
                     $req = $pdo->prepare($sql);
-
-                    if ($req->execute([':id_personne' => $id_personne])) {
-                        header("Location: index.php?action=listActors");
-                        exit;
-                    } else {
-                        echo "Erreur ajout de l'acteur.";
-                    }
+                    $req->execute([':id_personne' => $id_personne]);
                 }
             }
         }
+        header("Location: index.php?action=listActors");
+    }
+
+    public function deleteActors()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actorsIds'])) {
+            $actorsIds = $_POST['actorsIds'];
+
+            $pdo = Connect::Connection();
+
+            $actorsIds =  implode(',', array_map('intval', $actorsIds));
+
+            // récup des id_personne pour les acteurs
+            $personIdsQuery = $pdo->query("SELECT id_personne FROM acteur WHERE id_acteur IN ($actorsIds)");
+            $personIds = $personIdsQuery->fetchAll(PDO::FETCH_COLUMN);
+
+            if ($personIds) {
+                $personIds =  implode(',', array_map('intval', $personIds));
+                $delPersons = $pdo->prepare("DELETE FROM personne WHERE id_personne IN ($personIds)");
+                $delPersons->execute();
+            }
+        }
+        header("Location: index.php?action=listActors");
     }
     function isInBDD($pdo, $nom, $prenom): bool
     {

@@ -64,19 +64,12 @@ class RoleController
 
             $pdo = Connect::Connection();
 
-            if ($this->isInBDD($pdo, $roleName)) {
-                echo "Le rôle existe déjà.";
-            } else {
+            if (!$this->isInBDD($pdo, $roleName)) {
                 $req = $pdo->prepare("INSERT INTO role (personnage) VALUES (:personnage)");
-
-                if ($req->execute([':personnage' => $roleName])) {
-                    header("Location: index.php?action=listRoles");
-                    exit;
-                } else {
-                    echo "Erreur ajout du rôle.";
-                }
+                $req->execute([':personnage' => $roleName]);
             }
         }
+        header("Location: index.php?action=listRoles");
     }
 
     public function deleteRoles()
@@ -91,13 +84,9 @@ class RoleController
 
             //suppression des roles par groupes
             $req = $pdo->prepare("DELETE FROM role WHERE id_role IN ($roleIdsString)");
-            if ($req->execute()) {
-                header("Location: index.php?action=listRoles");
-                exit;
-            } else {
-                echo "Erreur lors de la suppression des rôles.";
-            }
+            $req->execute();
         }
+        header("Location: index.php?action=listRoles");
     }
 
     function isInBDD($pdo, $roleName): bool

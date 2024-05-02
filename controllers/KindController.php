@@ -61,28 +61,13 @@ class KindController
 
             $pdo = Connect::Connection();
 
-            if ($this->isInBDD($pdo, $genreName)) {
-                echo "Le genre existe déjà.";
-            } else {
+            if (!$this->isInBDD($pdo, $genreName)) {
                 $req = $pdo->prepare("INSERT INTO genre (libelle) VALUES (:libelle)");
-
-                if ($req->execute([':libelle' => $genreName])) {
-                    header("Location: index.php?action=listKinds");
-                    exit;
-                } else {
-                    echo "Erreur ajout du genre.";
-                }
+                $req->execute([':libelle' => $genreName]);
             }
         }
+        header("Location: index.php?action=listKinds");
     }
-
-    function isInBDD($pdo, $genreName): bool
-    {
-        $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
-        $check->execute([':libelle' => $genreName]);
-        return $check->fetchColumn() > 0;
-    }
-
     public function deleteKinds()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kindIds'])) {
@@ -95,13 +80,9 @@ class KindController
 
             //suppression des genres par groupes
             $req = $pdo->prepare("DELETE FROM genre WHERE id_genre IN ($kindIdsString)");
-            if ($req->execute()) {
-                header("Location: index.php?action=listKinds");
-                exit;
-            } else {
-                echo "Erreur suppression des genres !";
-            }
+            $req->execute();
         }
+        header("Location: index.php?action=listKinds");
     }
 
     function toView($kinds, $modalType = null)
@@ -110,5 +91,12 @@ class KindController
         $actionEdit = 'editKind';
         $actionDel = 'delKind';
         require "views/kindsView.php";
+    }
+
+    function isInBDD($pdo, $genreName): bool
+    {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
+        $check->execute([':libelle' => $genreName]);
+        return $check->fetchColumn() > 0;
     }
 }

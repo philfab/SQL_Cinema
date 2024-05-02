@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$modalContent = '';
+$showModal = false;
+?>
 
 
 <div class="film-gallery">
@@ -118,10 +121,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
 <?php
     $modalContent = ob_get_clean();
     $showModal = true;
-else :
-    $modalContent = '';
-    $showModal = false;
-endif;
+endif
 ?>
 
 <?php

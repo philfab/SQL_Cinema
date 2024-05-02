@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$modalContent = '';
+$showModal = false;
+?>
 
 <div class="film-gallery">
     <?php foreach ($realisateurs as $realisateur) { ?>
@@ -39,9 +42,30 @@ if (isset($modalType) && $modalType === 'modalAddDirector') :
 <?php
     $modalContent = ob_get_clean();
     $showModal = true;
-else :
-    $modalContent = '';
-    $showModal = false;
+endif;
+?>
+
+<?php
+if (isset($modalType) && $modalType === 'modalDelDirector') :
+    ob_start();
+?>
+    <form action="index.php?action=deleteDirectors" method="post">
+        <div id="casting-content">
+            <h3 class="modify-title">Sélectionnez les réalisateurs à supprimer</h3>
+            <div class="scroll-container">
+                <?php foreach ($realisateurs as $realisateur) { ?>
+                    <div class="actor-container  checksDelDirector-container">
+                        <input type="checkbox" id="dir-<?= $realisateur['id_realisateur'] ?>" name="directorsIds[]" value="<?= $realisateur['id_realisateur'] ?>">
+                        <label for="dir-<?= $realisateur['id_realisateur'] ?>"><?= $realisateur['prenom'] . ' ' . $realisateur['nom'] ?></label>
+                    </div>
+                <?php } ?>
+                <button type="submit" class="input input-del-director">Supprimer les réalisateurs sélectionnés</button>
+            </div>
+        </div>
+    </form>
+<?php
+    $modalContent = ob_get_clean();
+    $showModal = true;
 endif;
 ?>
 

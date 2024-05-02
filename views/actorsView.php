@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$modalContent = '';
+$showModal = false;
+?>
 
 <div class="film-gallery">
     <?php foreach ($acteurs as $acteur) { ?>
@@ -39,9 +42,30 @@ if (isset($modalType) && $modalType === 'modalAddActor') :
 <?php
     $modalContent = ob_get_clean();
     $showModal = true;
-else :
-    $modalContent = '';
-    $showModal = false;
+endif
+?>
+
+<?php
+if (isset($modalType) && $modalType === 'modalDelActor') :
+    ob_start();
+?>
+    <form action="index.php?action=deleteActors" method="post">
+        <div id="casting-content">
+            <h3 class="modify-title">Sélectionnez les acteurs à supprimer</h3>
+            <div class="scroll-container">
+                <?php foreach ($acteurs as $acteur) { ?>
+                    <div class="actor-container checksDelActor-container">
+                        <input type="checkbox" id="dir-<?= $acteur['id_acteur'] ?>" name="actorsIds[]" value="<?= $acteur['id_acteur'] ?>">
+                        <label for="dir-<?= $acteur['id_acteur'] ?>"><?= $acteur['prenom'] . ' ' . $acteur['nom'] ?></label>
+                    </div>
+                <?php } ?>
+                <button type="submit" class="input input-del-actor">Supprimer les acteurs sélectionnés</button>
+            </div>
+        </div>
+    </form>
+<?php
+    $modalContent = ob_get_clean();
+    $showModal = true;
 endif;
 ?>
 

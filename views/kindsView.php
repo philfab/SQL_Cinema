@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+$modalContent = '';
+$showModal = false;
+?>
 
 <div class="genre-container">
     <?php foreach ($kinds as $kind) { ?>
@@ -21,9 +24,6 @@ if (isset($modalType) && $modalType === 'modalAddKind') :
 <?php
     $modalContent = ob_get_clean(); // termine la capture du contenu de la modale
     $showModal = true;
-else :
-    $modalContent;
-    $showModal = false;
 endif;
 ?>
 
@@ -33,12 +33,12 @@ if (isset($modalType) && $modalType === 'modalDelKind') :
 ?>
     <form action="index.php?action=deleteKinds" method="post">
         <div id="casting-content">
+            <h3 class="modify-title">Sélectionnez les genres à supprimer</h3>
             <div class="scroll-container">
-                <h3 class="modify-title">Sélectionnez les genres à supprimer</h3>
                 <?php foreach ($kinds as $kind) { ?>
                     <div class="actor-container  checksDelKind-container">
-                        <input type="checkbox" id="kind-<?= $kind['id_genre']; ?>" name="kindIds[]" value="<?= $kind['id_genre']; ?>">
-                        <label for="kind-<?= $kind['id_genre']; ?>"><?= $kind['libelle']; ?></label>
+                        <input type="checkbox" id="kind-<?= $kind['id_genre'] ?>" name="kindIds[]" value="<?= $kind['id_genre'] ?>">
+                        <label for="kind-<?= $kind['id_genre'] ?>"><?= $kind['libelle'] ?></label>
                     </div>
                 <?php } ?>
                 <button type="submit" class="input input-del-kind">Supprimer les genres sélectionnés</button>

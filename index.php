@@ -38,9 +38,17 @@ switch ($action) {
         $controller = new DirectorController();
         $controller->addDirector();
         break;
+    case 'delDirector':
+        $controller = new DirectorController();
+        $controller->delDirector();
+        break;
     case 'addActor':
         $controller = new actorController();
         $controller->addActor();
+        break;
+    case 'delActor':
+        $controller = new ActorController();
+        $controller->delActor();
         break;
     case 'addFilm':
         $controller = new FilmController();
@@ -73,6 +81,14 @@ switch ($action) {
     case 'deleteKinds':
         $controller = new KindController();
         $controller->deleteKinds();
+        break;
+    case 'deleteDirectors':
+        $controller = new DirectorController();
+        $controller->deleteDirectors();
+        break;
+    case 'deleteActors':
+        $controller = new ActorController();
+        $controller->deleteActors();
         break;
     case 'detailFilm':
         if ($id) {

@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButtonDelRole = document.querySelector('.input-del-role');
     const checkboxesDelKind = document.querySelectorAll('.checksDelKind-container input[type="checkbox"]');
     const submitButtonDelKind = document.querySelector('.input-del-kind');
+    const checkboxesDelDirector = document.querySelectorAll('.checksDelDirector-container input[type="checkbox"]');
+    const submitButtonDelDirector = document.querySelector('.input-del-director');
+    const checkboxesDelActor = document.querySelectorAll('.checksDelActor-container input[type="checkbox"]');
+    const submitButtonDelActor = document.querySelector('.input-del-actor');
+   
 
     if (overlay){
         function closeModal() {
@@ -20,6 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeModal();
             }
         };
+
+        overlay.addEventListener('submit', function(event) {
+            if (event.target.tagName === 'FORM') {
+                closeModal();
+            }
+        });
     }
    
     if (closeButton) {
@@ -77,6 +88,35 @@ document.addEventListener('DOMContentLoaded', function() {
             checkbox.addEventListener('change', updateButtonStateDelKind);
         });
     }
+
+    function updateButtonStateDelDirector() {
+        if (!submitButtonDelDirector) return;
+
+        const isAnyChecked = Array.from(checkboxesDelDirector).some(checkbox => checkbox.checked);
+        submitButtonDelDirector.disabled = !isAnyChecked;
+    }
+
+    if (checkboxesDelDirector && checkboxesDelDirector.length > 0) {
+        updateButtonStateDelDirector();
+        checkboxesDelDirector.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonStateDelDirector);
+        });
+    }
+
+    function updateButtonStateDelActor() {
+        if (!submitButtonDelActor) return;
+
+        const isAnyChecked = Array.from(checkboxesDelActor).some(checkbox => checkbox.checked);
+        submitButtonDelActor.disabled = !isAnyChecked;
+    }
+
+    if (checkboxesDelActor && checkboxesDelActor.length > 0) {
+        updateButtonStateDelActor();
+        checkboxesDelActor.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonStateDelActor);
+        });
+    }
+
 
 });
 

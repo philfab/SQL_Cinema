@@ -108,9 +108,7 @@ class FilmController
             $genres = $_POST['genres'] ?? [];
 
 
-            if ($this->isInBDD($pdo, $titre, $annee_sortie)) {
-                echo "Un film avec le même titre et la même année existe déjà.";
-            } else {
+            if (!$this->isInBDD($pdo, $titre, $annee_sortie)) {
                 $sql = "INSERT INTO film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis)
                     VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
                 $req = $pdo->prepare($sql);
@@ -144,10 +142,9 @@ class FilmController
                         ]);
                     }
                 }
-
-                header("Location: index.php?action=listFilms;");
             }
         }
+        header("Location: index.php?action=listFilms;");
     }
     function isInBDD($pdo, $titre, $annee_sortie): bool
     {

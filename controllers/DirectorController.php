@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use PDO;
 use models\Connect;
 
 class DirectorController
@@ -39,6 +40,12 @@ class DirectorController
         $this->toView($this->getList(), $modalType);
     }
 
+    public function delDirector()
+    {
+        $modalType  = 'modalDelDirector';
+        $this->toView($this->getlist()->fetchAll(), $modalType);
+    }
+
     function toView($realisateurs, $modalType = null)
     {
         $actionAdd = 'addDirector';
@@ -71,9 +78,7 @@ class DirectorController
 
             $pdo = Connect::Connection();
 
-            if ($this->isInBDD($pdo, $nom, $prenom)) {
-                echo "Le reálisateur existe déjà.";
-            } else {
+            if (!$this->isInBDD($pdo, $nom, $prenom)) {
                 $sql = "INSERT INTO personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
                 $req = $pdo->prepare($sql);
                 $req->execute([
@@ -88,15 +93,33 @@ class DirectorController
                 if ($id_personne) {
                     $sql = "INSERT INTO realisateur (id_personne) VALUES (:id_personne)";
                     $req = $pdo->prepare($sql);
-                    if ($req->execute([':id_personne' => $id_personne])) {
-                        header("Location: index.php?action=listDirectors");
-                        exit;
-                    } else {
-                        echo "Erreur ajout du reálisateur.";
-                    }
+                    $req->execute([':id_personne' => $id_personne]);
                 }
             }
         }
+        header("Location: index.php?action=listDirectors");
+    }
+
+    public function deleteDirectors()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['directorsIds'])) {
+            $directorsIds = $_POST['directorsIds'];
+
+            $pdo = Connect::Connection();
+
+            $directorsIds =  implode(',', array_map('intval', $directorsIds));
+
+            // récup des id_personne pour les réals
+            $personIdsQuery = $pdo->query("SELECT id_personne FROM realisateur WHERE id_realisateur IN ($directorsIds)");
+            $personIds = $personIdsQuery->fetchAll(PDO::FETCH_COLUMN);
+
+            if ($personIds) {
+                $personIds =  implode(',', array_map('intval', $personIds));
+                $delPersons = $pdo->prepare("DELETE FROM personne WHERE id_personne IN ($personIds)");
+                $delPersons->execute();
+            }
+        }
+        header("Location: index.php?action=listDirectors");
     }
     function isInBDD($pdo, $nom, $prenom): bool
     {

@@ -526,6 +526,26 @@ figure, figure > img {
     margin: 10px 0 0 5px;
 }
 
+.film-gallery-casting {
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.film-gallery-casting figcaption {
+    font-size: 0.8rem;
+    padding: 3px;
+}
+
+.film-gallery-casting figcaption a{
+    background-color: transparent;
+    text-align: justify;
+}
+
+.film-gallery-casting img {
+    object-fit: cover;
+    min-width: 160px;
+}
+
 
 /* media queries tablet + mobile */
 @media (max-width: 1024px) {

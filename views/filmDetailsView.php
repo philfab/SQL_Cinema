@@ -42,32 +42,43 @@
                     </p>
                 </div>
 
-                <p>Réalisateur :
-                    <a href="index.php?action=detailDirector&id=<?= $filmDetails['id_realisateur'] ?>">
-                        <?= $filmDetails['prenom'] . ' ' . $filmDetails['nom'] ?>
-                    </a>
-                </p>
-
                 <p>Synopsis : <br> <span><?= $filmDetails['synopsis'] ?> </span></p>
+
+                <h4>Réalisateur</h4>
+                <div class="film-gallery film-gallery-casting">
+                    <figure>
+                        <a href="index.php?action=detailDirector&id=<?= $filmDetails['id_realisateur'] ?>">
+                            <img src="<?= $filmDetails['photo'] ?>" alt="Realisateur du film">
+                        </a>
+                        <figcaption>
+                            <?= $filmDetails['prenom'] . ' ' . $filmDetails['nom'] ?>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <?php if (isset($filmCasting)) { ?>
+                    <h4>Casting</h4>
+                    <div class="film-gallery film-gallery-casting">
+                        <?php foreach ($filmCasting as $acteur) { ?>
+                            <figure>
+                                <a href="index.php?action=detailActor&id=<?= $acteur['id_acteur'] ?>">
+                                    <img src="<?= $acteur['photo'] ?>" alt="Acteur du film">
+                                </a>
+                                <figcaption>
+                                    <?= $acteur['prenom'] . ' ' . $acteur['nom'] ?> <br>
+                                    <a href="index.php?action=detailRole&id=<?= $acteur['id_role'] ?>">
+                                        <?= $acteur['personnage'] ?>
+                                    </a>
+                                </figcaption>
+                            </figure>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+
             </div>
         <?php } ?>
 
-        <?php if (isset($filmCasting)) { ?>
-            <h4>Casting</h4>
-            <ul>
-                <?php foreach ($filmCasting as $acteur) { ?>
-                    <li>
-                        <a href="index.php?action=detailActor&id=<?= $acteur['id_acteur'] ?>">
-                            <?= $acteur['prenom'] . ' ' . $acteur['nom'] ?>
-                        </a>
-                        dans le rôle de
-                        <a href="index.php?action=detailRole&id=<?= $acteur['id_role'] ?>">
-                            <?= $acteur['personnage'] ?>
-                        </a>.
-                    </li>
-                <?php } ?>
-            </ul>
-        <?php } ?>
+
     </div>
 </section>
 

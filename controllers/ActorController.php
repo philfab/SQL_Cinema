@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Kint\Kint;
 use PDO;
 use models\Connect;
 
@@ -41,6 +42,46 @@ class ActorController
         $this->toView($this->getlist()->fetchAll(), $modalType);
     }
 
+    public function editActor($actorId)
+    {
+        $modalType  = 'modalEditActor';
+        $this->toDetailsView($this->getDetailsActor($actorId), $modalType);
+    }
+
+    public function updateActor($actorId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
+
+            $pdo = Connect::Connection();
+
+            $req = $pdo->prepare("SELECT id_personne FROM Acteur WHERE id_acteur = :actorId");
+            $req->execute([':actorId' => $actorId]);
+            $personne = $req->fetch(PDO::FETCH_ASSOC);
+            $personneId = $personne['id_personne'];
+            var_dump($personneId);
+            $sql = "UPDATE Personne SET prenom = :prenom, nom = :nom, dateNaissance = :dateNaissance, sexe = :sexe, photo = :photo 
+            WHERE id_personne = :id_personne";
+            $req = $pdo->prepare($sql);
+            if ($req->execute([
+                ':prenom' => $prenom,
+                ':nom' => $nom,
+                ':dateNaissance' => $dateNaissance,
+                ':sexe' => $sexe,
+                ':photo' => $photoUrl,
+                ':id_personne' => $personneId
+            ])) {
+                header("Location: index.php?action=detailActor&id=" . $actorId);
+            } else {
+                echo $req->errorInfo()[2];
+            }
+        }
+    }
+
     function toView($acteurs, $modalType = null)
     {
         $actionAdd = 'addActor';
@@ -51,11 +92,11 @@ class ActorController
         require "views/actorsView.php";
     }
 
-    public function detailsActor($actorId)
+    function getDetailsActor($actorId): array
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT p.prenom, p.nom, p.sexe, p.dateNaissance, p.photo, 
+        SELECT p.prenom, p.nom, p.sexe, p.dateNaissance, p.photo, a.id_acteur,
                f.id_film, f.titre, f.annee_sortie, f.affiche,
                r.id_role, r.personnage
         FROM Personne p
@@ -68,6 +109,21 @@ class ActorController
     ");
         $details->execute(['id' => $actorId]);
         $actorDetails = $details->fetchAll();
+        return $actorDetails;
+    }
+
+    public function detailsActor($actorId)
+    {
+        $this->toDetailsView($this->getDetailsActor($actorId));
+    }
+
+    function toDetailsView($actorDetails, $modalType = null)
+    {
+        $actionAdd = 'addActor';
+        $actionEdit = "editActor&id=" . $actorDetails[0]['id_acteur'];
+        $actionUpdate =  $modalType != null ? "updateActor&id=" . $actorDetails[0]['id_acteur'] : null;
+        $actionDel = 'delActor';
+        $path = "index.php?action=listActors";
         $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
         require "views/actorDetailsView.php";
     }

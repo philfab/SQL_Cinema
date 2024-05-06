@@ -22,7 +22,7 @@ class RoleController
         return $roles;
     }
 
-    public function getDetailsRole($roleId): array
+    function getDetailsRole($roleId): array
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("

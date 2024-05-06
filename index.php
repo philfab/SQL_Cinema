@@ -56,6 +56,12 @@ switch ($action) {
         $controller = new ActorController();
         $controller->delActor();
         break;
+    case 'editActor':
+        if ($id) {
+            $controller = new ActorController();
+            $controller->editActor($id);
+        }
+        break;
     case 'delFilm':
         $controller = new FilmController();
         $controller->delFilm();
@@ -138,6 +144,12 @@ switch ($action) {
         if ($id) {
             $controller = new RoleController();
             $controller->updateRole($id);
+        }
+        break;
+    case 'updateActor':
+        if ($id) {
+            $controller = new ActorController();
+            $controller->updateActor($id);
         }
         break;
     case 'listFilms':

@@ -1,5 +1,4 @@
-*,
-html {
+* {
     box-sizing: border-box;
     background-color: black;
     color: whitesmoke;
@@ -251,6 +250,7 @@ figure>img {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 #kinds-modal {
@@ -468,7 +468,7 @@ figure>img {
 
 .affiche-details {
     box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.7);
-    z-index: 10;
+    z-index: 1;
     max-height: 431px;
 
 }

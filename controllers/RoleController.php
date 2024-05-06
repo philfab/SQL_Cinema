@@ -22,16 +22,11 @@ class RoleController
         return $roles;
     }
 
-    public function listRoles()
-    {
-        $this->toView($this->getlist());
-    }
-
-    public function detailsRole($roleId)
+    public function getDetailsRole($roleId): array
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT f.id_film, a.id_acteur, r.id_role, r.personnage, p.prenom, p.nom, f.titre
+        SELECT f.id_film, a.id_acteur, r.id_role, r.personnage, p.prenom, p.nom, f.titre ,p.photo
         FROM Role r
         LEFT JOIN Casting c ON r.id_role = c.id_role
         LEFT JOIN Acteur a ON c.id_acteur = a.id_acteur
@@ -42,7 +37,17 @@ class RoleController
     ");
         $details->execute(['id' => $roleId]);
         $roleDetails = $details->fetchAll();
-        require "views/roleDetailsView.php";
+        return $roleDetails;
+    }
+
+    public function listRoles()
+    {
+        $this->toView($this->getlist());
+    }
+
+    public function detailsRole($roleId)
+    {
+        $this->toDetailsView($this->getDetailsRole($roleId));
     }
 
     public function addRole()
@@ -56,7 +61,11 @@ class RoleController
         $modalType  = 'modalDelRole';
         $this->toView($this->getlist()->fetchAll(), $modalType);
     }
-
+    public function editRole($roleId)
+    {
+        $modalType  = 'modalEditRole';
+        $this->toDetailsView($this->getDetailsRole($roleId), $modalType);
+    }
     public function saveRole()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roleName'])) {
@@ -70,6 +79,25 @@ class RoleController
             }
         }
         header("Location: index.php?action=listRoles");
+    }
+
+    public function updateRole($roleId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roleName'])) {
+            $roleName = filter_input(INPUT_POST, 'roleName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $pdo = Connect::Connection();
+
+            if (!$this->isInBDD($pdo, $roleName)) {
+                $req = $pdo->prepare("UPDATE role SET personnage = :personnage WHERE id_role = :id_role");
+                $req->execute([
+                    ':personnage' => $roleName,
+                    ':id_role' => $roleId
+                ]);
+            }
+        }
+
+        header("Location: index.php?action=detailRole&id=" . $roleId);
     }
 
     public function deleteRoles()
@@ -101,6 +129,19 @@ class RoleController
         $actionAdd = 'addRole';
         $actionEdit = 'editRole';
         $actionDel = 'delRole';
+        $path = "index.php?action=listRoles";
+        $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/rolesView.php";
+    }
+
+    function toDetailsView($roleDetails, $modalType = null)
+    {
+        $actionAdd = 'addRole';
+        $actionEdit = "editRole&id=" . $roleDetails[0]['id_role'];
+        $actionUpdate =  $modalType != null ? "updateRole&id=" . $roleDetails[0]['id_role'] : null;
+        $actionDel = 'delRole';
+        $path = "index.php?action=listRoles";
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
+        require "views/roleDetailsView.php";
     }
 }

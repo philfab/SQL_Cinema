@@ -5,8 +5,8 @@ USE Cinema;
 
 CREATE TABLE IF NOT EXISTS Personne (
     id_personne INT AUTO_INCREMENT PRIMARY KEY,
-    prenom VARCHAR(50),
-    nom VARCHAR(50),
+    prenom VARCHAR(30),
+    nom VARCHAR(30),
     dateNaissance DATE,
     sexe CHAR(1),
     photo VARCHAR(255) DEFAULT 'photo.jpg'
@@ -20,12 +20,12 @@ CREATE TABLE IF NOT EXISTS Realisateur (
 
 CREATE TABLE IF NOT EXISTS Genre (
     id_genre INT AUTO_INCREMENT PRIMARY KEY,
-    libelle VARCHAR(50)
+    libelle VARCHAR(30)
 );
 
 CREATE TABLE IF NOT EXISTS Film (
     id_film INT AUTO_INCREMENT PRIMARY KEY,
-    titre VARCHAR(255),
+    titre VARCHAR(100),
     annee_sortie INT,
     duree INT,
     synopsis TEXT,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Acteur (
 
 CREATE TABLE IF NOT EXISTS Role (
     id_role INT AUTO_INCREMENT PRIMARY KEY,
-    personnage VARCHAR(50)
+    personnage VARCHAR(30)
 );
 
 CREATE TABLE IF NOT EXISTS Casting (

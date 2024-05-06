@@ -18,12 +18,12 @@ $showModal = false;
 if (isset($modalType) && $modalType === 'modalAddActor') :
     ob_start();
 ?>
-    <form class="form" action="index.php?action=saveActor" method="post">
+    <form action="index.php?action=saveActor" method="post">
         <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required autofocus maxlength="100">
+        <input type="text" id="nom" name="nom" class="validate-input" required autofocus minlength="2" maxlength="30">
 
         <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" required maxlength="100">
+        <input type="text" id="prenom" name="prenom" class="validate-input" required minlength="2" maxlength="30">
 
         <label for="dateNaissance">Date de naissance :</label>
         <input type="date" id="dateNaissance" name="dateNaissance">
@@ -70,7 +70,7 @@ endif;
 ?>
 
 <?php
-$path = "index.php?action=listActors";
+
 $titre = "Liste des acteurs";
 $titre_secondaire = "Liste des acteurs";
 $contenu = ob_get_clean();

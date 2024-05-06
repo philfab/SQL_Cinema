@@ -74,10 +74,8 @@
                         <?php } ?>
                     </div>
                 <?php } ?>
-
             </div>
         <?php } ?>
-
 
     </div>
 </section>
@@ -86,6 +84,5 @@
 $titre = "Détails du film";
 $titre_secondaire = "";
 $contenu = ob_get_clean();
-$hideButtons = true;
 require "views/template.php";
 ?>

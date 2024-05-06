@@ -26,7 +26,7 @@ INSERT INTO Film (titre, annee_sortie, duree, synopsis, note, id_realisateur, af
 ('Jackie Brown', 1998, 150 , "Jackie Brown, une hôtesse de l'air, arrondit ses fins de mois en convoyant de l'argent.", 5, 1,"https://fr.web.img4.acsta.net/c_310_420/medias/04/05/00/040500_af.jpg");
 
 INSERT INTO Genre (libelle) VALUES
-('Action'), ('Drame'), ('Science-Fiction'), ('Historique'), ('Comedie');
+('Action'), ('Drame'), ('Science-Fiction'), ('Historique'), ('Comédie');
 
 INSERT INTO Classifier (id_film, id_genre) VALUES
 (1, 2), -- Pulp Fiction = Drame
@@ -47,7 +47,7 @@ INSERT INTO Role (personnage) VALUES
 ('Jack Dawson'),
 ('Rose DeWitt'),
 ('Dom Cobb'),
-('Cameo'),
+('Caméo'),
 ('Stephen'),
 ('Jack Conrad'),
 ('Janie Orlean'),

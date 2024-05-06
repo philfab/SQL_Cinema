@@ -22,7 +22,7 @@ class DirectorController
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
         SELECT p.prenom, p.nom,p.dateNaissance,p.sexe,p.photo, 
-               f.id_film, f.titre, f.annee_sortie
+               f.id_film, f.titre, f.annee_sortie, f.affiche
         FROM Personne p
         INNER JOIN Realisateur r ON p.id_personne = r.id_personne
         LEFT JOIN Film f ON r.id_realisateur = f.id_realisateur
@@ -31,7 +31,7 @@ class DirectorController
     ");
         $details->execute(['id' => $directorId]);
         $directorDetails = $details->fetchAll();
-
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
         require "views/directorDetailsView.php";
     }
     public function addDirector()
@@ -51,6 +51,8 @@ class DirectorController
         $actionAdd = 'addDirector';
         $actionEdit = 'editDirector';
         $actionDel = 'delDirector';
+        $path = "index.php?action=listDirectors";
+        $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/directorsView.php";
     }
 

@@ -46,6 +46,8 @@ class ActorController
         $actionAdd = 'addActor';
         $actionEdit = 'editActor';
         $actionDel = 'delActor';
+        $path = "index.php?action=listActors";
+        $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/actorsView.php";
     }
 
@@ -54,7 +56,7 @@ class ActorController
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
         SELECT p.prenom, p.nom, p.sexe, p.dateNaissance, p.photo, 
-               f.id_film, f.titre, f.annee_sortie, 
+               f.id_film, f.titre, f.annee_sortie, f.affiche,
                r.id_role, r.personnage
         FROM Personne p
         INNER JOIN Acteur a ON p.id_personne = a.id_personne
@@ -66,6 +68,7 @@ class ActorController
     ");
         $details->execute(['id' => $actorId]);
         $actorDetails = $details->fetchAll();
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
         require "views/actorDetailsView.php";
     }
 

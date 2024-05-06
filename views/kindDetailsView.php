@@ -1,24 +1,27 @@
 <?php ob_start(); ?>
 
-
-<?php if (isset($genreDetails) && !empty($genreDetails)) { ?>
-    <ul>
-        <?php foreach ($genreDetails as $film) { ?>
-            <?php if ($film['id_film'] != null) { ?>
-                <li>
+<?php if (isset($kindDetails) && !empty($kindDetails)) { ?>
+    <?php if ($kindDetails[0]['id_film'] != null) { ?>
+        <div class="film-gallery">
+            <?php foreach ($kindDetails as $film) { ?>
+                <figure>
                     <a href="index.php?action=detailFilm&id=<?= $film['id_film'] ?>">
-                        <?= $film['titre'] ?> (<?= $film['annee_sortie'] ?>) </a>
-                </li>
+                        <img src="<?= $film['affiche'] ?>" alt="Affiche du film">
+                    </a>
+                    <figcaption>
+                        <?= $film['titre'] ?>
+                    </figcaption>
+                </figure>
             <?php } ?>
-        <?php } ?>
-    </ul>
+        </div>
+    <?php } ?>
 <?php } ?>
 
 <?php
 $titre = "Films du Genre";
-if (isset($genreDetails) && !empty($genreDetails))
-    $titre_secondaire = "Films du Genre" . " " . $genreDetails[0]['libelle'];
+if (isset($kindDetails) && !empty($kindDetails)) {
+    $titre_secondaire = "Films du genre <span class='highlight'>" . $kindDetails[0]['libelle'] . "</span>";
+}
 $contenu = ob_get_clean();
-$hideButtons = true;
 require "views/template.php";
 ?>

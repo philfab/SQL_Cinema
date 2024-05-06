@@ -17,8 +17,8 @@ if (isset($modalType) && $modalType === 'modalAddRole') :
     ob_start(); // capture contenu modale
 ?>
     <form class="form" action="index.php?action=saveRole" method="post">
-        <label for="roleName">Nom du Rôle :</label>
-        <input type="text" id="roleName" name="roleName" required autofocus maxlength="20" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
+        <label for="roleName">Créer un Rôle :</label>
+        <input type="text" id="roleName" name="roleName" required autofocus minlength="2" maxlength="30" class="validate-input">
         <button class="input" type="submit">Ajouter</button>
     </form>
 <?php
@@ -53,7 +53,6 @@ endif;
 ?>
 
 <?php
-$path = "index.php?action=listRoles";
 $titre = "Liste des rôles";
 $titre_secondaire = "Liste des rôles";
 $contenu = ob_get_clean();

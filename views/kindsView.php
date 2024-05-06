@@ -12,13 +12,21 @@ $showModal = false;
 </div>
 
 <?php
-// si la modale doit etre affichée
+// si la modale doit être affichée
 if (isset($modalType) && $modalType === 'modalAddKind') :
     ob_start(); // commence la capture pour le contenu de la modale
 ?>
     <form class="form" action="index.php?action=saveKind" method="post">
-        <label for="genreName">Nom du genre :</label>
-        <input type="text" id="genreName" name="genreName" required autofocus maxlength="20" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
+        <label for="genreName">Créer un genre :</label>
+        <select id="genreName" name="genreName" required autofocus>
+            <option value="">--Sélectionnez un genre--</option>
+            <?php foreach ($allGenres as $genre) : ?>
+                <option value="<?= $genre ?>" <?= in_array(strtolower($genre), array_map('strtolower', $existingGenres)) ? 'disabled' : '' ?>>
+                    <?= $genre ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
         <button class="input" type="submit">Ajouter</button>
     </form>
 <?php
@@ -52,7 +60,6 @@ endif;
 ?>
 
 <?php
-$path = "index.php?action=listKinds";
 $titre = "Liste des genres";
 $titre_secondaire = "Liste des genres";
 $contenu = ob_get_clean();

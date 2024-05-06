@@ -34,6 +34,12 @@ switch ($action) {
         $controller = new RoleController();
         $controller->delRole();
         break;
+    case 'editRole':
+        if ($id) {
+            $controller = new RoleController();
+            $controller->editRole($id);
+        }
+        break;
     case 'addDirector':
         $controller = new DirectorController();
         $controller->addDirector();
@@ -126,6 +132,12 @@ switch ($action) {
         if ($id) {
             $controller = new RoleController();
             $controller->detailsRole($id);
+        }
+        break;
+    case 'updateRole':
+        if ($id) {
+            $controller = new RoleController();
+            $controller->updateRole($id);
         }
         break;
     case 'listFilms':

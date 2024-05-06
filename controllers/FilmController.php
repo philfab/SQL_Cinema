@@ -39,7 +39,9 @@ class FilmController
         $acteurs = (new ActorController())->getList()->fetchAll();
         $roles = (new RoleController())->getlist()->fetchAll();
         $kinds = (new KindController())->getlist()->fetchAll();
-        require "views/filmsView.php";;
+        $path = "index.php?action=listFilms";
+        $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
+        require "views/filmsView.php";
     }
 
     function getList(): \PDOStatement
@@ -69,6 +71,7 @@ class FilmController
         $filmDetails = $details->fetch();
         $filmCasting = $this->castingFilm($pdo, $filmId);
         $filmGenres = $this->genresFilm($pdo, $filmId);
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
         require "views/filmDetailsView.php";
     }
 

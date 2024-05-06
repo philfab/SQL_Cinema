@@ -23,7 +23,7 @@ if (isset($modalType) && $modalType === 'modalAddFilm') :
 
         <div class="form-row">
             <label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" required autofocus maxlength="100">
+            <input type="text" id="titre" name="titre" class="validate-input" required autofocus minlength="2" maxlength="30">
         </div>
 
         <div class="form-row container-casting">
@@ -151,7 +151,7 @@ endif;
 ?>
 
 <?php
-$path = "index.php?action=listFilms";
+
 $titre = "Liste des films";
 $titre_secondaire = "Liste des films";
 $contenu = ob_get_clean();

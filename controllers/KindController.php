@@ -6,7 +6,12 @@ use models\Connect;
 
 class KindController
 {
-
+    static $allGenres = [
+        "Action", "Animation", "Aventure", "Biopic", "Comédie", "Documentaire",
+        "Erotique", "Drame", "Famille", "Fantastique", "Film noir", "Guerre",
+        "Historique", "Horreur", "Musical", "Policier", "Romance", "Science-fiction",
+        "Sport", "Suspense", "Thriller", "Western"
+    ];
     public function __construct()
     {
     }
@@ -23,14 +28,14 @@ class KindController
     }
     public function listKinds()
     {
-        $this->toView($this->getlist());
+        $this->toView($this->getlist()->fetchAll());
     }
 
-    public function detailKind($genreId)
+    public function getDetailsKind($genreId): array
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT  f.id_film,g.libelle, f.titre, f.annee_sortie
+        SELECT  f.id_film,g.libelle, f.titre, f.annee_sortie, f.affiche
         FROM Genre g
         LEFT JOIN Classifier cl ON g.id_genre = cl.id_genre
         LEFT JOIN Film f ON cl.id_film = f.id_film
@@ -38,14 +43,19 @@ class KindController
         ORDER BY f.annee_sortie DESC
     ");
         $details->execute(['id' => $genreId]);
-        $genreDetails = $details->fetchAll();
-        require "views/kindDetailsView.php";
+        $kindDetails = $details->fetchAll();
+        return $kindDetails;
+    }
+
+    public function detailKind($genreId)
+    {
+        $this->toDetailsView($this->getDetailsKind($genreId));
     }
 
     public function addKind()
     {
         $modalType  = 'modalAddKind';
-        $this->toView($this->getlist(), $modalType);
+        $this->toView($this->getlist()->fetchAll(), $modalType);
     }
 
     public function delKind()
@@ -90,7 +100,17 @@ class KindController
         $actionAdd = 'addKind';
         $actionEdit = 'editKind';
         $actionDel = 'delKind';
+        $existingGenres = array_column($kinds, 'libelle');
+        $allGenres = self::$allGenres;
+        $path = "index.php?action=listKinds";
+        $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/kindsView.php";
+    }
+
+    function toDetailsView($kindDetails, $modalType = null)
+    {
+        $buttonStates = ['add' => false, 'edit' => false, 'delete' => false];
+        require "views/kindDetailsView.php";
     }
 
     function isInBDD($pdo, $genreName): bool

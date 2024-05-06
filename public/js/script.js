@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButtonDelFilm = document.querySelector('.input-del-film');
     const stars = document.querySelectorAll('#rating-container .star');
     const ratingInput = document.getElementById('note');
+    const inputs = document.querySelectorAll('.validate-input');
 
     if (overlay){
         function closeModal() {
@@ -171,7 +172,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //une étoile par défaut
+    if (ratingInput) 
     setStarRating(ratingInput.value);
+
+    inputs.forEach(input => {
+        input.addEventListener('keydown', function(event) {
+            if (!/[\p{L}' ]/u.test(event.key)) {
+                event.preventDefault();
+            }
+        });
+    });
 
 });
 

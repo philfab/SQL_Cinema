@@ -62,7 +62,7 @@ if (isset($modalType) && $modalType === 'modalEditDirector') :
     <input type="text" id="photoUrl" name="photoUrl" required maxlength="255"
         value="<?= $directorDetails[0]['photo'] ?>">
 
-    <button class="input" type="submit">Enregister modifications</button>
+    <button class="input" type="submit">Enregister les modifications</button>
 </form>
 <?php
     $modalContent = ob_get_clean(); // fin capture du contenu modale

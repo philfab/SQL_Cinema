@@ -42,7 +42,7 @@ $showModal = false;
 
 <?php
 if (isset($modalType) && $modalType === 'modalEditActor') :
-  ob_start(); // capture contenu modale
+    ob_start(); // capture contenu modale
 ?>
 <form class="form" action="index.php?action=<?= $actionUpdate ?>" method="post">
     <label for="nom">Nom :</label>
@@ -66,18 +66,18 @@ if (isset($modalType) && $modalType === 'modalEditActor') :
     <label for="photoUrl">Photo (lien) :</label>
     <input type="text" id="photoUrl" name="photoUrl" required maxlength="255" value="<?= $actorDetails[0]['photo'] ?>">
 
-    <button class="input" type="submit">Enregister modifications</button>
+    <button class="input" type="submit">Enregister les modifications</button>
 </form>
 <?php
-  $modalContent = ob_get_clean(); // fin capture du contenu modale
-  $showModal = true;
+    $modalContent = ob_get_clean(); // fin capture du contenu modale
+    $showModal = true;
 endif;
 ?>
 
 <?php
 $titre = "Détails de " . (($actorDetails[0]['sexe'] == 'M') ? "l'acteur" : "l'actrice") . " ";
 if (isset($actorDetails) && !empty($actorDetails))
-  $titre_secondaire = "<span class='highlight'>" . $actorDetails[0]['prenom'] . " " . $actorDetails[0]['nom'] . "</span>";
+    $titre_secondaire = "<span class='highlight'>" . $actorDetails[0]['prenom'] . " " . $actorDetails[0]['nom'] . "</span>";
 $contenu = ob_get_clean();
 require "views/template.php";
 ?>

@@ -76,6 +76,18 @@ switch ($action) {
         $controller = new FilmController();
         $controller->addFilm();
         break;
+    case 'editFilm':
+        if ($id) {
+            $controller = new FilmController();
+            $controller->editFilm($id);
+        }
+        break;
+    case  'updateFilm':
+        if ($id) {
+            $controller = new FilmController();
+            $controller->updateFilm($id);
+        }
+        break;
     case 'saveKind':
         $controller = new KindController();
         $controller->saveKind();

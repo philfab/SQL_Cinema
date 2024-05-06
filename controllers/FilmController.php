@@ -30,6 +30,25 @@ class FilmController
         $modalType  = 'modalDelFilm';
         $this->toView($this->getlist()->fetchAll(), $modalType);
     }
+    public function editFilm($filmId)
+    {
+        $modalType  = 'modalEditFilm';
+        $filmCasting = $this->castingFilm($filmId);
+        $filmGenres = $this->genresFilm($filmId);
+        $this->toDetailsView($this->getDetailsFilm($filmId), $filmCasting, $filmGenres, $modalType);
+    }
+
+    public function updateFilm($filmId)
+    {
+    }
+
+    public function detailsFilm($filmId)
+    {
+        $filmCasting = $this->castingFilm($filmId);
+        $filmGenres = $this->genresFilm($filmId);
+        $this->toDetailsView($this->getDetailsFilm($filmId), $filmCasting, $filmGenres);
+    }
+
     function toView($films, $modalType = null)
     {
         $actionAdd = 'addFilm';
@@ -44,6 +63,21 @@ class FilmController
         require "views/filmsView.php";
     }
 
+    function toDetailsView($filmDetails, $filmCasting, $filmGenres, $modalType = null)
+    {
+        $actionAdd = 'addFilm';
+        $actionEdit = "editFilm&id=" . $filmDetails['id_film'];
+        $actionUpdate =  $modalType != null ? "updateFilm&id=" . $filmDetails['id_film'] : null;
+        $actionDel = 'delFilm';
+        $realisateurs = (new DirectorController())->getList()->fetchAll();
+        $acteurs = (new ActorController())->getList()->fetchAll();
+        $roles = (new RoleController())->getlist()->fetchAll();
+        $kinds = (new KindController())->getlist()->fetchAll();
+        $path = "index.php?action=listFilms";
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
+        require "views/filmDetailsView.php";
+    }
+
     function getList(): \PDOStatement
     {
         $pdo = Connect::Connection();
@@ -56,11 +90,11 @@ class FilmController
         return $films;
     }
 
-    public function detailsFilm($filmId)
+    function getDetailsFilm($filmId)
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT f.*,f.id_realisateur , p.prenom, p.nom, p.photo,
+        SELECT f.*,f.id_realisateur , p.prenom, p.nom, p.photo, f.id_film, f.note,
                CONCAT(FLOOR(duree / 60), 'h ', LPAD(duree % 60, 2, '0'), 'mn') AS duree_formatee
         FROM film f
         INNER JOIN realisateur r ON f.id_realisateur = r.id_realisateur
@@ -69,14 +103,12 @@ class FilmController
     ");
         $details->execute(['id' => $filmId]);
         $filmDetails = $details->fetch();
-        $filmCasting = $this->castingFilm($pdo, $filmId);
-        $filmGenres = $this->genresFilm($pdo, $filmId);
-        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
-        require "views/filmDetailsView.php";
+        return $filmDetails;
     }
 
-    public function castingFilm($pdo, $filmId)
+    public function castingFilm($filmId)
     {
+        $pdo = Connect::Connection();
         $casting = $pdo->prepare("
         SELECT  r.id_role , c.id_acteur,p.prenom, p.nom, r.personnage,p.photo
         FROM Casting c
@@ -89,8 +121,9 @@ class FilmController
         $casting->execute(['id_film' => $filmId]);
         return  $casting->fetchAll();
     }
-    public function genresFilm($pdo, $filmId)
+    public function genresFilm($filmId)
     {
+        $pdo = Connect::Connection();
         $genres = $pdo->prepare("
         SELECT g.id_genre, g.libelle
         FROM genre g

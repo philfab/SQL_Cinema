@@ -17,11 +17,11 @@ class DirectorController
         $this->toView($this->getlist());
     }
 
-    public function detailsDirector($directorId)
+    function getDetailsDirector($directorId): array
     {
         $pdo = Connect::Connection();
         $details = $pdo->prepare("
-        SELECT p.prenom, p.nom,p.dateNaissance,p.sexe,p.photo, 
+        SELECT p.prenom, p.nom,p.dateNaissance,p.sexe,p.photo, r.id_realisateur,
                f.id_film, f.titre, f.annee_sortie, f.affiche
         FROM Personne p
         INNER JOIN Realisateur r ON p.id_personne = r.id_personne
@@ -31,8 +31,7 @@ class DirectorController
     ");
         $details->execute(['id' => $directorId]);
         $directorDetails = $details->fetchAll();
-        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
-        require "views/directorDetailsView.php";
+        return $directorDetails;
     }
     public function addDirector()
     {
@@ -46,6 +45,17 @@ class DirectorController
         $this->toView($this->getlist()->fetchAll(), $modalType);
     }
 
+    public function editDirector($directorID)
+    {
+        $modalType  = 'modalEditDirector';
+        $this->toDetailsView($this->getDetailsDirector($directorID), $modalType);
+    }
+
+    public function detailsDirector($directorID)
+    {
+        $this->toDetailsView($this->getDetailsDirector($directorID));
+    }
+
     function toView($realisateurs, $modalType = null)
     {
         $actionAdd = 'addDirector';
@@ -54,6 +64,50 @@ class DirectorController
         $path = "index.php?action=listDirectors";
         $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/directorsView.php";
+    }
+
+    function toDetailsView($directorDetails, $modalType = null)
+    {
+        $actionAdd = 'addDirector';
+        $actionEdit = "editDirector&id=" . $directorDetails[0]['id_realisateur'];
+        $actionUpdate =  $modalType != null ? "updateDirector&id=" . $directorDetails[0]['id_realisateur'] : null;
+        $actionDel = 'delDirector';
+        $path = "index.php?action=listDirectors";
+        $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
+        require "views/directorDetailsView.php";
+    }
+    public function updatedirector($directorID)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
+
+            $pdo = Connect::Connection();
+
+            $req = $pdo->prepare("SELECT id_personne FROM realisateur WHERE id_realisateur = :directorID");
+            $req->execute([':directorID' => $directorID]);
+            $personne = $req->fetch(PDO::FETCH_ASSOC);
+            $personneId = $personne['id_personne'];
+
+            $sql = "UPDATE Personne SET prenom = :prenom, nom = :nom, dateNaissance = :dateNaissance, sexe = :sexe, photo = :photo 
+            WHERE id_personne = :id_personne";
+            $req = $pdo->prepare($sql);
+            if ($req->execute([
+                ':prenom' => $prenom,
+                ':nom' => $nom,
+                ':dateNaissance' => $dateNaissance,
+                ':sexe' => $sexe,
+                ':photo' => $photoUrl,
+                ':id_personne' => $personneId
+            ])) {
+                header("Location: index.php?action=detailDirector&id=" . $directorID);
+            } else {
+                echo $req->errorInfo()[2];
+            }
+        }
     }
 
     public function getList(): \PDOStatement

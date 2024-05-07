@@ -584,24 +584,18 @@ figure>img {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    /* Espacement entre les tuiles */
     justify-content: center;
-    /* Centrage des tuiles dans le conteneur */
-    padding: 20px;
-    /* Espace autour des tuiles à l'intérieur du conteneur */
     background-color: black;
-    /* Fond du conteneur */
 }
 
 .genre-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    /* Augmentez l'espace entre les tuiles */
     justify-content: center;
     padding: 20px;
     background-color: black;
-    /* Assurez-vous que le fond est noir */
+
 }
 
 .highlight {

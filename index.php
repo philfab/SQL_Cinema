@@ -15,7 +15,7 @@ spl_autoload_register(function ($class) {
 });
 
 $action = $_GET['action'] ?? 'listFilms';
-$id = $_GET['id'] ?? null;
+$id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
 switch ($action) {
     case 'addKind':

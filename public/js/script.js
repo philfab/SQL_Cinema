@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (ratingInput) 
     setStarRating(ratingInput.value);
 
+    if (inputs)
     inputs.forEach(input => {
         input.addEventListener('keydown', function(event) {
             if (!/[\p{L}' ]/u.test(event.key)) {

@@ -40,7 +40,69 @@ class FilmController
 
     public function updateFilm($filmId)
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pdo = Connect::Connection();
+
+            $titre = $_POST['titre'] ?? '';
+            $annee_sortie = $_POST['annee_sortie'] ?? '';
+            $realisateur = $_POST['realisateur'] ?? null;
+            $affiche = $_POST['affiche'] ?? '';
+            $duree = $_POST['duree'] ?? 0;
+            $note = $_POST['note'] ?? null;
+            $synopsis = $_POST['synopsis'] ?? '';
+            $genres = $_POST['genres'] ?? [];
+
+            $sql = "UPDATE film SET titre = :titre, id_realisateur = :id_realisateur, affiche = :affiche, duree = :duree, note = :note, annee_sortie = :annee_sortie, synopsis = :synopsis WHERE id_film = :film_id";
+            $req = $pdo->prepare($sql);
+            $req->execute([
+                'titre' => $titre,
+                'id_realisateur' => $realisateur,
+                'affiche' => $affiche,
+                'duree' => $duree,
+                'note' => $note,
+                'annee_sortie' => $annee_sortie,
+                'synopsis' => $synopsis,
+                'film_id' => $filmId
+            ]);
+
+            // suppression des genres actus
+            $sql = "DELETE FROM classifier WHERE id_film = :film_id";
+            $req = $pdo->prepare($sql);
+            $req->execute(['film_id' => $filmId]);
+
+            // maj des genres
+            if ($genres) {
+                foreach ($genres as $genreId) {
+                    $sql = "INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)";
+                    $req = $pdo->prepare($sql);
+                    $req->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
+                }
+            }
+
+            // suppression des acteurs actus
+            $sql = "DELETE FROM casting WHERE id_film = :film_id";
+            $req = $pdo->prepare($sql);
+            $req->execute(['film_id' => $filmId]);
+
+            // maj des acteurs
+            if (isset($_POST['actor']) && $_POST['actor']) {
+                foreach ($_POST['actor'] as $id_acteur => $data) {
+                    $role_id = $data['role'] ?? null;
+                    if ($role_id) {
+                        $sql = "INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)";
+                        $req = $pdo->prepare($sql);
+                        $req->execute([
+                            'id_film' => $filmId,
+                            'id_acteur' => $id_acteur,
+                            'id_role' => $role_id
+                        ]);
+                    }
+                }
+            }
+        }
+        header("Location: index.php?action=detailFilm&id=" . $filmId);
     }
+
 
     public function detailsFilm($filmId)
     {

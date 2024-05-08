@@ -104,9 +104,10 @@ if (isset($modalType) && $modalType === 'modalEditFilm') :
                 </select>
             </div>
 
-            <div class="form-row">
+            <div class="form-row" style="position: relative;">
                 <label for="affiche">Affiche du film (lien image) :</label>
-                <input type="text" id="affiche" name="affiche" value="<?= $filmDetails['affiche'] ?>" required maxlength="255">
+                <input type="url" id="affiche" name="affiche" required maxlength="255" data-preview-target="imagePreview5" value="<?= $filmDetails['affiche'] ?>">
+                <img id="imagePreview5" class="imagePreview" src="">
             </div>
         </div>
 

@@ -34,8 +34,9 @@ if (isset($modalType) && $modalType === 'modalAddDirector') :
             <option value="F">Feminin</option>
         </select>
 
-        <label for="photoUrl">Photo (lien) :</label>
-        <input type="text" id="photoUrl" name="photoUrl" required maxlength="255">
+        <label for="photoUrl2">Photo (lien) :</label>
+        <input type="url" id="photoUrl2" name="photoUrl" data-preview-target="imagePreview2" required maxlength="255">
+        <img id="imagePreview2" class="imagePreview" src="">
 
         <button class="input" type="submit">Ajouter</button>
     </form>

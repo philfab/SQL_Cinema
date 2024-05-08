@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('#rating-container .star');
     const ratingInput = document.getElementById('note');
     const inputs = document.querySelectorAll('.validate-input');
-
+    
     if (overlay){
         function closeModal() {
             history.replaceState (null, null, overlay.dataset.path);     
@@ -181,6 +181,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!/[\p{L}' ]/u.test(event.key)) {
                 event.preventDefault();
             }
+        });
+    });
+
+    document.querySelectorAll('input[type="url"]').forEach(input => {
+        const previewId = input.getAttribute('data-preview-target');
+        const preview = document.getElementById(previewId);
+
+        input.addEventListener('mouseover', function() {
+            const url = input.value;
+            if (url) {
+                preview.src = url;
+                preview.style.display = 'block';
+            }
+        });
+
+        input.addEventListener('mouseout', function() {
+            preview.style.display = 'none';
         });
     });
 

@@ -56,8 +56,9 @@ if (isset($modalType) && $modalType === 'modalEditDirector') :
             <option value="F" <?php echo ($directorDetails[0]['sexe'] == 'F') ? 'selected' : ''; ?>>Feminin</option>
         </select>
 
-        <label for="photoUrl">Photo (lien) :</label>
-        <input type="text" id="photoUrl" name="photoUrl" required maxlength="255" value="<?= $directorDetails[0]['photo'] ?>">
+        <label for="photoUrl4">Photo (lien) :</label>
+        <input type="url" id="photoUrl4" name="photoUrl" required maxlength="255" data-preview-target="imagePreview4" value="<?= $directorDetails[0]['photo'] ?>">
+        <img id="imagePreview4" class="imagePreview" src="">
 
         <button class="input" type="submit">Enregister les modifications</button>
     </form>

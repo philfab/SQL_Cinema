@@ -301,7 +301,9 @@ figure>img {
     margin-bottom: 5px;
 }
 
-.modal-content input[type="text"] {
+.modal-content input[type="text"],
+.modal-content input[type="url"]
+ {
     border: 1px solid #555;
     background: #333;
     color: #fff;
@@ -609,6 +611,26 @@ figure>img {
 
 option:disabled {
     color: gray;
+}
+
+.imagePreview {
+    display: none;
+    position: absolute;
+    left: 100%;
+    bottom: 0;
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid whitesmoke;
+}
+
+input[type="url"]{
+  cursor: pointer;
+}
+
+.form-row .imagePreview{
+    bottom: -75px;
+    margin-left: 20px;
 }
 
 /* media queries tablet + mobile */

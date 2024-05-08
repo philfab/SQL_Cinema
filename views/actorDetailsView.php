@@ -59,8 +59,9 @@ if (isset($modalType) && $modalType === 'modalEditActor') :
             <option value="F" <?php echo ($actorDetails[0]['sexe'] == 'F') ? 'selected' : ''; ?>>Feminin</option>
         </select>
 
-        <label for="photoUrl">Photo (lien) :</label>
-        <input type="text" id="photoUrl" name="photoUrl" required maxlength="255" value="<?= $actorDetails[0]['photo'] ?>">
+        <label for="photoUrl3">Photo (lien) :</label>
+        <input type="url" id="photoUrl3" name="photoUrl" required maxlength="255" data-preview-target="imagePreview3" value="<?= $actorDetails[0]['photo'] ?>">
+        <img id="imagePreview3" class="imagePreview" src="">
 
         <button class="input" type="submit">Enregister les modifications</button>
     </form>

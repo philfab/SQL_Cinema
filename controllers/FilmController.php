@@ -2,113 +2,58 @@
 
 namespace Controllers;
 
-use models\{
-    Connect,
-};
-use Kint\Kint;
+use Models\ActorModel;
+use Models\DirectorModel;
+use models\FilmModel;
+use Models\KindModel;
+use Models\RoleModel;
 
 class FilmController
 {
+    private $filmModel;
 
     public function __construct()
     {
+        $this->filmModel = new FilmModel();
     }
 
     public function listFilms()
     {
-        $this->toView($this->getlist());
+        $films =  $this->filmModel->getList();
+        $this->toView($films);
     }
 
     public function addFilm()
     {
         $modalType = "modalAddFilm";
-        $this->toView($this->getList(), $modalType);
+        $this->toView($this->filmModel->getList(), $modalType);
     }
 
     public function delFilm()
     {
         $modalType  = 'modalDelFilm';
-        $this->toView($this->getlist()->fetchAll(), $modalType);
+        $this->toView($this->filmModel->getList()->fetchAll(), $modalType);
     }
+
     public function editFilm($filmId)
     {
         $modalType  = 'modalEditFilm';
-        $filmCasting = $this->castingFilm($filmId);
-        $filmGenres = $this->genresFilm($filmId);
-        $this->toDetailsView($this->getDetailsFilm($filmId), $filmCasting, $filmGenres, $modalType);
+        $filmCasting = $this->filmModel->getCastingFilm($filmId);
+        $filmGenres = $this->filmModel->getGenresFilm($filmId);
+        $this->toDetailsView($this->filmModel->getDetailsFilm($filmId), $filmCasting, $filmGenres, $modalType);
     }
 
     public function updateFilm($filmId)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $pdo = Connect::Connection();
-
-            $titre = $_POST['titre'] ?? '';
-            $annee_sortie = $_POST['annee_sortie'] ?? '';
-            $realisateur = $_POST['realisateur'] ?? null;
-            $affiche = $_POST['affiche'] ?? '';
-            $duree = $_POST['duree'] ?? 0;
-            $note = $_POST['note'] ?? null;
-            $synopsis = $_POST['synopsis'] ?? '';
-            $genres = $_POST['genres'] ?? [];
-
-            $sql = "UPDATE film SET titre = :titre, id_realisateur = :id_realisateur, affiche = :affiche, duree = :duree, note = :note, annee_sortie = :annee_sortie, synopsis = :synopsis WHERE id_film = :film_id";
-            $req = $pdo->prepare($sql);
-            $req->execute([
-                'titre' => $titre,
-                'id_realisateur' => $realisateur,
-                'affiche' => $affiche,
-                'duree' => $duree,
-                'note' => $note,
-                'annee_sortie' => $annee_sortie,
-                'synopsis' => $synopsis,
-                'film_id' => $filmId
-            ]);
-
-            // suppression des genres actus
-            $sql = "DELETE FROM classifier WHERE id_film = :film_id";
-            $req = $pdo->prepare($sql);
-            $req->execute(['film_id' => $filmId]);
-
-            // maj des genres
-            if ($genres) {
-                foreach ($genres as $genreId) {
-                    $sql = "INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)";
-                    $req = $pdo->prepare($sql);
-                    $req->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
-                }
-            }
-
-            // suppression des acteurs actus
-            $sql = "DELETE FROM casting WHERE id_film = :film_id";
-            $req = $pdo->prepare($sql);
-            $req->execute(['film_id' => $filmId]);
-
-            // maj des acteurs
-            if (isset($_POST['actor']) && $_POST['actor']) {
-                foreach ($_POST['actor'] as $id_acteur => $data) {
-                    $role_id = $data['role'] ?? null;
-                    if ($role_id) {
-                        $sql = "INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)";
-                        $req = $pdo->prepare($sql);
-                        $req->execute([
-                            'id_film' => $filmId,
-                            'id_acteur' => $id_acteur,
-                            'id_role' => $role_id
-                        ]);
-                    }
-                }
-            }
-        }
+        $this->filmModel->updateFilm($filmId);
         header("Location: index.php?action=detailFilm&id=" . $filmId);
     }
 
-
     public function detailsFilm($filmId)
     {
-        $filmCasting = $this->castingFilm($filmId);
-        $filmGenres = $this->genresFilm($filmId);
-        $this->toDetailsView($this->getDetailsFilm($filmId), $filmCasting, $filmGenres);
+        $filmCasting = $this->filmModel->getCastingFilm($filmId);
+        $filmGenres = $this->filmModel->getGenresFilm($filmId);
+        $this->toDetailsView($this->filmModel->getDetailsFilm($filmId), $filmCasting, $filmGenres);
     }
 
     function toView($films, $modalType = null)
@@ -116,10 +61,10 @@ class FilmController
         $actionAdd = 'addFilm';
         $actionEdit = 'editFilm';
         $actionDel = 'delFilm';
-        $realisateurs = (new DirectorController())->getList()->fetchAll();
-        $acteurs = (new ActorController())->getList()->fetchAll();
-        $roles = (new RoleController())->getlist()->fetchAll();
-        $kinds = (new KindController())->getlist()->fetchAll();
+        $realisateurs = (new DirectorModel())->getList()->fetchAll();
+        $acteurs = (new ActorModel())->getList()->fetchAll();
+        $roles = (new RoleModel())->getlist()->fetchAll();
+        $kinds = (new KindModel())->getlist()->fetchAll();
         $path = "index.php?action=listFilms";
         $buttonStates = ['add' => true, 'edit' => false, 'delete' => true];
         require "views/filmsView.php";
@@ -131,149 +76,24 @@ class FilmController
         $actionEdit = "editFilm&id=" . $filmDetails['id_film'];
         $actionUpdate =  $modalType != null ? "updateFilm&id=" . $filmDetails['id_film'] : null;
         $actionDel = 'delFilm';
-        $realisateurs = (new DirectorController())->getList()->fetchAll();
-        $acteurs = (new ActorController())->getList()->fetchAll();
-        $roles = (new RoleController())->getlist()->fetchAll();
-        $kinds = (new KindController())->getlist()->fetchAll();
+        $realisateurs = (new DirectorModel())->getList()->fetchAll();
+        $acteurs = (new ActorModel())->getList()->fetchAll();
+        $roles = (new RoleModel())->getlist()->fetchAll();
+        $kinds = (new KindModel())->getlist()->fetchAll();
         $path = "index.php?action=listFilms";
         $buttonStates = ['add' => false, 'edit' => true, 'delete' => false];
         require "views/filmDetailsView.php";
     }
 
-    function getList(): \PDOStatement
-    {
-        $pdo = Connect::Connection();
-        $films = $pdo->query("
-            SELECT id_film, titre, annee_sortie, affiche
-            FROM film
-            ORDER BY annee_sortie DESC
-        ");
-
-        return $films;
-    }
-
-    function getDetailsFilm($filmId)
-    {
-        $pdo = Connect::Connection();
-        $details = $pdo->prepare("
-        SELECT f.*,f.id_realisateur , p.prenom, p.nom, p.photo, f.id_film, f.note,
-               CONCAT(FLOOR(duree / 60), 'h ', LPAD(duree % 60, 2, '0'), 'mn') AS duree_formatee
-        FROM film f
-        INNER JOIN realisateur r ON f.id_realisateur = r.id_realisateur
-        INNER JOIN personne p ON r.id_personne = p.id_personne
-        WHERE f.id_film = :id
-    ");
-        $details->execute(['id' => $filmId]);
-        $filmDetails = $details->fetch();
-        return $filmDetails;
-    }
-
-    public function castingFilm($filmId)
-    {
-        $pdo = Connect::Connection();
-        $casting = $pdo->prepare("
-        SELECT  r.id_role , c.id_acteur,p.prenom, p.nom, r.personnage,p.photo
-        FROM Casting c
-        INNER JOIN Acteur a ON c.id_acteur = a.id_acteur
-        INNER JOIN Personne p ON a.id_personne = p.id_personne
-        INNER JOIN Role r ON c.id_role = r.id_role
-        WHERE c.id_film = :id_film
-        ORDER BY p.nom
-    ");
-        $casting->execute(['id_film' => $filmId]);
-        return  $casting->fetchAll();
-    }
-    public function genresFilm($filmId)
-    {
-        $pdo = Connect::Connection();
-        $genres = $pdo->prepare("
-        SELECT g.id_genre, g.libelle
-        FROM genre g
-        INNER JOIN classifier c ON g.id_genre = c.id_genre
-        WHERE c.id_film = :id_film
-    ");
-        $genres->execute(['id_film' => $filmId]);
-        return $genres->fetchAll();
-    }
     public function saveFilm()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $pdo = Connect::Connection();
-
-            // Récupération des données du formulaire
-            $titre = $_POST['titre'] ?? '';
-            $annee_sortie = $_POST['annee_sortie'] ?? '';
-            $realisateur = $_POST['realisateur'] ?? null;
-            $affiche = $_POST['affiche'] ?? '';
-            $duree = $_POST['duree'] ?? 0;
-            $note = $_POST['note'] ?? null;
-            $synopsis = $_POST['synopsis'] ?? '';
-            $genres = $_POST['genres'] ?? [];
-
-
-            if (!$this->isInBDD($pdo, $titre, $annee_sortie)) {
-                $sql = "INSERT INTO film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis)
-                    VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
-                $req = $pdo->prepare($sql);
-                $req->execute([
-                    'titre' => $titre,
-                    'id_realisateur' => $realisateur,
-                    'affiche' => $affiche,
-                    'duree' => $duree,
-                    'note' => $note,
-                    'annee_sortie' => $annee_sortie,
-                    'synopsis' => $synopsis
-                ]);
-
-                $filmId = $pdo->lastInsertId();
-
-                // genres du film
-                if ($genres) {
-                    foreach ($genres as $genreId) {
-                        $reqInsertClassifier = $pdo->prepare("INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
-                        $reqInsertClassifier->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
-                    }
-                }
-
-                // gestion des acteurs et des rôles respectifs
-                if (isset($_POST['actor']) && $_POST['actor']) {
-                    foreach ($_POST['actor'] as $id_acteur => $data) {
-                        $role_id = $data['role'] ?? null;
-                        if ($role_id) {
-                            $reqInsertCasting = $pdo->prepare("INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
-                            $reqInsertCasting->execute([
-                                'id_film' => $filmId,
-                                'id_acteur' => $id_acteur,
-                                'id_role' => $role_id
-                            ]);
-                        }
-                    }
-                }
-            }
-        }
+        $this->filmModel->saveFilm();
         header("Location: index.php?action=listFilms");
     }
 
     public function deleteFilms()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmsIds'])) {
-            $filmsIds = $_POST['filmsIds'];
-
-            $pdo = Connect::Connection();
-
-            $filmsIds = implode(',', array_map('intval', $filmsIds));
-
-            // Suppression des films
-            $req = $pdo->prepare("DELETE FROM film WHERE id_film IN ($filmsIds)");
-            $req->execute();
-        }
+        $this->filmModel->deleteFilms();
         header("Location: index.php?action=listFilms");
-    }
-
-    function isInBDD($pdo, $titre, $annee_sortie): bool
-    {
-        $check = $pdo->prepare("SELECT id_film FROM film WHERE titre = :titre AND annee_sortie = :annee_sortie");
-        $check->execute(['titre' => $titre, 'annee_sortie' => $annee_sortie]);
-        return $check->fetchColumn() > 0;
     }
 }

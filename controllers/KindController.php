@@ -2,100 +2,66 @@
 
 namespace Controllers;
 
-use models\Connect;
+use Models\KindModel;
 
 class KindController
 {
+    private $kindModel;
     static $allGenres = [
         "Action", "Animation", "Aventure", "Biopic", "Comédie", "Documentaire",
         "Erotique", "Drame", "Famille", "Fantastique", "Film noir", "Guerre",
         "Historique", "Horreur", "Musical", "Policier", "Romance", "Science-fiction",
         "Sport", "Suspense", "Thriller", "Western"
     ];
+
     public function __construct()
     {
+        $this->kindModel = new KindModel();
     }
 
-    function getlist(): \PDOStatement
-    {
-        $pdo = Connect::Connection();
-        $kinds = $pdo->query("
-            SELECT id_genre, libelle
-            FROM genre
-            ORDER BY libelle ASC
-        ");
-        return $kinds;
-    }
     public function listKinds()
     {
-        $this->toView($this->getlist()->fetchAll());
-    }
-
-    public function getDetailsKind($genreId): array
-    {
-        $pdo = Connect::Connection();
-        $details = $pdo->prepare("
-        SELECT  f.id_film,g.libelle, f.titre, f.annee_sortie, f.affiche
-        FROM Genre g
-        LEFT JOIN Classifier cl ON g.id_genre = cl.id_genre
-        LEFT JOIN Film f ON cl.id_film = f.id_film
-        WHERE g.id_genre = :id
-        ORDER BY f.annee_sortie DESC
-    ");
-        $details->execute(['id' => $genreId]);
-        $kindDetails = $details->fetchAll();
-        return $kindDetails;
+        $kinds = $this->kindModel->getList()->fetchAll();
+        $this->toView($kinds);
     }
 
     public function detailKind($genreId)
     {
-        $this->toDetailsView($this->getDetailsKind($genreId));
+        $kindDetails = $this->kindModel->getDetailsKind($genreId);
+        $this->toDetailsView($kindDetails);
     }
 
     public function addKind()
     {
         $modalType  = 'modalAddKind';
-        $this->toView($this->getlist()->fetchAll(), $modalType);
-    }
-
-    public function delKind()
-    {
-        $modalType  = 'modalDelKind';
-        $this->toView($this->getlist()->fetchAll(), $modalType);
+        $this->toView($this->kindModel->getList()->fetchAll(), $modalType);
     }
 
     public function saveKind()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['genreName'])) {
             $genreName = filter_input(INPUT_POST, 'genreName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            $pdo = Connect::Connection();
-
-            if (!$this->isInBDD($pdo, $genreName)) {
-                $req = $pdo->prepare("INSERT INTO genre (libelle) VALUES (:libelle)");
-                $req->execute([':libelle' => $genreName]);
-            }
+            $this->kindModel->saveKind($genreName);
         }
         header("Location: index.php?action=listKinds");
     }
+
+    public function delKind()
+    {
+        $modalType  = 'modalDelKind';
+        $this->toView($this->kindModel->getList()->fetchAll(), $modalType);
+    }
+
     public function deleteKinds()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kindIds'])) {
             $kindIds = $_POST['kindIds'];
-
-            $pdo = Connect::Connection();
-
-            //array_map = verif si entiers
-            $kindIdsString = implode(',', array_map('intval', $kindIds));
-
-            //suppression des genres par groupes
-            $req = $pdo->prepare("DELETE FROM genre WHERE id_genre IN ($kindIdsString)");
-            $req->execute();
+            $this->kindModel->deleteKinds($kindIds);
         }
         header("Location: index.php?action=listKinds");
     }
 
-    function toView($kinds, $modalType = null)
+    private function toView($kinds, $modalType = null)
     {
         $actionAdd = 'addKind';
         $actionEdit = 'editKind';
@@ -107,16 +73,9 @@ class KindController
         require "views/kindsView.php";
     }
 
-    function toDetailsView($kindDetails, $modalType = null)
+    private function toDetailsView($kindDetails, $modalType = null)
     {
         $buttonStates = ['add' => false, 'edit' => false, 'delete' => false];
         require "views/kindDetailsView.php";
-    }
-
-    function isInBDD($pdo, $genreName): bool
-    {
-        $check = $pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
-        $check->execute([':libelle' => $genreName]);
-        return $check->fetchColumn() > 0;
     }
 }

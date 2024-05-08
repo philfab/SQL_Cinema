@@ -2,32 +2,25 @@
 
 namespace Controllers;
 
-use Kint\Kint;
-use PDO;
-use models\Connect;
+use Models\ActorModel;
 
 class ActorController
 {
+    private $actorModel;
+
     public function __construct()
     {
+        $this->actorModel = new ActorModel();
     }
 
     function getList()
     {
-        $pdo = Connect::Connection();
-        $acteurs = $pdo->query("
-            SELECT id_acteur, p.prenom, p.nom, p.photo
-            FROM Personne p
-            INNER JOIN acteur a ON p.id_personne = a.id_personne
-            GROUP BY a.id_acteur
-            ORDER BY p.nom ASC
-        ");
-        return $acteurs;
+        return $this->actorModel->getList();
     }
 
     function listActors()
     {
-        $this->toView($this->getlist());
+        $this->toView($this->getList());
     }
 
     public function addActor()
@@ -39,13 +32,13 @@ class ActorController
     public function delActor()
     {
         $modalType = "modalDelActor";
-        $this->toView($this->getlist()->fetchAll(), $modalType);
+        $this->toView($this->getList()->fetchAll(), $modalType);
     }
 
     public function editActor($actorId)
     {
-        $modalType  = 'modalEditActor';
-        $this->toDetailsView($this->getDetailsActor($actorId), $modalType);
+        $modalType = 'modalEditActor';
+        $this->toDetailsView($this->actorModel->getDetailsActor($actorId), $modalType);
     }
 
     public function updateActor($actorId)
@@ -57,28 +50,8 @@ class ActorController
             $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
 
-            $pdo = Connect::Connection();
-
-            $req = $pdo->prepare("SELECT id_personne FROM Acteur WHERE id_acteur = :actorId");
-            $req->execute([':actorId' => $actorId]);
-            $personne = $req->fetch(PDO::FETCH_ASSOC);
-            $personneId = $personne['id_personne'];
-            var_dump($personneId);
-            $sql = "UPDATE Personne SET prenom = :prenom, nom = :nom, dateNaissance = :dateNaissance, sexe = :sexe, photo = :photo 
-            WHERE id_personne = :id_personne";
-            $req = $pdo->prepare($sql);
-            if ($req->execute([
-                ':prenom' => $prenom,
-                ':nom' => $nom,
-                ':dateNaissance' => $dateNaissance,
-                ':sexe' => $sexe,
-                ':photo' => $photoUrl,
-                ':id_personne' => $personneId
-            ])) {
-                header("Location: index.php?action=detailActor&id=" . $actorId);
-            } else {
-                echo $req->errorInfo()[2];
-            }
+            $this->actorModel->updateActor($actorId, $nom, $prenom, $dateNaissance, $sexe, $photoUrl);
+            header("Location: index.php?action=detailActor&id=" . $actorId);
         }
     }
 
@@ -94,22 +67,7 @@ class ActorController
 
     function getDetailsActor($actorId): array
     {
-        $pdo = Connect::Connection();
-        $details = $pdo->prepare("
-        SELECT p.prenom, p.nom, p.sexe, p.dateNaissance, p.photo, a.id_acteur,
-               f.id_film, f.titre, f.annee_sortie, f.affiche,
-               r.id_role, r.personnage
-        FROM Personne p
-        INNER JOIN Acteur a ON p.id_personne = a.id_personne
-        LEFT JOIN Casting c ON a.id_acteur = c.id_acteur
-        LEFT JOIN Film f ON c.id_film = f.id_film
-        LEFT JOIN Role r ON c.id_role = r.id_role
-        WHERE a.id_acteur = :id
-        ORDER BY f.annee_sortie DESC, f.titre
-    ");
-        $details->execute(['id' => $actorId]);
-        $actorDetails = $details->fetchAll();
-        return $actorDetails;
+        return $this->actorModel->getDetailsActor($actorId);
     }
 
     public function detailsActor($actorId)
@@ -137,55 +95,17 @@ class ActorController
             $sexe = filter_input(INPUT_POST, 'sexe', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $photoUrl = $_POST['photoUrl'] ?? 'photo.jpg';
 
-            $pdo = Connect::Connection();
-
-            if (!$this->isInBDD($pdo, $nom, $prenom)) {
-                $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
-                $req = $pdo->prepare($sql);
-                $req->execute([
-                    ':prenom' => $prenom,
-                    ':nom' => $nom,
-                    ':dateNaissance' => $dateNaissance,
-                    ':sexe' => $sexe,
-                    ':photo' => $photoUrl
-                ]);
-                $id_personne = $pdo->lastInsertId(); // récup l'id de personne
-
-                if ($id_personne) {
-                    $sql = "INSERT INTO acteur (id_personne) VALUES (:id_personne)";
-                    $req = $pdo->prepare($sql);
-                    $req->execute([':id_personne' => $id_personne]);
-                }
-            }
+            $this->actorModel->saveActor($nom, $prenom, $dateNaissance, $sexe, $photoUrl);
+            header("Location: index.php?action=listActors");
         }
-        header("Location: index.php?action=listActors");
     }
 
     public function deleteActors()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actorsIds'])) {
             $actorsIds = $_POST['actorsIds'];
-
-            $pdo = Connect::Connection();
-
-            $actorsIds =  implode(',', array_map('intval', $actorsIds));
-
-            // récup des id_personne pour les acteurs
-            $personIdsQuery = $pdo->query("SELECT id_personne FROM acteur WHERE id_acteur IN ($actorsIds)");
-            $personIds = $personIdsQuery->fetchAll(PDO::FETCH_COLUMN);
-
-            if ($personIds) {
-                $personIds =  implode(',', array_map('intval', $personIds));
-                $delPersons = $pdo->prepare("DELETE FROM personne WHERE id_personne IN ($personIds)");
-                $delPersons->execute();
-            }
+            $this->actorModel->deleteActors($actorsIds);
+            header("Location: index.php?action=listActors");
         }
-        header("Location: index.php?action=listActors");
-    }
-    function isInBDD($pdo, $nom, $prenom): bool
-    {
-        $check = $pdo->prepare("SELECT COUNT(*) FROM personne WHERE nom = :nom AND prenom = :prenom");
-        $check->execute([':nom' => $nom, ':prenom' => $prenom]);
-        return $check->fetchColumn() > 0;
     }
 }

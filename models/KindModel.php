@@ -17,7 +17,7 @@ class KindModel
     {
         return $this->pdo->query("
             SELECT id_genre, libelle
-            FROM genre
+            FROM Genre
             ORDER BY libelle ASC
         ");
     }
@@ -39,7 +39,7 @@ class KindModel
     public function saveKind($genreName)
     {
         if (!$this->isInBDD($genreName)) {
-            $req = $this->pdo->prepare("INSERT INTO genre (libelle) VALUES (:libelle)");
+            $req = $this->pdo->prepare("INSERT INTO Genre (libelle) VALUES (:libelle)");
             $req->execute(['libelle' => $genreName]);
         }
     }
@@ -47,13 +47,13 @@ class KindModel
     public function deleteKinds($kindIds)
     {
         $kindIdsString = implode(',', array_map('intval', $kindIds));
-        $req = $this->pdo->prepare("DELETE FROM genre WHERE id_genre IN ($kindIdsString)");
+        $req = $this->pdo->prepare("DELETE FROM Genre WHERE id_genre IN ($kindIdsString)");
         $req->execute();
     }
 
     private function isInBDD($genreName): bool
     {
-        $check = $this->pdo->prepare("SELECT COUNT(*) FROM genre WHERE libelle = :libelle");
+        $check = $this->pdo->prepare("SELECT COUNT(*) FROM Genre WHERE libelle = :libelle");
         $check->execute(['libelle' => $genreName]);
         return $check->fetchColumn() > 0;
     }

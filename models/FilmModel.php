@@ -31,7 +31,7 @@ class FilmModel
     {
         $films = $this->pdo->query("
             SELECT id_film, titre, annee_sortie, affiche
-            FROM film
+            FROM Film
             ORDER BY annee_sortie DESC
         ");
         return $films;
@@ -42,9 +42,9 @@ class FilmModel
         $details = $this->pdo->prepare("
         SELECT f.*,f.id_realisateur , p.prenom, p.nom, p.photo, f.id_film, f.note,
                CONCAT(FLOOR(duree / 60), 'h ', LPAD(duree % 60, 2, '0'), 'mn') AS duree_formatee
-        FROM film f
-        INNER JOIN realisateur r ON f.id_realisateur = r.id_realisateur
-        INNER JOIN personne p ON r.id_personne = p.id_personne
+        FROM Film f
+        INNER JOIN Realisateur r ON f.id_realisateur = r.id_realisateur
+        INNER JOIN Personne p ON r.id_personne = p.id_personne
         WHERE f.id_film = :id
     ");
         $details->execute(['id' => $filmId]);
@@ -56,8 +56,8 @@ class FilmModel
     {
         $genres = $this->pdo->prepare("
         SELECT g.id_genre, g.libelle
-        FROM genre g
-        INNER JOIN classifier c ON g.id_genre = c.id_genre
+        FROM Genre g
+        INNER JOIN Classifier c ON g.id_genre = c.id_genre
         WHERE c.id_film = :id_film
     ");
         $genres->execute(['id_film' => $filmId]);
@@ -78,7 +78,7 @@ class FilmModel
             $genres = $_POST['genres'] ?? [];
 
             // maj du film
-            $sql = "UPDATE film SET titre = :titre, id_realisateur = :id_realisateur, affiche = :affiche, duree = :duree, note = :note, annee_sortie = :annee_sortie, synopsis = :synopsis WHERE id_film = :film_id";
+            $sql = "UPDATE Film SET titre = :titre, id_realisateur = :id_realisateur, affiche = :affiche, duree = :duree, note = :note, annee_sortie = :annee_sortie, synopsis = :synopsis WHERE id_film = :film_id";
             $req = $this->pdo->prepare($sql);
             $req->execute([
                 'titre' => $titre,
@@ -92,30 +92,30 @@ class FilmModel
             ]);
 
             // suppression des genres actuels
-            $sql = "DELETE FROM classifier WHERE id_film = :film_id";
+            $sql = "DELETE FROM Classifier WHERE id_film = :film_id";
             $req = $this->pdo->prepare($sql);
             $req->execute(['film_id' => $filmId]);
 
             //majdes genres
             if ($genres) {
                 foreach ($genres as $genreId) {
-                    $sql = "INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)";
+                    $sql = "INSERT INTO Classifier (id_film, id_genre) VALUES (:id_film, :id_genre)";
                     $req = $this->pdo->prepare($sql);
                     $req->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
                 }
             }
 
             // suppression des acteurs actuels
-            $sql = "DELETE FROM casting WHERE id_film = :film_id";
+            $sql = "DELETE FROM Casting WHERE id_film = :film_id";
             $req = $this->pdo->prepare($sql);
             $req->execute(['film_id' => $filmId]);
 
             //maj des acteurs
             if (isset($_POST['actor']) && $_POST['actor']) {
                 foreach ($_POST['actor'] as $id_acteur => $data) {
-                    $role_id = $data['role'] ?? null;
+                    $role_id = $data['Role'] ?? null;
                     if ($role_id) {
-                        $sql = "INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)";
+                        $sql = "INSERT INTO Casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)";
                         $req = $this->pdo->prepare($sql);
                         $req->execute([
                             'id_film' => $filmId,
@@ -142,7 +142,7 @@ class FilmModel
             $genres = $_POST['genres'] ?? [];
 
             if (!$this->isInBDD($titre, $annee_sortie)) {
-                $sql = "INSERT INTO film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis) VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
+                $sql = "INSERT INTO Film (titre, id_realisateur, affiche, duree, note, annee_sortie, synopsis) VALUES (:titre, :id_realisateur, :affiche, :duree, :note, :annee_sortie, :synopsis)";
                 $req = $this->pdo->prepare($sql);
                 $req->execute([
                     'titre' => $titre,
@@ -158,16 +158,16 @@ class FilmModel
 
                 if ($genres) {
                     foreach ($genres as $genreId) {
-                        $req = $this->pdo->prepare("INSERT INTO classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
+                        $req = $this->pdo->prepare("INSERT INTO Classifier (id_film, id_genre) VALUES (:id_film, :id_genre)");
                         $req->execute(['id_film' => $filmId, 'id_genre' => $genreId]);
                     }
                 }
 
                 if (isset($_POST['actor']) && $_POST['actor']) {
                     foreach ($_POST['actor'] as $id_acteur => $data) {
-                        $role_id = $data['role'] ?? null;
+                        $role_id = $data['Role'] ?? null;
                         if ($role_id) {
-                            $req = $this->pdo->prepare("INSERT INTO casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
+                            $req = $this->pdo->prepare("INSERT INTO Casting (id_film, id_acteur, id_role) VALUES (:id_film, :id_acteur, :id_role)");
                             $req->execute([
                                 'id_film' => $filmId,
                                 'id_acteur' => $id_acteur,
@@ -187,14 +187,14 @@ class FilmModel
 
             $filmsIds = implode(',', array_map('intval', $filmsIds));
 
-            $req = $this->pdo->prepare("DELETE FROM film WHERE id_film IN ($filmsIds)");
+            $req = $this->pdo->prepare("DELETE FROM Film WHERE id_film IN ($filmsIds)");
             $req->execute();
         }
     }
 
     function isInBDD($titre, $annee_sortie): bool
     {
-        $check = $this->pdo->prepare("SELECT id_film FROM film WHERE titre = :titre AND annee_sortie = :annee_sortie");
+        $check = $this->pdo->prepare("SELECT id_film FROM Film WHERE titre = :titre AND annee_sortie = :annee_sortie");
         $check->execute(['titre' => $titre, 'annee_sortie' => $annee_sortie]);
         return $check->fetchColumn() > 0;
     }

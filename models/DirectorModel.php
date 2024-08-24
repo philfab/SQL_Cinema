@@ -19,7 +19,7 @@ class DirectorModel
         return $this->pdo->query("
             SELECT r.id_realisateur, p.prenom, p.nom, p.photo
             FROM Personne p
-            INNER JOIN realisateur r ON p.id_personne = r.id_personne
+            INNER JOIN Realisateur r ON p.id_personne = r.id_personne
             GROUP BY r.id_realisateur
             ORDER BY p.nom ASC
         ");
@@ -43,7 +43,7 @@ class DirectorModel
     public function saveDirector($nom, $prenom, $dateNaissance, $sexe, $photoUrl)
     {
         if (!$this->isInBDD($nom, $prenom)) {
-            $sql = "INSERT INTO personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
+            $sql = "INSERT INTO Personne (prenom, nom, dateNaissance, sexe, photo) VALUES (:prenom, :nom, :dateNaissance, :sexe, :photo)";
             $req = $this->pdo->prepare($sql);
             $req->execute([
                 ':prenom' => $prenom,
@@ -55,7 +55,7 @@ class DirectorModel
             $id_personne = $this->pdo->lastInsertId();
 
             if ($id_personne) {
-                $sql = "INSERT INTO realisateur (id_personne) VALUES (:id_personne)";
+                $sql = "INSERT INTO Realisateur (id_personne) VALUES (:id_personne)";
                 $req = $this->pdo->prepare($sql);
                 $req->execute([':id_personne' => $id_personne]);
             }
@@ -64,7 +64,7 @@ class DirectorModel
 
     public function updateDirector($directorId, $nom, $prenom, $dateNaissance, $sexe, $photoUrl)
     {
-        $req = $this->pdo->prepare("SELECT id_personne FROM realisateur WHERE id_realisateur = :directorId");
+        $req = $this->pdo->prepare("SELECT id_personne FROM Realisateur WHERE id_realisateur = :directorId");
         $req->execute([':directorId' => $directorId]);
         $personne = $req->fetch(PDO::FETCH_ASSOC);
         $personneId = $personne['id_personne'];
@@ -85,19 +85,19 @@ class DirectorModel
     public function deleteDirectors($directorIds)
     {
         $directorIdsString = implode(',', array_map('intval', $directorIds));
-        $personIdsQuery = $this->pdo->query("SELECT id_personne FROM realisateur WHERE id_realisateur IN ($directorIdsString)");
+        $personIdsQuery = $this->pdo->query("SELECT id_personne FROM Realisateur WHERE id_realisateur IN ($directorIdsString)");
         $personIds = $personIdsQuery->fetchAll(PDO::FETCH_COLUMN);
 
         if ($personIds) {
             $personIdsString = implode(',', array_map('intval', $personIds));
-            $delPersons = $this->pdo->prepare("DELETE FROM personne WHERE id_personne IN ($personIdsString)");
+            $delPersons = $this->pdo->prepare("DELETE FROM Personne WHERE id_personne IN ($personIdsString)");
             $delPersons->execute();
         }
     }
 
     private function isInBDD($nom, $prenom)
     {
-        $check = $this->pdo->prepare("SELECT COUNT(*) FROM personne WHERE nom = :nom AND prenom = :prenom");
+        $check = $this->pdo->prepare("SELECT COUNT(*) FROM Personne WHERE nom = :nom AND prenom = :prenom");
         $check->execute([':nom' => $nom, ':prenom' => $prenom]);
         return $check->fetchColumn() > 0;
     }

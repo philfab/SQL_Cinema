@@ -19,7 +19,7 @@ class ActorModel
         $acteurs = $this->pdo->query("
             SELECT id_acteur, p.prenom, p.nom, p.photo
             FROM Personne p
-            INNER JOIN acteur a ON p.id_personne = a.id_personne
+            INNER JOIN Acteur a ON p.id_personne = a.id_personne
             GROUP BY a.id_acteur
             ORDER BY p.nom ASC
         ");
@@ -59,7 +59,7 @@ class ActorModel
             $id_personne = $this->pdo->lastInsertId();
 
             if ($id_personne) {
-                $sql = "INSERT INTO acteur (id_personne) VALUES (:id_personne)";
+                $sql = "INSERT INTO Acteur (id_personne) VALUES (:id_personne)";
                 $req = $this->pdo->prepare($sql);
                 $req->execute([':id_personne' => $id_personne]);
             }
@@ -89,19 +89,19 @@ class ActorModel
     public function deleteActors($actorIds)
     {
         $actorsIds = implode(',', array_map('intval', $actorIds));
-        $personIdsQuery = $this->pdo->query("SELECT id_personne FROM acteur WHERE id_acteur IN ($actorsIds)");
+        $personIdsQuery = $this->pdo->query("SELECT id_personne FROM Acteur WHERE id_acteur IN ($actorsIds)");
         $personIds = $personIdsQuery->fetchAll(PDO::FETCH_COLUMN);
 
         if ($personIds) {
             $personIds = implode(',', array_map('intval', $personIds));
-            $delPersons = $this->pdo->prepare("DELETE FROM personne WHERE id_personne IN ($personIds)");
+            $delPersons = $this->pdo->prepare("DELETE FROM Personne WHERE id_personne IN ($personIds)");
             $delPersons->execute();
         }
     }
 
     private function isInBDD($nom, $prenom): bool
     {
-        $check = $this->pdo->prepare("SELECT COUNT(*) FROM personne WHERE nom = :nom AND prenom = :prenom");
+        $check = $this->pdo->prepare("SELECT COUNT(*) FROM Personne WHERE nom = :nom AND prenom = :prenom");
         $check->execute([':nom' => $nom, ':prenom' => $prenom]);
         return $check->fetchColumn() > 0;
     }

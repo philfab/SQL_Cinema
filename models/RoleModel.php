@@ -16,7 +16,7 @@ class RoleModel
     {
         return $this->pdo->query("
             SELECT id_role, personnage
-            FROM role
+            FROM Role
             ORDER BY personnage ASC
         ");
     }
@@ -40,7 +40,7 @@ class RoleModel
     public function saveRole($roleName)
     {
         if (!$this->isInBDD($roleName)) {
-            $req = $this->pdo->prepare("INSERT INTO role (personnage) VALUES (:personnage)");
+            $req = $this->pdo->prepare("INSERT INTO Role (personnage) VALUES (:personnage)");
             $req->execute([':personnage' => $roleName]);
         }
     }
@@ -48,7 +48,7 @@ class RoleModel
     public function updateRole($roleId, $roleName)
     {
         if (!$this->isInBDD($roleName)) {
-            $req = $this->pdo->prepare("UPDATE role SET personnage = :personnage WHERE id_role = :id_role");
+            $req = $this->pdo->prepare("UPDATE Role SET personnage = :personnage WHERE id_role = :id_role");
             $req->execute([
                 ':personnage' => $roleName,
                 ':id_role' => $roleId
@@ -59,13 +59,13 @@ class RoleModel
     public function deleteRoles($roleIds)
     {
         $roleIdsString = implode(',', array_map('intval', $roleIds));
-        $req = $this->pdo->prepare("DELETE FROM role WHERE id_role IN ($roleIdsString)");
+        $req = $this->pdo->prepare("DELETE FROM Role WHERE id_role IN ($roleIdsString)");
         $req->execute();
     }
 
     private function isInBDD($roleName): bool
     {
-        $check = $this->pdo->prepare("SELECT COUNT(*) FROM role WHERE personnage = :personnage");
+        $check = $this->pdo->prepare("SELECT COUNT(*) FROM Role WHERE personnage = :personnage");
         $check->execute([':personnage' => $roleName]);
         return $check->fetchColumn() > 0;
     }
